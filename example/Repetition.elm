@@ -1,6 +1,7 @@
 module Repetition exposing (..)
 
 import Html exposing (Html, div, text)
+import Draw exposing (..)
 
 
 type alias Model =
@@ -9,7 +10,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( "Repetition Page", Cmd.none )
+    ( "", Cmd.none )
 
 
 type Msg
@@ -18,8 +19,12 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ text model ]
+    a4Landscape
+        [ withStroke 0.4 ]
+        [ g
+            [ translate 10 10 ]
+            [ line 0 0 5 5 [] ]
+        ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

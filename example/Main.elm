@@ -1,8 +1,16 @@
-module Main exposing (..)
+module Main exposing (main)
 
-import Html exposing (Html, div, text, main_, nav, node, article, a)
+{-| Single Gallery Application to display various examples of generative art.
+
+@docs main
+-}
+
+import Html exposing (Html, div, text, main_, nav, node, article, a, p)
 import Html.Events exposing (onClick)
 import Tuple exposing (first, mapFirst, mapSecond)
+
+-- elm-generative examples
+
 import Repetition
 import Shepherding
 
@@ -48,7 +56,8 @@ view route =
             [ text stylesheet ]
         , nav
             []
-            [ a [ onClick <| Set (Repetition Nothing) ] [ text "Repetition" ]
+            [ p [] [ text "Accumulation" ]
+            , a [ onClick <| Set (Repetition Nothing) ] [ text "Circles" ]
             , a [ onClick <| Set (Shepherding Nothing) ] [ text "Shepherding" ]
             ]
         , article
@@ -76,41 +85,47 @@ stylesheet : String
 stylesheet =
     """
 body {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 main {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
 }
 
 nav {
-  flex: 0 0 15rem;
-  height: 100vh;
-  color: #9af;
-  background: #F5F5F6;
-  position: relative;
+    flex: 0 0 10rem;
+    height: 100vh;
+    background: #F5F5F6;
+    position: relative;
+    padding: 1rem 2rem;
+    line-height: 1.5;
+}
+
+nav > p {
+    margin-bottom: 0;
 }
 
 nav > a {
-  cursor: pointer;
-  display: block;
+    color: #9af;
+    cursor: pointer;
+    display: block;
 }
 
 article {
-  flex: 1 0 auto;
-  position: relative;
-  height: 100vh;
+    flex: 1 0 auto;
+    position: relative;
+    height: 100vh;
 }
 
 /* 1 cm = 1 rem */
 svg {
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  background: #FAFAFB;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: #FAFAFB;
 }
 """
 
@@ -143,7 +158,8 @@ subscriptions : Route -> Sub Msg
 subscriptions model =
     Sub.none
 
-
+{-| Program Entry.
+-}
 main : Program Never Route Msg
 main =
     Html.program
