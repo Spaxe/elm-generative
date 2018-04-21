@@ -2,22 +2,21 @@ module Crawl exposing (..)
 
 import Html exposing (Html, div, text)
 import Draw exposing (..)
+import Generative exposing (..)
 import Random
 
 
 type alias Data =
-    List (List ( Float, Float ))
+    List (List Float)
 
 
 type alias Model =
-    { data : Data
-    , state : Msg
-    }
+    Data
 
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate { data = [], state = Generate }
+    update Generate []
 
 
 type Msg
@@ -30,8 +29,7 @@ view model =
     a4Landscape
         [ withStroke 0.4
         ]
-        [ List.map2 path model.data [ [] ]
-            |> g [ translate 10 10 ]
+        [ g [ translate 10 10 ] (simplePaths model)
         ]
 
 
@@ -41,13 +39,12 @@ update msg model =
         Generate ->
             ( model
             , Random.generate Draw <|
-                Random.list 1 <|
-                    Random.list 2 <|
-                        Random.pair (Random.float 0 100) (Random.float 0 100)
+                Random.list 18 <|
+                    random1D 28 1
             )
 
         Draw data ->
-            ( { model | data = data }, Cmd.none )
+            ( data, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

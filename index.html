@@ -12324,6 +12324,19 @@ var _creative$elm_generative$Draw$path = function (points) {
 			_1: {ctor: '[]'}
 		});
 };
+var _creative$elm_generative$Draw$paths = F2(
+	function (pointsList, nodesList) {
+		return A3(_elm_lang$core$List$map2, _creative$elm_generative$Draw$path, pointsList, nodesList);
+	});
+var _creative$elm_generative$Draw$simplePaths = function (pointsList) {
+	return A2(
+		_creative$elm_generative$Draw$paths,
+		pointsList,
+		A2(
+			_elm_lang$core$List$repeat,
+			_elm_lang$core$List$length(pointsList),
+			{ctor: '[]'}));
+};
 var _creative$elm_generative$Draw$line = F4(
 	function (x1, y1, x2, y2) {
 		return _elm_lang$svg$Svg$line(
@@ -13012,6 +13025,16 @@ var _elm_lang$core$Random$cmdMap = F2(
 			A2(_elm_lang$core$Random$map, func, _p79._0));
 	});
 _elm_lang$core$Native_Platform.effectManagers['Random'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Random$init, onEffects: _elm_lang$core$Random$onEffects, onSelfMsg: _elm_lang$core$Random$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Random$cmdMap};
+var _creative$elm_generative$Generative$random = function (amplitude) {
+	return A2(_elm_lang$core$Random$float, (0 - amplitude) / 2, amplitude / 2);
+};
+var _creative$elm_generative$Generative$random1D = F2(
+	function (n, amplitude) {
+		return A2(
+			_elm_lang$core$Random$list,
+			n,
+			_creative$elm_generative$Generative$random(amplitude));
+	});
 var _creative$elm_generative$Crawl$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
@@ -13032,22 +13055,10 @@ var _creative$elm_generative$Crawl$view = function (model) {
 					_0: A2(_creative$elm_generative$Draw$translate, 10, 10),
 					_1: {ctor: '[]'}
 				},
-				A3(
-					_elm_lang$core$List$map2,
-					_creative$elm_generative$Draw$path,
-					model.data,
-					{
-						ctor: '::',
-						_0: {ctor: '[]'},
-						_1: {ctor: '[]'}
-					})),
+				_creative$elm_generative$Draw$simplePaths(model)),
 			_1: {ctor: '[]'}
 		});
 };
-var _creative$elm_generative$Crawl$Model = F2(
-	function (a, b) {
-		return {data: a, state: b};
-	});
 var _creative$elm_generative$Crawl$Draw = function (a) {
 	return {ctor: 'Draw', _0: a};
 };
@@ -13063,33 +13074,24 @@ var _creative$elm_generative$Crawl$update = F2(
 					_creative$elm_generative$Crawl$Draw,
 					A2(
 						_elm_lang$core$Random$list,
-						1,
+						2,
 						A2(
 							_elm_lang$core$Random$list,
-							2,
+							10,
 							A2(
 								_elm_lang$core$Random$pair,
 								A2(_elm_lang$core$Random$float, 0, 100),
 								A2(_elm_lang$core$Random$float, 0, 100)))))
 			};
 		} else {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{data: _p0._0}),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
+			return {ctor: '_Tuple2', _0: _p0._0, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 var _creative$elm_generative$Crawl$Generate = {ctor: 'Generate'};
 var _creative$elm_generative$Crawl$init = A2(
 	_creative$elm_generative$Crawl$update,
 	_creative$elm_generative$Crawl$Generate,
-	{
-		data: {ctor: '[]'},
-		state: _creative$elm_generative$Crawl$Generate
-	});
+	{ctor: '[]'});
 var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
 var _elm_lang$html$Html_Events$targetChecked = A2(
 	_elm_lang$core$Json_Decode$at,
@@ -13434,7 +13436,7 @@ var _creative$elm_generative$Main$main = _elm_lang$html$Html$program(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Crawl.Msg":{"args":[],"tags":{"Draw":["Crawl.Data"],"Generate":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Shepherding":["Maybe.Maybe Shepherding.Model"],"Crawl":["Maybe.Maybe Crawl.Model"]}},"Main.Msg":{"args":[],"tags":{"Set":["Main.Route"],"CrawlMsg":["Crawl.Msg"],"ShepherdingMsg":["Shepherding.Msg"]}},"Shepherding.Msg":{"args":[],"tags":{"Start":[]}}},"aliases":{"Shepherding.Model":{"args":[],"type":"String"},"Crawl.Model":{"args":[],"type":"{ data : Crawl.Data, state : Crawl.Msg }"},"Crawl.Data":{"args":[],"type":"List (List ( Float, Float ))"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Crawl.Msg":{"args":[],"tags":{"Draw":["Crawl.Data"],"Generate":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Shepherding":["Maybe.Maybe Shepherding.Model"],"Crawl":["Maybe.Maybe Crawl.Model"]}},"Main.Msg":{"args":[],"tags":{"Set":["Main.Route"],"CrawlMsg":["Crawl.Msg"],"ShepherdingMsg":["Shepherding.Msg"]}},"Shepherding.Msg":{"args":[],"tags":{"Start":[]}}},"aliases":{"Shepherding.Model":{"args":[],"type":"String"},"Crawl.Model":{"args":[],"type":"Crawl.Data"},"Crawl.Data":{"args":[],"type":"List (List ( Float, Float ))"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

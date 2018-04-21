@@ -9,6 +9,8 @@ module Draw
         , circle
         , line
         , path
+        , paths
+        , simplePaths
         )
 
 {-| SVG Drawing helper functions
@@ -103,6 +105,20 @@ path points =
                 |> (++) "M "
                 |> Attributes.d
             ]
+
+
+{-| Draw a list of paths
+-}
+paths : List (List ( Float, Float )) -> List (List (Svg msg)) -> List (Svg msg)
+paths pointsList nodesList =
+    List.map2 path pointsList nodesList
+
+
+{-| Draw a list of paths with no children nodes
+-}
+simplePaths : List (List ( Float, Float )) -> List (Svg msg)
+simplePaths pointsList =
+    paths pointsList <| List.repeat (List.length pointsList) []
 
 
 {-| A fixed sized SVG container.
