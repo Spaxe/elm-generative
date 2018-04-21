@@ -1,4 +1,15 @@
-module Draw exposing (a4Landscape, a4Portrait, translate, withStroke, rect, g, circle, line)
+module Draw
+    exposing
+        ( a4Landscape
+        , a4Portrait
+        , translate
+        , withStroke
+        , rect
+        , g
+        , circle
+        , line
+        , path
+        )
 
 {-| SVG Drawing helper functions
 -}
@@ -65,6 +76,7 @@ circle x y r =
         , Attributes.r <| toString r
         ]
 
+
 {-| Draw a line
 -}
 line : Float -> Float -> Float -> Float -> List (Svg msg) -> Svg msg
@@ -76,6 +88,21 @@ line x1 y1 x2 y2 =
         , Attributes.y2 <| toString y2
         ]
 
+
+{-| Draw lines from a list of points
+-}
+path : List ( Float, Float ) -> List (Svg msg) -> Svg msg
+path points =
+    let
+        coords ( x, y ) =
+            (toString x) ++ ", " ++ (toString y)
+    in
+        Svg.path
+            [ List.map coords points
+                |> String.join " L "
+                |> (++) "M "
+                |> Attributes.d
+            ]
 
 
 {-| A fixed sized SVG container.

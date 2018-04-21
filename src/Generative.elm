@@ -1,6 +1,6 @@
 module Generative exposing ()
 
-{-| Generative art is a lot of fun. This package aims to help you tinker.
+{-| Tools to help you tinker.
 
 # Setting it up
 
@@ -8,4 +8,7 @@ module Generative exposing ()
 
 -}
 
+--import Random
+
+--random :
 

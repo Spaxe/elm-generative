@@ -11,7 +11,7 @@ import Tuple exposing (first, mapFirst, mapSecond)
 
 -- elm-generative examples
 
-import Repetition
+import Crawl
 import Shepherding
 
 
@@ -21,10 +21,10 @@ import Shepherding
 init : Route -> ( Route, Cmd Msg )
 init route =
     case route of
-        Repetition _ ->
-            Repetition.init
-                |> mapFirst (Repetition << Just)
-                |> mapSecond (Cmd.map RepetitionMsg)
+        Crawl _ ->
+            Crawl.init
+                |> mapFirst (Crawl << Just)
+                |> mapSecond (Cmd.map CrawlMsg)
 
         Shepherding _ ->
             Shepherding.init
@@ -34,12 +34,12 @@ init route =
 
 type Msg
     = Set Route
-    | RepetitionMsg Repetition.Msg
+    | CrawlMsg Crawl.Msg
     | ShepherdingMsg Shepherding.Msg
 
 
 type Route
-    = Repetition (Maybe Repetition.Model)
+    = Crawl (Maybe Crawl.Model)
     | Shepherding (Maybe Shepherding.Model)
 
 
@@ -57,7 +57,7 @@ view route =
         , nav
             []
             [ p [] [ text "Accumulation" ]
-            , a [ onClick <| Set (Repetition Nothing) ] [ text "Circles" ]
+            , a [ onClick <| Set (Crawl Nothing) ] [ text "Circles" ]
             , a [ onClick <| Set (Shepherding Nothing) ] [ text "Shepherding" ]
             ]
         , article
@@ -69,9 +69,9 @@ view route =
 render : Route -> Html Msg
 render route =
     case route of
-        Repetition (Just pageModel) ->
-            Repetition.view pageModel
-                |> Html.map RepetitionMsg
+        Crawl (Just pageModel) ->
+            Crawl.view pageModel
+                |> Html.map CrawlMsg
 
         Shepherding (Just pageModel) ->
             Shepherding.view pageModel
@@ -140,10 +140,10 @@ update msg route =
         ( Set route, _ ) ->
             init route
 
-        ( RepetitionMsg pageMsg, Repetition (Just pageModel) ) ->
-            Repetition.update pageMsg pageModel
-                |> mapFirst (Repetition << Just)
-                |> mapSecond (Cmd.map RepetitionMsg)
+        ( CrawlMsg pageMsg, Crawl (Just pageModel) ) ->
+            Crawl.update pageMsg pageModel
+                |> mapFirst (Crawl << Just)
+                |> mapSecond (Cmd.map CrawlMsg)
 
         ( ShepherdingMsg pageMsg, Shepherding (Just pageModel) ) ->
             Shepherding.update pageMsg pageModel
@@ -151,7 +151,7 @@ update msg route =
                 |> mapSecond (Cmd.map ShepherdingMsg)
 
         _ ->
-            init (Repetition Nothing)
+            init (Crawl Nothing)
 
 
 subscriptions : Route -> Sub Msg
@@ -163,7 +163,7 @@ subscriptions model =
 main : Program Never Route Msg
 main =
     Html.program
-        { init = init <| Repetition Nothing
+        { init = init <| Crawl Nothing
         , view = view
         , update = update
         , subscriptions = subscriptions
