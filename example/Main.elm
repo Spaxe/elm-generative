@@ -3,11 +3,13 @@ module Main exposing (main)
 {-| Single Gallery Application to display various examples of generative art.
 
 @docs main
+
 -}
 
 import Html exposing (Html, div, text, main_, nav, node, article, a, p)
 import Html.Events exposing (onClick)
 import Tuple exposing (first, mapFirst, mapSecond)
+
 
 -- elm-generative examples
 
@@ -57,7 +59,7 @@ view route =
         , nav
             []
             [ p [] [ text "Accumulation" ]
-            , a [ onClick <| Set (Crawl Nothing) ] [ text "Circles" ]
+            , a [ onClick <| Set (Crawl Nothing) ] [ text "Lines" ]
             , a [ onClick <| Set (Shepherding Nothing) ] [ text "Shepherding" ]
             ]
         , article
@@ -157,6 +159,7 @@ update msg route =
 subscriptions : Route -> Sub Msg
 subscriptions model =
     Sub.none
+
 
 {-| Program Entry.
 -}
