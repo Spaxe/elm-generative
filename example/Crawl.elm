@@ -49,7 +49,7 @@ view model =
         a4Landscape
             [ withStroke 0.4
             ]
-            [ g [ translate 10 10 ] (simplePaths transformed)
+            [ g [ translate 50 50 ] (simplePaths transformed)
             ]
 
 
@@ -60,7 +60,7 @@ update msg model =
             ( model
             , Random.generate Draw <|
                 Random.list 18 <|
-                    random1D 100 1
+                    random1D 100 10
             )
 
         Draw data ->
