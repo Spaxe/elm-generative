@@ -27,8 +27,7 @@ module Generative
 -}
 
 import Random exposing (Generator, float, list)
-import Tuple exposing (mapFirst)
-import Basics.Extra exposing (swap)
+import Tuple exposing (mapFirst, mapSecond)
 import List.Extra exposing (zip)
 
 
@@ -81,23 +80,13 @@ makePath n x1 y1 x2 y2 =
 return a new list only modifying the first values.
 -}
 mapX : (a -> a -> a) -> List a -> List ( a, b ) -> List ( a, b )
-mapX f a b =
-    case ( a, b ) of
-        ( [], _ ) ->
-            []
-
-        ( _, [] ) ->
-            []
-
-        ( x :: xs, xy :: xys ) ->
-            mapFirst (f x) xy :: mapX f xs xys
+mapX f =
+    List.map2 <| mapFirst << f
 
 
 {-| Map a function over a List to the second element of List of Tuples, and
 return a new list only modifying the second values.
 -}
 mapY : (a -> a -> a) -> List a -> List ( b, a ) -> List ( b, a )
-mapY f a b =
-    List.map swap b
-        |> mapX f a
-        |> List.map swap
+mapY f =
+    List.map2 <| mapSecond << f

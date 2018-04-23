@@ -14591,65 +14591,20 @@ var _elm_lang$core$Random$cmdMap = F2(
 			A2(_elm_lang$core$Random$map, func, _p79._0));
 	});
 _elm_lang$core$Native_Platform.effectManagers['Random'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Random$init, onEffects: _elm_lang$core$Random$onEffects, onSelfMsg: _elm_lang$core$Random$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Random$cmdMap};
-var _elm_community$basics_extra$Basics_Extra$turnsPerRadian = 1 / _elm_lang$core$Basics$turns(1);
-var _elm_community$basics_extra$Basics_Extra$inTurns = function (angle) {
-	return angle * _elm_community$basics_extra$Basics_Extra$turnsPerRadian;
+var _creative$elm_generative$Generative$mapY = function (f) {
+	return _elm_lang$core$List$map2(
+		function (_p0) {
+			return _elm_lang$core$Tuple$mapSecond(
+				f(_p0));
+		});
 };
-var _elm_community$basics_extra$Basics_Extra$inRadians = _elm_lang$core$Basics$identity;
-var _elm_community$basics_extra$Basics_Extra$degreesPerRadian = 1 / _elm_lang$core$Basics$degrees(1);
-var _elm_community$basics_extra$Basics_Extra$inDegrees = function (angle) {
-	return angle * _elm_community$basics_extra$Basics_Extra$degreesPerRadian;
+var _creative$elm_generative$Generative$mapX = function (f) {
+	return _elm_lang$core$List$map2(
+		function (_p1) {
+			return _elm_lang$core$Tuple$mapFirst(
+				f(_p1));
+		});
 };
-var _elm_community$basics_extra$Basics_Extra$fmod = F2(
-	function (x, m) {
-		return x - (m * _elm_lang$core$Basics$toFloat(
-			_elm_lang$core$Basics$floor(x / m)));
-	});
-var _elm_community$basics_extra$Basics_Extra$maxSafeInteger = Math.pow(2, 53) - 1;
-var _elm_community$basics_extra$Basics_Extra$minSafeInteger = 0 - _elm_community$basics_extra$Basics_Extra$maxSafeInteger;
-var _elm_community$basics_extra$Basics_Extra$isSafeInteger = function (number) {
-	return (_elm_lang$core$Native_Utils.cmp(_elm_community$basics_extra$Basics_Extra$minSafeInteger, number) < 1) && (_elm_lang$core$Native_Utils.cmp(_elm_community$basics_extra$Basics_Extra$maxSafeInteger, number) > -1);
-};
-var _elm_community$basics_extra$Basics_Extra$swap = function (_p0) {
-	var _p1 = _p0;
-	return {ctor: '_Tuple2', _0: _p1._1, _1: _p1._0};
-};
-var _elm_community$basics_extra$Basics_Extra_ops = _elm_community$basics_extra$Basics_Extra_ops || {};
-_elm_community$basics_extra$Basics_Extra_ops['=>'] = F2(
-	function (v0, v1) {
-		return {ctor: '_Tuple2', _0: v0, _1: v1};
-	});
-var _creative$elm_generative$Generative$mapX = F3(
-	function (f, a, b) {
-		var _p0 = {ctor: '_Tuple2', _0: a, _1: b};
-		if (_p0._0.ctor === '[]') {
-			return {ctor: '[]'};
-		} else {
-			if (_p0._1.ctor === '[]') {
-				return {ctor: '[]'};
-			} else {
-				return {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$core$Tuple$mapFirst,
-						f(_p0._0._0),
-						_p0._1._0),
-					_1: A3(_creative$elm_generative$Generative$mapX, f, _p0._0._1, _p0._1._1)
-				};
-			}
-		}
-	});
-var _creative$elm_generative$Generative$mapY = F3(
-	function (f, a, b) {
-		return A2(
-			_elm_lang$core$List$map,
-			_elm_community$basics_extra$Basics_Extra$swap,
-			A3(
-				_creative$elm_generative$Generative$mapX,
-				f,
-				a,
-				A2(_elm_lang$core$List$map, _elm_community$basics_extra$Basics_Extra$swap, b)));
-	});
 var _creative$elm_generative$Generative$makePath = F5(
 	function (n, x1, y1, x2, y2) {
 		if (_elm_lang$core$Native_Utils.cmp(n, 1) < 0) {
@@ -14658,7 +14613,7 @@ var _creative$elm_generative$Generative$makePath = F5(
 			var dy = (y2 - y1) / _elm_lang$core$Basics$toFloat(n);
 			var ys = A2(
 				_elm_lang$core$List$map,
-				function (_p1) {
+				function (_p2) {
 					return A2(
 						F2(
 							function (x, y) {
@@ -14671,13 +14626,13 @@ var _creative$elm_generative$Generative$makePath = F5(
 									return x * y;
 								}),
 							dy,
-							_elm_lang$core$Basics$toFloat(_p1)));
+							_elm_lang$core$Basics$toFloat(_p2)));
 				},
 				A2(_elm_lang$core$List$range, 0, n));
 			var dx = (x2 - x1) / _elm_lang$core$Basics$toFloat(n);
 			var xs = A2(
 				_elm_lang$core$List$map,
-				function (_p2) {
+				function (_p3) {
 					return A2(
 						F2(
 							function (x, y) {
@@ -14690,7 +14645,7 @@ var _creative$elm_generative$Generative$makePath = F5(
 									return x * y;
 								}),
 							dx,
-							_elm_lang$core$Basics$toFloat(_p2)));
+							_elm_lang$core$Basics$toFloat(_p3)));
 				},
 				A2(_elm_lang$core$List$range, 0, n));
 			return A2(_elm_community$list_extra$List_Extra$zip, xs, ys);
