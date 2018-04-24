@@ -6,9 +6,11 @@ module Main exposing (main)
 
 -}
 
+import Navigation exposing (Location)
 import Html exposing (Html, div, text, main_, nav, node, article, a, p)
-import Html.Events exposing (onClick)
+import Html.Attributes exposing (href)
 import Tuple exposing (first, mapFirst, mapSecond)
+import UrlParser exposing (..)
 
 
 -- elm-generative examples
@@ -20,9 +22,9 @@ import Example.Landscape as Landscape
 -- MODEL --
 
 
-init : Route -> ( Route, Cmd Msg )
-init route =
-    case route of
+init : Location -> ( Route, Cmd Msg )
+init location =
+    case parseLocation location of
         Curtain _ ->
             Curtain.init
                 |> mapFirst (Curtain << Just)
@@ -35,7 +37,7 @@ init route =
 
 
 type Msg
-    = Set Route
+    = NavigateTo Location
     | CurtainMsg Curtain.Msg
     | LandscapeMsg Landscape.Msg
 
@@ -59,8 +61,8 @@ view route =
         , nav
             []
             [ p [] [ text "Accumulation" ]
-            , a [ onClick <| Set (Curtain Nothing) ] [ text "Curtain" ]
-            , a [ onClick <| Set (Landscape Nothing) ] [ text "Landscape" ]
+            , a [ href "/#curtain" ] [ text "Curtain" ]
+            , a [ href "/#landscape" ] [ text "Landscape" ]
             ]
         , article
             []
@@ -139,8 +141,8 @@ svg {
 update : Msg -> Route -> ( Route, Cmd Msg )
 update msg route =
     case ( msg, route ) of
-        ( Set route, _ ) ->
-            init route
+        ( NavigateTo location, _ ) ->
+            init location
 
         ( CurtainMsg pageMsg, Curtain (Just pageModel) ) ->
             Curtain.update pageMsg pageModel
@@ -153,7 +155,11 @@ update msg route =
                 |> mapSecond (Cmd.map LandscapeMsg)
 
         _ ->
-            init (Curtain Nothing)
+            ( route, Cmd.none )
+
+
+
+-- SUBSCRIPTIONS --
 
 
 subscriptions : Route -> Sub Msg
@@ -161,12 +167,35 @@ subscriptions model =
     Sub.none
 
 
+
+-- ROUTING --
+
+
+matchers : Parser (Route -> a) a
+matchers =
+    oneOf
+        [ map (Curtain Nothing) top
+        , map (Curtain Nothing) (s "curtain")
+        , map (Landscape Nothing) (s "landscape")
+        ]
+
+
+parseLocation : Location -> Route
+parseLocation location =
+    case parseHash matchers location of
+        Just route ->
+            route
+
+        Nothing ->
+            Curtain Nothing
+
+
 {-| Program Entry.
 -}
 main : Program Never Route Msg
 main =
-    Html.program
-        { init = init <| Curtain Nothing
+    Navigation.program NavigateTo
+        { init = init
         , view = view
         , update = update
         , subscriptions = subscriptions
