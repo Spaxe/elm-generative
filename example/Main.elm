@@ -13,8 +13,8 @@ import Tuple exposing (first, mapFirst, mapSecond)
 
 -- elm-generative examples
 
-import Crawl
-import Shepherding
+import Example.Curtain as Curtain
+import Example.Landscape as Landscape
 
 
 -- MODEL --
@@ -23,26 +23,26 @@ import Shepherding
 init : Route -> ( Route, Cmd Msg )
 init route =
     case route of
-        Crawl _ ->
-            Crawl.init
-                |> mapFirst (Crawl << Just)
-                |> mapSecond (Cmd.map CrawlMsg)
+        Curtain _ ->
+            Curtain.init
+                |> mapFirst (Curtain << Just)
+                |> mapSecond (Cmd.map CurtainMsg)
 
-        Shepherding _ ->
-            Shepherding.init
-                |> mapFirst (Shepherding << Just)
-                |> mapSecond (Cmd.map ShepherdingMsg)
+        Landscape _ ->
+            Landscape.init
+                |> mapFirst (Landscape << Just)
+                |> mapSecond (Cmd.map LandscapeMsg)
 
 
 type Msg
     = Set Route
-    | CrawlMsg Crawl.Msg
-    | ShepherdingMsg Shepherding.Msg
+    | CurtainMsg Curtain.Msg
+    | LandscapeMsg Landscape.Msg
 
 
 type Route
-    = Crawl (Maybe Crawl.Model)
-    | Shepherding (Maybe Shepherding.Model)
+    = Curtain (Maybe Curtain.Model)
+    | Landscape (Maybe Landscape.Model)
 
 
 
@@ -59,8 +59,8 @@ view route =
         , nav
             []
             [ p [] [ text "Accumulation" ]
-            , a [ onClick <| Set (Crawl Nothing) ] [ text "Lines" ]
-            , a [ onClick <| Set (Shepherding Nothing) ] [ text "Shepherding" ]
+            , a [ onClick <| Set (Curtain Nothing) ] [ text "Curtain" ]
+            , a [ onClick <| Set (Landscape Nothing) ] [ text "Landscape" ]
             ]
         , article
             []
@@ -71,13 +71,13 @@ view route =
 render : Route -> Html Msg
 render route =
     case route of
-        Crawl (Just pageModel) ->
-            Crawl.view pageModel
-                |> Html.map CrawlMsg
+        Curtain (Just pageModel) ->
+            Curtain.view pageModel
+                |> Html.map CurtainMsg
 
-        Shepherding (Just pageModel) ->
-            Shepherding.view pageModel
-                |> Html.map ShepherdingMsg
+        Landscape (Just pageModel) ->
+            Landscape.view pageModel
+                |> Html.map LandscapeMsg
 
         _ ->
             text "404 Not Found"
@@ -142,18 +142,18 @@ update msg route =
         ( Set route, _ ) ->
             init route
 
-        ( CrawlMsg pageMsg, Crawl (Just pageModel) ) ->
-            Crawl.update pageMsg pageModel
-                |> mapFirst (Crawl << Just)
-                |> mapSecond (Cmd.map CrawlMsg)
+        ( CurtainMsg pageMsg, Curtain (Just pageModel) ) ->
+            Curtain.update pageMsg pageModel
+                |> mapFirst (Curtain << Just)
+                |> mapSecond (Cmd.map CurtainMsg)
 
-        ( ShepherdingMsg pageMsg, Shepherding (Just pageModel) ) ->
-            Shepherding.update pageMsg pageModel
-                |> mapFirst (Shepherding << Just)
-                |> mapSecond (Cmd.map ShepherdingMsg)
+        ( LandscapeMsg pageMsg, Landscape (Just pageModel) ) ->
+            Landscape.update pageMsg pageModel
+                |> mapFirst (Landscape << Just)
+                |> mapSecond (Cmd.map LandscapeMsg)
 
         _ ->
-            init (Crawl Nothing)
+            init (Curtain Nothing)
 
 
 subscriptions : Route -> Sub Msg
@@ -166,7 +166,7 @@ subscriptions model =
 main : Program Never Route Msg
 main =
     Html.program
-        { init = init <| Crawl Nothing
+        { init = init <| Curtain Nothing
         , view = view
         , update = update
         , subscriptions = subscriptions

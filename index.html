@@ -12307,7 +12307,8 @@ var _creative$elm_generative$Draw$path = function (points) {
 				', ',
 				_elm_lang$core$Basics$toString(_p1._1)));
 	};
-	return _elm_lang$svg$Svg$path(
+	return A2(
+		_elm_lang$svg$Svg$path,
 		{
 			ctor: '::',
 			_0: _elm_lang$svg$Svg_Attributes$d(
@@ -12322,20 +12323,11 @@ var _creative$elm_generative$Draw$path = function (points) {
 						' L ',
 						A2(_elm_lang$core$List$map, coords, points)))),
 			_1: {ctor: '[]'}
-		});
+		},
+		{ctor: '[]'});
 };
-var _creative$elm_generative$Draw$paths = F2(
-	function (pointsList, nodesList) {
-		return A3(_elm_lang$core$List$map2, _creative$elm_generative$Draw$path, pointsList, nodesList);
-	});
-var _creative$elm_generative$Draw$simplePaths = function (pointsList) {
-	return A2(
-		_creative$elm_generative$Draw$paths,
-		pointsList,
-		A2(
-			_elm_lang$core$List$repeat,
-			_elm_lang$core$List$length(pointsList),
-			{ctor: '[]'}));
+var _creative$elm_generative$Draw$paths = function (pointsList) {
+	return A2(_elm_lang$core$List$map, _creative$elm_generative$Draw$path, pointsList);
 };
 var _creative$elm_generative$Draw$line = F4(
 	function (x1, y1, x2, y2) {
@@ -14591,14 +14583,25 @@ var _elm_lang$core$Random$cmdMap = F2(
 			A2(_elm_lang$core$Random$map, func, _p79._0));
 	});
 _elm_lang$core$Native_Platform.effectManagers['Random'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Random$init, onEffects: _elm_lang$core$Random$onEffects, onSelfMsg: _elm_lang$core$Random$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Random$cmdMap};
-var _creative$elm_generative$Generative$mapY = function (f) {
+var _creative$elm_generative$Generative$accumulateList = _elm_community$list_extra$List_Extra$scanl1(
+	_elm_lang$core$List$map2(
+		F2(
+			function (x, y) {
+				return x + y;
+			})));
+var _creative$elm_generative$Generative$accumulate = _elm_community$list_extra$List_Extra$scanl1(
+	F2(
+		function (x, y) {
+			return x + y;
+		}));
+var _creative$elm_generative$Generative$map2Second = function (f) {
 	return _elm_lang$core$List$map2(
 		function (_p0) {
 			return _elm_lang$core$Tuple$mapSecond(
 				f(_p0));
 		});
 };
-var _creative$elm_generative$Generative$mapX = function (f) {
+var _creative$elm_generative$Generative$map2First = function (f) {
 	return _elm_lang$core$List$map2(
 		function (_p1) {
 			return _elm_lang$core$Tuple$mapFirst(
@@ -14661,12 +14664,12 @@ var _creative$elm_generative$Generative$random1D = F2(
 			n,
 			_creative$elm_generative$Generative$random(amplitude));
 	});
-var _creative$elm_generative$Crawl$subscriptions = function (model) {
+var _creative$elm_generative$Example_Curtain$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _creative$elm_generative$Crawl$initialiseLines = function (n) {
+var _creative$elm_generative$Example_Curtain$initialiseLines = function (n) {
 	var line = function (y) {
-		return A5(_creative$elm_generative$Generative$makePath, 100, 10, y, 110, y);
+		return A5(_creative$elm_generative$Generative$makePath, 100, 10, y, 210, y);
 	};
 	return A2(
 		_elm_lang$core$List$map,
@@ -14680,21 +14683,22 @@ var _creative$elm_generative$Crawl$initialiseLines = function (n) {
 						function (x, y) {
 							return x * y;
 						}),
-					10.0,
+					1.0,
 					_elm_lang$core$Basics$toFloat(_p0));
 			}));
 };
-var _creative$elm_generative$Crawl$view = function (model) {
-	var generative = model;
-	var data = _creative$elm_generative$Crawl$initialiseLines(10);
+var _creative$elm_generative$Example_Curtain$view = function (model) {
+	var randomValues = model;
+	var shepherdedValues = _creative$elm_generative$Generative$accumulateList(randomValues);
+	var data = _creative$elm_generative$Example_Curtain$initialiseLines(100);
 	var transformed = A3(
 		_elm_lang$core$List$map2,
-		_creative$elm_generative$Generative$mapY(
+		_creative$elm_generative$Generative$map2Second(
 			F2(
 				function (x, y) {
 					return x + y;
 				})),
-		generative,
+		shepherdedValues,
 		data);
 	return A2(
 		_creative$elm_generative$Draw$a4Landscape,
@@ -14709,17 +14713,17 @@ var _creative$elm_generative$Crawl$view = function (model) {
 				_creative$elm_generative$Draw$g,
 				{
 					ctor: '::',
-					_0: A2(_creative$elm_generative$Draw$translate, 50, 50),
+					_0: A2(_creative$elm_generative$Draw$translate, 40, 50),
 					_1: {ctor: '[]'}
 				},
-				_creative$elm_generative$Draw$simplePaths(transformed)),
+				_creative$elm_generative$Draw$paths(transformed)),
 			_1: {ctor: '[]'}
 		});
 };
-var _creative$elm_generative$Crawl$Draw = function (a) {
+var _creative$elm_generative$Example_Curtain$Draw = function (a) {
 	return {ctor: 'Draw', _0: a};
 };
-var _creative$elm_generative$Crawl$update = F2(
+var _creative$elm_generative$Example_Curtain$update = F2(
 	function (msg, model) {
 		var _p1 = msg;
 		if (_p1.ctor === 'Generate') {
@@ -14728,21 +14732,41 @@ var _creative$elm_generative$Crawl$update = F2(
 				_0: model,
 				_1: A2(
 					_elm_lang$core$Random$generate,
-					_creative$elm_generative$Crawl$Draw,
+					_creative$elm_generative$Example_Curtain$Draw,
 					A2(
 						_elm_lang$core$Random$list,
-						18,
-						A2(_creative$elm_generative$Generative$random1D, 100, 10)))
+						100,
+						A2(_creative$elm_generative$Generative$random1D, 200, 0.5)))
 			};
 		} else {
 			return {ctor: '_Tuple2', _0: _p1._0, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
-var _creative$elm_generative$Crawl$Generate = {ctor: 'Generate'};
-var _creative$elm_generative$Crawl$init = A2(
-	_creative$elm_generative$Crawl$update,
-	_creative$elm_generative$Crawl$Generate,
+var _creative$elm_generative$Example_Curtain$Generate = {ctor: 'Generate'};
+var _creative$elm_generative$Example_Curtain$init = A2(
+	_creative$elm_generative$Example_Curtain$update,
+	_creative$elm_generative$Example_Curtain$Generate,
 	{ctor: '[]'});
+var _creative$elm_generative$Example_Landscape$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _creative$elm_generative$Example_Landscape$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _creative$elm_generative$Example_Landscape$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(model),
+			_1: {ctor: '[]'}
+		});
+};
+var _creative$elm_generative$Example_Landscape$init = {ctor: '_Tuple2', _0: 'Shepherding Page', _1: _elm_lang$core$Platform_Cmd$none};
+var _creative$elm_generative$Example_Landscape$Start = {ctor: 'Start'};
 var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
 var _elm_lang$html$Html_Events$targetChecked = A2(
 	_elm_lang$core$Json_Decode$at,
@@ -14857,46 +14881,26 @@ var _elm_lang$html$Html_Events$Options = F2(
 	function (a, b) {
 		return {stopPropagation: a, preventDefault: b};
 	});
-var _creative$elm_generative$Shepherding$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
-};
-var _creative$elm_generative$Shepherding$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-	});
-var _creative$elm_generative$Shepherding$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(model),
-			_1: {ctor: '[]'}
-		});
-};
-var _creative$elm_generative$Shepherding$init = {ctor: '_Tuple2', _0: 'Shepherding Page', _1: _elm_lang$core$Platform_Cmd$none};
-var _creative$elm_generative$Shepherding$Start = {ctor: 'Start'};
 var _creative$elm_generative$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
 var _creative$elm_generative$Main$stylesheet = '\nbody {\n    margin: 0;\n    padding: 0;\n}\n\nmain {\n    width: 100vw;\n    height: 100vh;\n    display: flex;\n}\n\nnav {\n    flex: 0 0 10rem;\n    height: 100vh;\n    background: #F5F5F6;\n    position: relative;\n    padding: 1rem 2rem;\n    line-height: 1.5;\n}\n\nnav > p {\n    margin-bottom: 0;\n}\n\nnav > a {\n    color: #9af;\n    cursor: pointer;\n    display: block;\n}\n\narticle {\n    flex: 1 0 auto;\n    position: relative;\n    height: 100vh;\n}\n\n/* 1 cm = 1 rem */\nsvg {\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background: #FAFAFB;\n}\n';
-var _creative$elm_generative$Main$ShepherdingMsg = function (a) {
-	return {ctor: 'ShepherdingMsg', _0: a};
+var _creative$elm_generative$Main$LandscapeMsg = function (a) {
+	return {ctor: 'LandscapeMsg', _0: a};
 };
-var _creative$elm_generative$Main$CrawlMsg = function (a) {
-	return {ctor: 'CrawlMsg', _0: a};
+var _creative$elm_generative$Main$CurtainMsg = function (a) {
+	return {ctor: 'CurtainMsg', _0: a};
 };
 var _creative$elm_generative$Main$render = function (route) {
 	var _p0 = route;
 	_v0_2:
 	do {
-		if (_p0.ctor === 'Crawl') {
+		if (_p0.ctor === 'Curtain') {
 			if (_p0._0.ctor === 'Just') {
 				return A2(
 					_elm_lang$html$Html$map,
-					_creative$elm_generative$Main$CrawlMsg,
-					_creative$elm_generative$Crawl$view(_p0._0._0));
+					_creative$elm_generative$Main$CurtainMsg,
+					_creative$elm_generative$Example_Curtain$view(_p0._0._0));
 			} else {
 				break _v0_2;
 			}
@@ -14904,8 +14908,8 @@ var _creative$elm_generative$Main$render = function (route) {
 			if (_p0._0.ctor === 'Just') {
 				return A2(
 					_elm_lang$html$Html$map,
-					_creative$elm_generative$Main$ShepherdingMsg,
-					_creative$elm_generative$Shepherding$view(_p0._0._0));
+					_creative$elm_generative$Main$LandscapeMsg,
+					_creative$elm_generative$Example_Landscape$view(_p0._0._0));
 			} else {
 				break _v0_2;
 			}
@@ -14916,36 +14920,36 @@ var _creative$elm_generative$Main$render = function (route) {
 var _creative$elm_generative$Main$Set = function (a) {
 	return {ctor: 'Set', _0: a};
 };
-var _creative$elm_generative$Main$Shepherding = function (a) {
-	return {ctor: 'Shepherding', _0: a};
+var _creative$elm_generative$Main$Landscape = function (a) {
+	return {ctor: 'Landscape', _0: a};
 };
-var _creative$elm_generative$Main$Crawl = function (a) {
-	return {ctor: 'Crawl', _0: a};
+var _creative$elm_generative$Main$Curtain = function (a) {
+	return {ctor: 'Curtain', _0: a};
 };
 var _creative$elm_generative$Main$init = function (route) {
 	var _p1 = route;
-	if (_p1.ctor === 'Crawl') {
+	if (_p1.ctor === 'Curtain') {
 		return A2(
 			_elm_lang$core$Tuple$mapSecond,
-			_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CrawlMsg),
+			_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
 			A2(
 				_elm_lang$core$Tuple$mapFirst,
 				function (_p2) {
-					return _creative$elm_generative$Main$Crawl(
+					return _creative$elm_generative$Main$Curtain(
 						_elm_lang$core$Maybe$Just(_p2));
 				},
-				_creative$elm_generative$Crawl$init));
+				_creative$elm_generative$Example_Curtain$init));
 	} else {
 		return A2(
 			_elm_lang$core$Tuple$mapSecond,
-			_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$ShepherdingMsg),
+			_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
 			A2(
 				_elm_lang$core$Tuple$mapFirst,
 				function (_p3) {
-					return _creative$elm_generative$Main$Shepherding(
+					return _creative$elm_generative$Main$Landscape(
 						_elm_lang$core$Maybe$Just(_p3));
 				},
-				_creative$elm_generative$Shepherding$init));
+				_creative$elm_generative$Example_Landscape$init));
 	}
 };
 var _creative$elm_generative$Main$view = function (route) {
@@ -14986,12 +14990,12 @@ var _creative$elm_generative$Main$view = function (route) {
 									ctor: '::',
 									_0: _elm_lang$html$Html_Events$onClick(
 										_creative$elm_generative$Main$Set(
-											_creative$elm_generative$Main$Crawl(_elm_lang$core$Maybe$Nothing))),
+											_creative$elm_generative$Main$Curtain(_elm_lang$core$Maybe$Nothing))),
 									_1: {ctor: '[]'}
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Lines'),
+									_0: _elm_lang$html$Html$text('Curtain'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -15002,12 +15006,12 @@ var _creative$elm_generative$Main$view = function (route) {
 										ctor: '::',
 										_0: _elm_lang$html$Html_Events$onClick(
 											_creative$elm_generative$Main$Set(
-												_creative$elm_generative$Main$Shepherding(_elm_lang$core$Maybe$Nothing))),
+												_creative$elm_generative$Main$Landscape(_elm_lang$core$Maybe$Nothing))),
 										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('Shepherding'),
+										_0: _elm_lang$html$Html$text('Landscape'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {ctor: '[]'}
@@ -15038,33 +15042,33 @@ var _creative$elm_generative$Main$update = F2(
 				switch (_p4._0.ctor) {
 					case 'Set':
 						return _creative$elm_generative$Main$init(_p4._0._0);
-					case 'CrawlMsg':
-						if ((_p4._1.ctor === 'Crawl') && (_p4._1._0.ctor === 'Just')) {
+					case 'CurtainMsg':
+						if ((_p4._1.ctor === 'Curtain') && (_p4._1._0.ctor === 'Just')) {
 							return A2(
 								_elm_lang$core$Tuple$mapSecond,
-								_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CrawlMsg),
+								_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
 								A2(
 									_elm_lang$core$Tuple$mapFirst,
 									function (_p5) {
-										return _creative$elm_generative$Main$Crawl(
+										return _creative$elm_generative$Main$Curtain(
 											_elm_lang$core$Maybe$Just(_p5));
 									},
-									A2(_creative$elm_generative$Crawl$update, _p4._0._0, _p4._1._0._0)));
+									A2(_creative$elm_generative$Example_Curtain$update, _p4._0._0, _p4._1._0._0)));
 						} else {
 							break _v2_3;
 						}
 					default:
-						if ((_p4._1.ctor === 'Shepherding') && (_p4._1._0.ctor === 'Just')) {
+						if ((_p4._1.ctor === 'Landscape') && (_p4._1._0.ctor === 'Just')) {
 							return A2(
 								_elm_lang$core$Tuple$mapSecond,
-								_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$ShepherdingMsg),
+								_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
 								A2(
 									_elm_lang$core$Tuple$mapFirst,
 									function (_p6) {
-										return _creative$elm_generative$Main$Shepherding(
+										return _creative$elm_generative$Main$Landscape(
 											_elm_lang$core$Maybe$Just(_p6));
 									},
-									A2(_creative$elm_generative$Shepherding$update, _p4._0._0, _p4._1._0._0)));
+									A2(_creative$elm_generative$Example_Landscape$update, _p4._0._0, _p4._1._0._0)));
 						} else {
 							break _v2_3;
 						}
@@ -15074,12 +15078,12 @@ var _creative$elm_generative$Main$update = F2(
 			}
 		} while(false);
 		return _creative$elm_generative$Main$init(
-			_creative$elm_generative$Main$Crawl(_elm_lang$core$Maybe$Nothing));
+			_creative$elm_generative$Main$Curtain(_elm_lang$core$Maybe$Nothing));
 	});
 var _creative$elm_generative$Main$main = _elm_lang$html$Html$program(
 	{
 		init: _creative$elm_generative$Main$init(
-			_creative$elm_generative$Main$Crawl(_elm_lang$core$Maybe$Nothing)),
+			_creative$elm_generative$Main$Curtain(_elm_lang$core$Maybe$Nothing)),
 		view: _creative$elm_generative$Main$view,
 		update: _creative$elm_generative$Main$update,
 		subscriptions: _creative$elm_generative$Main$subscriptions
@@ -15087,7 +15091,7 @@ var _creative$elm_generative$Main$main = _elm_lang$html$Html$program(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Crawl.Msg":{"args":[],"tags":{"Draw":["Crawl.Data"],"Generate":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Shepherding":["Maybe.Maybe Shepherding.Model"],"Crawl":["Maybe.Maybe Crawl.Model"]}},"Main.Msg":{"args":[],"tags":{"Set":["Main.Route"],"CrawlMsg":["Crawl.Msg"],"ShepherdingMsg":["Shepherding.Msg"]}},"Shepherding.Msg":{"args":[],"tags":{"Start":[]}}},"aliases":{"Shepherding.Model":{"args":[],"type":"String"},"Crawl.Model":{"args":[],"type":"Crawl.Data"},"Crawl.Data":{"args":[],"type":"List (List Float)"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Data"],"Generate":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Route":{"args":[],"tags":{"Landscape":["Maybe.Maybe Example.Landscape.Model"],"Curtain":["Maybe.Maybe Example.Curtain.Model"]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"Set":["Main.Route"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Start":[]}}},"aliases":{"Example.Landscape.Model":{"args":[],"type":"String"},"Example.Curtain.Data":{"args":[],"type":"List (List Float)"},"Example.Curtain.Model":{"args":[],"type":"Example.Curtain.Data"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

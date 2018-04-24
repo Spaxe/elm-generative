@@ -1,4 +1,4 @@
-module Shepherding exposing (..)
+module Example.Landscape exposing (..)
 
 import Html exposing (Html, div, text)
 

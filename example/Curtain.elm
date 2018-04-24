@@ -1,4 +1,4 @@
-module Crawl exposing (..)
+module Example.Curtain exposing (..)
 
 import Html exposing (Html, div, text)
 import Draw exposing (..)
@@ -24,9 +24,9 @@ initialiseLines : Int -> List (List ( Float, Float ))
 initialiseLines n =
     let
         line y =
-            makePath 100 10 y 110 y
+            makePath 100 10 y 210 y
     in
-        List.map line <| List.Extra.initialize n (toFloat >> (*) 10.0)
+        List.map line <| List.Extra.initialize n (toFloat >> (*) 1.0)
 
 
 type Msg
@@ -38,18 +38,21 @@ view : Model -> Html Msg
 view model =
     let
         data =
-            initialiseLines 10
+            initialiseLines 100
 
-        generative =
+        randomValues =
             model
 
+        shepherdedValues =
+            accumulateList randomValues
+
         transformed =
-            List.map2 (mapY (+)) generative data
+            List.map2 (map2Second (+)) shepherdedValues data
     in
         a4Landscape
             [ withStroke 0.4
             ]
-            [ g [ translate 50 50 ] (simplePaths transformed)
+            [ g [ translate 40 50 ] (paths transformed)
             ]
 
 
@@ -59,8 +62,8 @@ update msg model =
         Generate ->
             ( model
             , Random.generate Draw <|
-                Random.list 18 <|
-                    random1D 100 10
+                Random.list 100 <|
+                    random1D 200 0.5
             )
 
         Draw data ->

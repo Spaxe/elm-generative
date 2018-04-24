@@ -5,6 +5,8 @@ module Generative
         , makePath
         , map2First
         , map2Second
+        , accumulate
+        , accumulateList
         )
 
 {-| Tools to help you tinker.
@@ -24,11 +26,16 @@ module Generative
 
 @docs map2First, map2Second
 
+
+# Utils
+
+@docs accumulate, accumulateList
+
 -}
 
 import Random exposing (Generator, float, list)
 import Tuple exposing (mapFirst, mapSecond)
-import List.Extra exposing (zip)
+import List.Extra exposing (zip, scanl1)
 
 
 {-| Generates one random value at most `amplitude` apart, centred around 0.
@@ -90,3 +97,17 @@ return a new list only modifying the second values.
 map2Second : (a -> a -> a1) -> List a -> List ( b, a ) -> List ( b, a1 )
 map2Second f =
     List.map2 <| mapSecond << f
+
+
+{-| Adds every number in the list so far and keep a running sum.
+-}
+accumulate : List number -> List number
+accumulate =
+    scanl1 (+)
+
+
+{-| Adds every list to the next list so far and keep a running sum.
+-}
+accumulateList : List (List number) -> List (List number)
+accumulateList =
+    scanl1 <| List.map2 (+)
