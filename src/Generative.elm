@@ -3,8 +3,8 @@ module Generative
         ( random
         , random1D
         , makePath
-        , mapX
-        , mapY
+        , map2First
+        , map2Second
         )
 
 {-| Tools to help you tinker.
@@ -22,7 +22,7 @@ module Generative
 
 # Shape transformers
 
-@docs mapX, mapY
+@docs map2First, map2Second
 
 -}
 
@@ -79,14 +79,14 @@ makePath n x1 y1 x2 y2 =
 {-| Map a function over a List to the first element of List of Tuples, and
 return a new list only modifying the first values.
 -}
-mapX : (a -> a -> a) -> List a -> List ( a, b ) -> List ( a, b )
-mapX f =
+map2First : (a -> a -> a1) -> List a -> List ( a, b ) -> List ( a1, b )
+map2First f =
     List.map2 <| mapFirst << f
 
 
 {-| Map a function over a List to the second element of List of Tuples, and
 return a new list only modifying the second values.
 -}
-mapY : (a -> a -> a) -> List a -> List ( b, a ) -> List ( b, a )
-mapY f =
+map2Second : (a -> a -> a1) -> List a -> List ( b, a ) -> List ( b, a1 )
+map2Second f =
     List.map2 <| mapSecond << f
