@@ -14696,65 +14696,90 @@ var _creative$elm_generative$Example_Curtain$initialiseLines = function (n) {
 			}));
 };
 var _creative$elm_generative$Example_Curtain$view = function (model) {
-	var randomValues = model;
-	var shepherdedValues = _creative$elm_generative$Generative$accumulateList(randomValues);
-	var data = _creative$elm_generative$Example_Curtain$initialiseLines(100);
-	var transformed = A3(
-		_elm_lang$core$List$map2,
-		_creative$elm_generative$Generative$map2Second(
-			F2(
-				function (x, y) {
-					return x + y;
-				})),
-		shepherdedValues,
-		data);
-	return A2(
-		_creative$elm_generative$Draw$a4Landscape,
-		{
-			ctor: '::',
-			_0: _creative$elm_generative$Draw$withStroke(0.4),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: A2(
-				_creative$elm_generative$Draw$g,
-				{
-					ctor: '::',
-					_0: A2(_creative$elm_generative$Draw$translate, 40, 50),
-					_1: {ctor: '[]'}
-				},
-				_creative$elm_generative$Draw$paths(transformed)),
-			_1: {ctor: '[]'}
-		});
+	var _p1 = model;
+	if (_p1.ctor === 'Curtain') {
+		var shiftAmount = _creative$elm_generative$Generative$accumulateList(_p1._1);
+		var shift = A2(
+			_elm_lang$core$List$map2,
+			_creative$elm_generative$Generative$map2First(
+				F2(
+					function (x, y) {
+						return x + y;
+					})),
+			shiftAmount);
+		var drapeAmount = _creative$elm_generative$Generative$accumulateList(_p1._0);
+		var drape = A2(
+			_elm_lang$core$List$map2,
+			_creative$elm_generative$Generative$map2Second(
+				F2(
+					function (x, y) {
+						return x + y;
+					})),
+			drapeAmount);
+		var data = _creative$elm_generative$Example_Curtain$initialiseLines(100);
+		var transformed = function (_p2) {
+			return shift(
+				drape(_p2));
+		}(data);
+		return A2(
+			_creative$elm_generative$Draw$a4Landscape,
+			{
+				ctor: '::',
+				_0: _creative$elm_generative$Draw$withStroke(0.4),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_creative$elm_generative$Draw$g,
+					{
+						ctor: '::',
+						_0: A2(_creative$elm_generative$Draw$translate, 40, 50),
+						_1: {ctor: '[]'}
+					},
+					_creative$elm_generative$Draw$paths(transformed)),
+				_1: {ctor: '[]'}
+			});
+	} else {
+		return _elm_lang$html$Html$text('');
+	}
 };
+var _creative$elm_generative$Example_Curtain$Curtain = F2(
+	function (a, b) {
+		return {ctor: 'Curtain', _0: a, _1: b};
+	});
+var _creative$elm_generative$Example_Curtain$Empty = {ctor: 'Empty'};
 var _creative$elm_generative$Example_Curtain$Draw = function (a) {
 	return {ctor: 'Draw', _0: a};
 };
 var _creative$elm_generative$Example_Curtain$update = F2(
 	function (msg, model) {
-		var _p1 = msg;
-		if (_p1.ctor === 'Generate') {
+		var _p3 = msg;
+		if (_p3.ctor === 'Generate') {
 			return {
 				ctor: '_Tuple2',
 				_0: model,
 				_1: A2(
 					_elm_lang$core$Random$generate,
 					_creative$elm_generative$Example_Curtain$Draw,
-					A2(
-						_elm_lang$core$Random$list,
-						100,
-						A2(_creative$elm_generative$Generative$random1D, 200, 0.5)))
+					A3(
+						_elm_lang$core$Random$map2,
+						_creative$elm_generative$Example_Curtain$Curtain,
+						A2(
+							_elm_lang$core$Random$list,
+							100,
+							A2(_creative$elm_generative$Generative$random1D, 200, 0.6)),
+						A2(
+							_elm_lang$core$Random$list,
+							100,
+							A2(_creative$elm_generative$Generative$random1D, 200, 0.4))))
 			};
 		} else {
-			return {ctor: '_Tuple2', _0: _p1._0, _1: _elm_lang$core$Platform_Cmd$none};
+			return {ctor: '_Tuple2', _0: _p3._0, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 var _creative$elm_generative$Example_Curtain$Generate = {ctor: 'Generate'};
-var _creative$elm_generative$Example_Curtain$init = A2(
-	_creative$elm_generative$Example_Curtain$update,
-	_creative$elm_generative$Example_Curtain$Generate,
-	{ctor: '[]'});
+var _creative$elm_generative$Example_Curtain$init = A2(_creative$elm_generative$Example_Curtain$update, _creative$elm_generative$Example_Curtain$Generate, _creative$elm_generative$Example_Curtain$Empty);
 var _creative$elm_generative$Example_Landscape$numberOfSegments = 1000;
 var _creative$elm_generative$Example_Landscape$initialiseLines = function (n) {
 	var line = function (y) {
@@ -16803,7 +16828,7 @@ var _creative$elm_generative$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Landscape.Model":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"NavigateTo":["Navigation.Location"],"TemplateMsg":["Example.Template.Msg"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Model"],"Generate":[]}},"Example.Template.Msg":{"args":[],"tags":{"Draw":["Example.Template.Model"],"Generate":[]}}},"aliases":{"Example.Template.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"},"Example.Curtain.Model":{"args":[],"type":"List (List Float)"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Landscape.Model":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"NavigateTo":["Navigation.Location"],"TemplateMsg":["Example.Template.Msg"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Model"],"Generate":[]}},"Example.Curtain.Model":{"args":[],"tags":{"Empty":[],"Curtain":["List (List Float)","List (List Float)"]}},"Example.Template.Msg":{"args":[],"tags":{"Draw":["Example.Template.Model"],"Generate":[]}}},"aliases":{"Example.Template.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

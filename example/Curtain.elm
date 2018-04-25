@@ -7,13 +7,14 @@ import Generative exposing (..)
 import Random
 
 
-type alias Model =
-    List (List Float)
+type Model
+    = Empty
+    | Curtain (List (List Float)) (List (List Float))
 
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate []
+    update Generate <| Empty
 
 
 initialiseLines : Int -> List (List ( Float, Float ))
@@ -32,24 +33,35 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    let
-        data =
-            initialiseLines 100
+    case model of
+        Curtain verticalDrape horizontalShift ->
+            let
+                data =
+                    initialiseLines 100
 
-        randomValues =
-            model
+                drapeAmount =
+                    accumulateList verticalDrape
 
-        shepherdedValues =
-            accumulateList randomValues
+                shiftAmount =
+                    accumulateList horizontalShift
 
-        transformed =
-            List.map2 (map2Second (+)) shepherdedValues data
-    in
-        a4Landscape
-            [ withStroke 0.4
-            ]
-            [ g [ translate 40 50 ] (paths transformed)
-            ]
+                drape =
+                    List.map2 (map2Second (+)) drapeAmount
+
+                shift =
+                    List.map2 (map2First (+)) shiftAmount
+
+                transformed =
+                    (drape >> shift) data
+            in
+                a4Landscape
+                    [ withStroke 0.4
+                    ]
+                    [ g [ translate 40 50 ] (paths transformed)
+                    ]
+
+        Empty ->
+            text ""
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -58,8 +70,13 @@ update msg model =
         Generate ->
             ( model
             , Random.generate Draw <|
-                Random.list 100 <|
-                    random1D 200 0.5
+                Random.map2 Curtain
+                    (Random.list 100 <|
+                        random1D 200 0.6
+                    )
+                    (Random.list 100 <|
+                        random1D 200 0.4
+                    )
             )
 
         Draw data ->
