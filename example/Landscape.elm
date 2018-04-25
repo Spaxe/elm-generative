@@ -1,34 +1,67 @@
 module Example.Landscape exposing (..)
 
 import Html exposing (Html, div, text)
+import Draw exposing (..)
+import List.Extra
+import Generative exposing (..)
+import Random
 
 
 type alias Model =
-    String
+    List (List Float)
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( "Shepherding Page", Cmd.none )
+    update Generate []
+
+
+initialiseLines : Int -> List (List ( Float, Float ))
+initialiseLines n =
+    let
+        line y =
+            makePath 100 10 y 210 y
+    in
+        List.map line <|
+            List.Extra.initialize n (toFloat >> (*) 1.0)
 
 
 type Msg
-    = Start
+    = Generate
+    | Draw Model
 
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ text model ]
+    let
+        data =
+            initialiseLines 100
+
+        randomValues =
+            model
+
+        shepherdedValues =
+            accumulateList randomValues
+
+        transformed =
+            List.map2 (map2Second (+)) shepherdedValues data
+    in
+        a4Landscape
+            [ withStroke 0.4
+            ]
+            [ g [ translate 40 50 ] (paths transformed)
+            ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Start ->
-            ( model, Cmd.none )
+        Generate ->
+            ( model
+            , Random.generate Draw <|
+                Random.list 100 <|
+                    random1D 200 0.5
+            )
 
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+        Draw data ->
+            ( data, Cmd.none )

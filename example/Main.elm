@@ -15,6 +15,7 @@ import UrlParser exposing (..)
 
 -- elm-generative examples
 
+import Example.Template as Template
 import Example.Curtain as Curtain
 import Example.Landscape as Landscape
 
@@ -35,16 +36,23 @@ init location =
                 |> mapFirst (Landscape << Just)
                 |> mapSecond (Cmd.map LandscapeMsg)
 
+        Template _ ->
+            Template.init
+                |> mapFirst (Template << Just)
+                |> mapSecond (Cmd.map TemplateMsg)
+
 
 type Msg
     = NavigateTo Location
     | CurtainMsg Curtain.Msg
     | LandscapeMsg Landscape.Msg
+    | TemplateMsg Template.Msg
 
 
 type Route
     = Curtain (Maybe Curtain.Model)
     | Landscape (Maybe Landscape.Model)
+    | Template (Maybe Template.Model)
 
 
 
@@ -60,7 +68,9 @@ view route =
             [ text stylesheet ]
         , nav
             []
-            [ p [] [ text "Accumulation" ]
+            [ p [] [ text "Make your own" ]
+            , a [ href "/#template" ] [ text "Template" ]
+            , p [] [ text "Accumulation" ]
             , a [ href "/#curtain" ] [ text "Curtain" ]
             , a [ href "/#landscape" ] [ text "Landscape" ]
             ]
@@ -80,6 +90,10 @@ render route =
         Landscape (Just pageModel) ->
             Landscape.view pageModel
                 |> Html.map LandscapeMsg
+
+        Template (Just pageModel) ->
+            Template.view pageModel
+                |> Html.map TemplateMsg
 
         _ ->
             text "404 Not Found"
@@ -116,6 +130,7 @@ nav > a {
     color: #9af;
     cursor: pointer;
     display: block;
+    text-decoration: none;
 }
 
 article {
@@ -154,6 +169,11 @@ update msg route =
                 |> mapFirst (Landscape << Just)
                 |> mapSecond (Cmd.map LandscapeMsg)
 
+        ( TemplateMsg pageMsg, Template (Just pageModel) ) ->
+            Template.update pageMsg pageModel
+                |> mapFirst (Template << Just)
+                |> mapSecond (Cmd.map TemplateMsg)
+
         _ ->
             ( route, Cmd.none )
 
@@ -174,7 +194,8 @@ subscriptions model =
 matchers : Parser (Route -> a) a
 matchers =
     oneOf
-        [ map (Curtain Nothing) top
+        [ map (Template Nothing) top
+        , map (Template Nothing) (s "template")
         , map (Curtain Nothing) (s "curtain")
         , map (Landscape Nothing) (s "landscape")
         ]

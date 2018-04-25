@@ -1,4 +1,4 @@
-module Example.Curtain exposing (..)
+module Example.Template exposing (..)
 
 import Html exposing (Html, div, text)
 import Draw exposing (..)
@@ -7,22 +7,23 @@ import Generative exposing (..)
 import Random
 
 
+numberOfLines : Int
+numberOfLines =
+    10
+
+
+numberOfSegments : Int
+numberOfSegments =
+    100
+
+
+gap : Int
+gap =
+    10
+
+
 type alias Model =
     List (List Float)
-
-
-init : ( Model, Cmd Msg )
-init =
-    update Generate []
-
-
-initialiseLines : Int -> List (List ( Float, Float ))
-initialiseLines n =
-    let
-        line y =
-            makePath 100 10 y 210 y
-    in
-        List.map line <| List.Extra.initialize n (toFloat >> (*) 1.0)
 
 
 type Msg
@@ -30,25 +31,37 @@ type Msg
     | Draw Model
 
 
+init : ( Model, Cmd Msg )
+init =
+    update Generate []
+
+
+setup : Int -> List (List ( Float, Float ))
+setup n =
+    let
+        line y =
+            makePath numberOfSegments 0 y 110 y
+    in
+        List.map line <|
+            List.Extra.initialize n (toFloat << (*) gap)
+
+
 view : Model -> Html Msg
 view model =
     let
         data =
-            initialiseLines 100
+            setup numberOfLines
 
         randomValues =
             model
 
-        shepherdedValues =
-            accumulateList randomValues
-
         transformed =
-            List.map2 (map2Second (+)) shepherdedValues data
+            List.map2 (map2Second (+)) randomValues data
     in
         a4Landscape
             [ withStroke 0.4
             ]
-            [ g [ translate 40 50 ] (paths transformed)
+            [ g [ translate 90 50 ] (paths transformed)
             ]
 
 
@@ -58,8 +71,8 @@ update msg model =
         Generate ->
             ( model
             , Random.generate Draw <|
-                Random.list 100 <|
-                    random1D 200 0.5
+                Random.list numberOfLines <|
+                    random1D numberOfSegments (toFloat gap)
             )
 
         Draw data ->
