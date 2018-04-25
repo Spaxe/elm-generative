@@ -8,7 +8,7 @@ import Random
 
 numberOfLines : Int
 numberOfLines =
-    20
+    50
 
 
 numberOfSegments : Int
@@ -16,13 +16,13 @@ numberOfSegments =
     1000
 
 
-type alias Model =
-    List (List Float)
+type Model
+    = Landscape ( Float, Float ) Float (List (List Float))
 
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate []
+    update Generate <| Landscape ( 0, 0 ) 0 []
 
 
 initialiseLines : Int -> List (List ( Float, Float ))
@@ -42,24 +42,33 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    let
-        data =
-            initialiseLines numberOfLines
+    case model of
+        Landscape dSunPosition dSunSize crawl ->
+            let
+                data =
+                    initialiseLines numberOfLines
 
-        randomValues =
-            List.map accumulate model
+                randomValues =
+                    List.map accumulate crawl
 
-        shepherdedValues =
-            accumulateList randomValues
+                shepherdedValues =
+                    accumulateList randomValues
 
-        transformed =
-            List.map2 (map2Second (+)) shepherdedValues data
-    in
-        a4Landscape
-            [ withStroke 0.4
-            ]
-            [ g [ translate 40 100 ] (paths transformed)
-            ]
+                transformed =
+                    List.map2 (map2Second (+)) shepherdedValues data
+
+                sunPosition =
+                    dSunPosition
+
+                sunSize =
+                    10 + dSunSize
+            in
+                a4Landscape
+                    [ withStroke 0.4
+                    ]
+                    [ g [ translate 40 100 ] (paths transformed)
+                    , g [ translate 150 40 ] [ uncurry circle sunPosition sunSize [] ]
+                    ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -68,8 +77,12 @@ update msg model =
         Generate ->
             ( model
             , Random.generate Draw <|
-                Random.list numberOfLines <|
-                    random1D numberOfSegments 1
+                Random.map3 Landscape
+                    (Random.pair (random 100) (random 50))
+                    (random 10)
+                    (Random.list numberOfLines <|
+                        random1D numberOfSegments 1
+                    )
             )
 
         Draw data ->
