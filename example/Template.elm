@@ -1,10 +1,16 @@
 module Example.Template exposing (..)
 
+{-| You can follow the structure of this module to create your own.
+-}
+
 import Html exposing (Html, div, text)
 import Draw exposing (..)
 import List.Extra
 import Generative exposing (..)
 import Random
+
+
+-- Configuration for use, typically number of repetitions
 
 
 numberOfLines : Int
@@ -22,8 +28,16 @@ gap =
     10
 
 
+
+-- Model contains the generative/random element
+
+
 type alias Model =
     List (List Float)
+
+
+
+-- Msg setup the drawing process
 
 
 type Msg
@@ -31,9 +45,17 @@ type Msg
     | Draw Model
 
 
+
+-- Init just calls the first update
+
+
 init : ( Model, Cmd Msg )
 init =
     update Generate []
+
+
+
+-- Setup is called by view, used to create the base SVGs
 
 
 setup : Int -> List (List ( Float, Float ))
@@ -44,6 +66,10 @@ setup n =
     in
         List.map line <|
             List.Extra.initialize n (toFloat << (*) gap)
+
+
+
+-- Composes the generative functions together and draw on screen
 
 
 view : Model -> Html Msg
@@ -63,6 +89,10 @@ view model =
             ]
             [ g [ translate 90 50 ] (paths transformed)
             ]
+
+
+
+-- Update is where randomness happens
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
