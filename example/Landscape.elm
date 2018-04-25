@@ -2,9 +2,18 @@ module Example.Landscape exposing (..)
 
 import Html exposing (Html, div, text)
 import Draw exposing (..)
-import List.Extra
 import Generative exposing (..)
 import Random
+
+
+numberOfLines : Int
+numberOfLines =
+    20
+
+
+numberOfSegments : Int
+numberOfSegments =
+    1000
 
 
 type alias Model =
@@ -20,10 +29,10 @@ initialiseLines : Int -> List (List ( Float, Float ))
 initialiseLines n =
     let
         line y =
-            makePath 100 10 y 210 y
+            makePath numberOfSegments 10 y 210 y
     in
         List.map line <|
-            List.Extra.initialize n (toFloat >> (*) 1.0)
+            List.repeat n 0
 
 
 type Msg
@@ -35,10 +44,10 @@ view : Model -> Html Msg
 view model =
     let
         data =
-            initialiseLines 100
+            initialiseLines numberOfLines
 
         randomValues =
-            model
+            List.map accumulate model
 
         shepherdedValues =
             accumulateList randomValues
@@ -49,7 +58,7 @@ view model =
         a4Landscape
             [ withStroke 0.4
             ]
-            [ g [ translate 40 50 ] (paths transformed)
+            [ g [ translate 40 100 ] (paths transformed)
             ]
 
 
@@ -59,8 +68,8 @@ update msg model =
         Generate ->
             ( model
             , Random.generate Draw <|
-                Random.list 100 <|
-                    random1D 200 0.5
+                Random.list numberOfLines <|
+                    random1D numberOfSegments 1
             )
 
         Draw data ->

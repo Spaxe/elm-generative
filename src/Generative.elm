@@ -3,8 +3,13 @@ module Generative
         ( random
         , random1D
         , makePath
+        , firstList
+        , secondList
         , map2First
         , map2Second
+        , updateFirst
+        , updateSecond
+        , transpose
         , accumulate
         , accumulateList
         )
@@ -24,17 +29,19 @@ module Generative
 
 # Shape transformers
 
-@docs map2First, map2Second
+@docs accumulate, accumulateList
 
 
 # Utils
 
-@docs accumulate, accumulateList
+@docs firstList, secondList, map2First, map2Second, updateFirst, updateSecond
+
+@docs transpose
 
 -}
 
 import Random exposing (Generator, float, list)
-import Tuple exposing (mapFirst, mapSecond)
+import Tuple exposing (..)
 import List.Extra exposing (zip, scanl1)
 
 
@@ -83,6 +90,48 @@ makePath n x1 y1 x2 y2 =
             zip xs ys
 
 
+{-| Adds every number in the list so far and keep a running sum.
+-}
+accumulate : List number -> List number
+accumulate =
+    scanl1 (+)
+
+
+{-| Adds every list to the next list so far and keep a running sum.
+-}
+accumulateList : List (List number) -> List (List number)
+accumulateList =
+    scanl1 <| List.map2 (+)
+
+
+{-| Extracts the first elements of a list of tuples
+-}
+firstList : List ( a, b ) -> List a
+firstList =
+    List.map first
+
+
+{-| Extracts the second elements of a list of tuples
+-}
+secondList : List ( a, b ) -> List b
+secondList =
+    List.map second
+
+
+{-| Change the first value in a list of tuples
+-}
+updateFirst : (a -> a1) -> List ( a, b ) -> List ( a1, b )
+updateFirst f =
+    List.map (mapFirst f)
+
+
+{-| Change the second value in a list of tuples
+-}
+updateSecond : (b -> b1) -> List ( a, b ) -> List ( a, b1 )
+updateSecond f =
+    List.map (mapSecond f)
+
+
 {-| Map a function over a List to the first element of List of Tuples, and
 return a new list only modifying the first values.
 -}
@@ -99,15 +148,8 @@ map2Second f =
     List.map2 <| mapSecond << f
 
 
-{-| Adds every number in the list so far and keep a running sum.
+{-| transpose a 2D list
 -}
-accumulate : List number -> List number
-accumulate =
-    scanl1 (+)
-
-
-{-| Adds every list to the next list so far and keep a running sum.
--}
-accumulateList : List (List number) -> List (List number)
-accumulateList =
-    scanl1 <| List.map2 (+)
+transpose : List (List a) -> List (List a)
+transpose =
+    List.Extra.transpose

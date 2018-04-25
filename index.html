@@ -14583,17 +14583,7 @@ var _elm_lang$core$Random$cmdMap = F2(
 			A2(_elm_lang$core$Random$map, func, _p79._0));
 	});
 _elm_lang$core$Native_Platform.effectManagers['Random'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Random$init, onEffects: _elm_lang$core$Random$onEffects, onSelfMsg: _elm_lang$core$Random$onSelfMsg, tag: 'cmd', cmdMap: _elm_lang$core$Random$cmdMap};
-var _creative$elm_generative$Generative$accumulateList = _elm_community$list_extra$List_Extra$scanl1(
-	_elm_lang$core$List$map2(
-		F2(
-			function (x, y) {
-				return x + y;
-			})));
-var _creative$elm_generative$Generative$accumulate = _elm_community$list_extra$List_Extra$scanl1(
-	F2(
-		function (x, y) {
-			return x + y;
-		}));
+var _creative$elm_generative$Generative$transpose = _elm_community$list_extra$List_Extra$transpose;
 var _creative$elm_generative$Generative$map2Second = function (f) {
 	return _elm_lang$core$List$map2(
 		function (_p0) {
@@ -14608,6 +14598,27 @@ var _creative$elm_generative$Generative$map2First = function (f) {
 				f(_p1));
 		});
 };
+var _creative$elm_generative$Generative$updateSecond = function (f) {
+	return _elm_lang$core$List$map(
+		_elm_lang$core$Tuple$mapSecond(f));
+};
+var _creative$elm_generative$Generative$updateFirst = function (f) {
+	return _elm_lang$core$List$map(
+		_elm_lang$core$Tuple$mapFirst(f));
+};
+var _creative$elm_generative$Generative$secondList = _elm_lang$core$List$map(_elm_lang$core$Tuple$second);
+var _creative$elm_generative$Generative$firstList = _elm_lang$core$List$map(_elm_lang$core$Tuple$first);
+var _creative$elm_generative$Generative$accumulateList = _elm_community$list_extra$List_Extra$scanl1(
+	_elm_lang$core$List$map2(
+		F2(
+			function (x, y) {
+				return x + y;
+			})));
+var _creative$elm_generative$Generative$accumulate = _elm_community$list_extra$List_Extra$scanl1(
+	F2(
+		function (x, y) {
+			return x + y;
+		}));
 var _creative$elm_generative$Generative$makePath = F5(
 	function (n, x1, y1, x2, y2) {
 		if (_elm_lang$core$Native_Utils.cmp(n, 1) < 0) {
@@ -14744,30 +14755,21 @@ var _creative$elm_generative$Example_Curtain$init = A2(
 	_creative$elm_generative$Example_Curtain$update,
 	_creative$elm_generative$Example_Curtain$Generate,
 	{ctor: '[]'});
+var _creative$elm_generative$Example_Landscape$numberOfSegments = 1000;
 var _creative$elm_generative$Example_Landscape$initialiseLines = function (n) {
 	var line = function (y) {
-		return A5(_creative$elm_generative$Generative$makePath, 100, 10, y, 210, y);
+		return A5(_creative$elm_generative$Generative$makePath, _creative$elm_generative$Example_Landscape$numberOfSegments, 10, y, 210, y);
 	};
 	return A2(
 		_elm_lang$core$List$map,
 		line,
-		A2(
-			_elm_community$list_extra$List_Extra$initialize,
-			n,
-			function (_p0) {
-				return A2(
-					F2(
-						function (x, y) {
-							return x * y;
-						}),
-					1.0,
-					_elm_lang$core$Basics$toFloat(_p0));
-			}));
+		A2(_elm_lang$core$List$repeat, n, 0));
 };
+var _creative$elm_generative$Example_Landscape$numberOfLines = 20;
 var _creative$elm_generative$Example_Landscape$view = function (model) {
-	var randomValues = model;
+	var randomValues = A2(_elm_lang$core$List$map, _creative$elm_generative$Generative$accumulate, model);
 	var shepherdedValues = _creative$elm_generative$Generative$accumulateList(randomValues);
-	var data = _creative$elm_generative$Example_Landscape$initialiseLines(100);
+	var data = _creative$elm_generative$Example_Landscape$initialiseLines(_creative$elm_generative$Example_Landscape$numberOfLines);
 	var transformed = A3(
 		_elm_lang$core$List$map2,
 		_creative$elm_generative$Generative$map2Second(
@@ -14790,7 +14792,7 @@ var _creative$elm_generative$Example_Landscape$view = function (model) {
 				_creative$elm_generative$Draw$g,
 				{
 					ctor: '::',
-					_0: A2(_creative$elm_generative$Draw$translate, 40, 50),
+					_0: A2(_creative$elm_generative$Draw$translate, 40, 100),
 					_1: {ctor: '[]'}
 				},
 				_creative$elm_generative$Draw$paths(transformed)),
@@ -14802,8 +14804,8 @@ var _creative$elm_generative$Example_Landscape$Draw = function (a) {
 };
 var _creative$elm_generative$Example_Landscape$update = F2(
 	function (msg, model) {
-		var _p1 = msg;
-		if (_p1.ctor === 'Generate') {
+		var _p0 = msg;
+		if (_p0.ctor === 'Generate') {
 			return {
 				ctor: '_Tuple2',
 				_0: model,
@@ -14812,11 +14814,11 @@ var _creative$elm_generative$Example_Landscape$update = F2(
 					_creative$elm_generative$Example_Landscape$Draw,
 					A2(
 						_elm_lang$core$Random$list,
-						100,
-						A2(_creative$elm_generative$Generative$random1D, 200, 0.5)))
+						_creative$elm_generative$Example_Landscape$numberOfLines,
+						A2(_creative$elm_generative$Generative$random1D, _creative$elm_generative$Example_Landscape$numberOfSegments, 1)))
 			};
 		} else {
-			return {ctor: '_Tuple2', _0: _p1._0, _1: _elm_lang$core$Platform_Cmd$none};
+			return {ctor: '_Tuple2', _0: _p0._0, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 var _creative$elm_generative$Example_Landscape$Generate = {ctor: 'Generate'};
