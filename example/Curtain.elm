@@ -19,11 +19,8 @@ init =
 
 initialiseLines : Int -> List (List ( Float, Float ))
 initialiseLines n =
-    let
-        line y =
-            makePath 100 10 y 210 y
-    in
-        List.map line <| List.Extra.initialize n (toFloat >> (*) 1.0)
+    List.map (\y -> makePath 100 10 y 210 y) <|
+        List.Extra.initialize n (toFloat >> (*) 1.0)
 
 
 type Msg
@@ -35,30 +32,14 @@ view : Model -> Html Msg
 view model =
     case model of
         Curtain verticalDrape horizontalShift ->
-            let
-                data =
-                    initialiseLines 100
-
-                drapeAmount =
-                    accumulateList verticalDrape
-
-                shiftAmount =
-                    accumulateList horizontalShift
-
-                drape =
-                    List.map2 (map2Second (+)) drapeAmount
-
-                shift =
-                    List.map2 (map2First (+)) shiftAmount
-
-                transformed =
-                    (drape >> shift) data
-            in
-                a4Landscape
-                    [ withStroke 0.4
-                    ]
-                    [ g [ translate 40 50 ] (paths transformed)
-                    ]
+            a4Landscape
+                []
+                (initialiseLines 100
+                    |> List.map2 (map2First (+)) (accumulateList horizontalShift)
+                    |> List.map2 (map2Second (+)) (accumulateList verticalDrape)
+                    |> List.map (translateList 40 50)
+                    |> paths
+                )
 
         Empty ->
             text ""

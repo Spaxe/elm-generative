@@ -141,6 +141,8 @@ article {
 
 /* 1 cm = 1 rem */
 svg {
+    height: 100vh;
+    width: auto;
     justify-content: center;
     align-items: center;
     position: relative;

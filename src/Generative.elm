@@ -12,6 +12,8 @@ module Generative
         , transpose
         , accumulate
         , accumulateList
+        , translate
+        , translateList
         )
 
 {-| Tools to help you tinker.
@@ -29,7 +31,7 @@ module Generative
 
 # Shape transformers
 
-@docs accumulate, accumulateList
+@docs accumulate, accumulateList, translate, translateList
 
 
 # Utils
@@ -130,6 +132,24 @@ updateFirst f =
 updateSecond : (b -> b1) -> List ( a, b ) -> List ( a, b1 )
 updateSecond f =
     List.map (mapSecond f)
+
+
+{-| Move a point
+-}
+translate : number -> number -> ( number, number ) -> ( number, number )
+translate x y point =
+    point
+        |> mapFirst ((+) x)
+        |> mapSecond ((+) y)
+
+
+{-| Move a list of points
+-}
+translateList : number -> number -> List ( number, number ) -> List ( number, number )
+translateList x y points =
+    points
+        |> updateFirst ((+) x)
+        |> updateSecond ((+) y)
 
 
 {-| Map a function over a List to the first element of List of Tuples, and

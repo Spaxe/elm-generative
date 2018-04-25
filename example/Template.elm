@@ -85,10 +85,8 @@ view model =
             List.map2 (map2Second (+)) randomValues data
     in
         a4Landscape
-            [ withStroke 0.4
-            ]
-            [ g [ translate 90 50 ] (paths transformed)
-            ]
+            []
+            (paths <| List.map (translateList 90 50) transformed)
 
 
 

@@ -64,10 +64,9 @@ view model =
                     10 + dSunSize
             in
                 a4Landscape
-                    [ withStroke 0.4
-                    ]
-                    [ g [ translate 40 100 ] (paths transformed)
-                    , g [ translate 150 40 ] [ uncurry circle sunPosition sunSize [] ]
+                    []
+                    [ g [] (paths <| List.map (translateList 40 100) transformed)
+                    , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
                     ]
 
 

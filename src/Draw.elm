@@ -2,8 +2,6 @@ module Draw
     exposing
         ( a4Landscape
         , a4Portrait
-        , translate
-        , withStroke
         , rect
         , g
         , circle
@@ -16,6 +14,7 @@ module Draw
 -}
 
 import Html exposing (Html)
+import Html.Attributes
 import Svg.Attributes as Attributes
 import Svg exposing (Svg, svg, g, rect)
 
@@ -39,20 +38,6 @@ a4Portrait =
 g : List (Svg.Attribute msg) -> List (Svg msg) -> Svg msg
 g =
     Svg.g
-
-
-{-| Shift the drawing space by some distance
--}
-translate : Float -> Float -> Svg.Attribute msg
-translate x y =
-    Attributes.transform <| "translate(" ++ (toString x) ++ " " ++ (toString y) ++ ")"
-
-
-{-| Draw the containing elements with a thin stroke
--}
-withStroke : Float -> Svg.Attribute msg
-withStroke width =
-    Attributes.style <| "fill: none; stroke: black; stroke-width: " ++ (toString width)
 
 
 {-| Draw a rectangle
@@ -137,5 +122,11 @@ frame width height unit attributes =
                 ++ (toString width)
                 ++ " "
                 ++ (toString height)
+        , Attributes.fill "none"
+        , Attributes.stroke "black"
+        , Attributes.strokeWidth "0.4"
+        , Attributes.width <| (toString width)
+        , Attributes.height <| (toString height)
+        , Html.Attributes.attribute "xmlns" "http://www.w3.org/2000/svg"
         ]
             ++ attributes
