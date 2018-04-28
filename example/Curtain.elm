@@ -20,7 +20,7 @@ init =
 initialiseLines : Int -> List (List ( Float, Float ))
 initialiseLines n =
     List.map (\y -> makePath 100 10 y 210 y) <|
-        List.Extra.initialize n (toFloat >> (*) 1.0)
+        List.Extra.initialize n (toFloat >> (*) 1.5)
 
 
 type Msg
@@ -37,7 +37,7 @@ view model =
                 (initialiseLines 100
                     |> List.map2 (map2First (+)) (accumulateList horizontalShift)
                     |> List.map2 (map2Second (+)) (accumulateList verticalDrape)
-                    |> List.map (translateList 40 50)
+                    |> List.map (translateList 40 30)
                     |> paths
                 )
 

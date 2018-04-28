@@ -8,7 +8,7 @@ import Random
 
 numberOfLines : Int
 numberOfLines =
-    50
+    10
 
 
 numberOfSegments : Int

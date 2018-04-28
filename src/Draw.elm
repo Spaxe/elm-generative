@@ -124,9 +124,10 @@ frame width height unit attributes =
                 ++ (toString height)
         , Attributes.fill "none"
         , Attributes.stroke "black"
+        , Attributes.id "frame"
         , Attributes.strokeWidth "0.4"
-        , Attributes.width <| (toString width)
-        , Attributes.height <| (toString height)
+        , Attributes.width <| (toString width) ++ unit
+        , Attributes.height <| (toString height) ++ unit
         , Html.Attributes.attribute "xmlns" "http://www.w3.org/2000/svg"
         ]
             ++ attributes

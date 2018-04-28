@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+nav {
+    flex: 0 0 10rem;
+    height: 100vh;
+    background: #F5F5F6;
+    position: relative;
+    padding: 1rem 2rem;
+    line-height: 1.5;
+}
+
+nav > p {
+    margin-bottom: 0;
+}
+
+nav > a {
+    color: #9af;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+}
+
+nav > a:hover {
+    color: #67c;
+}
+
+article {
+    flex: 1 0 auto;
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column
+}
+
+article > .options {
+    flex: 0 0 2rem;
+    display: flex;
+    align-items: center;
+}
+
+button {
+    background: transparent;
+    border: none;
+    color: #9af;
+    margin: 0 0.5rem;
+    cursor: pointer;
+}
+
+button:hover {
+    color: #67c;
+}
+
+article > .main {
+    flex: 1 0 auto;
+    position: relative;
+}
+
+/* 1 cm = 1 rem */
+svg {
+    height: 100%;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: #FAFAFB;
+}
