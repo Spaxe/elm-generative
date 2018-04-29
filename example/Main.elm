@@ -17,9 +17,10 @@ import UrlParser exposing (s, parseHash, Parser, oneOf, top)
 
 -- elm-generative examples
 
-import Example.Template as Template
+import Example.OpenFile as OpenFile
 import Example.Curtain as Curtain
 import Example.Landscape as Landscape
+import Example.ParallelRandom as ParallelRandom
 
 
 -- MODEL --
@@ -30,6 +31,11 @@ init location =
     let
         routeMsg =
             case parseLocation location of
+                OpenFile _ ->
+                    OpenFile.init
+                        |> mapFirst (OpenFile << Just)
+                        |> mapSecond (Cmd.map OpenFileMsg)
+
                 Curtain _ ->
                     Curtain.init
                         |> mapFirst (Curtain << Just)
@@ -40,10 +46,10 @@ init location =
                         |> mapFirst (Landscape << Just)
                         |> mapSecond (Cmd.map LandscapeMsg)
 
-                Template _ ->
-                    Template.init
-                        |> mapFirst (Template << Just)
-                        |> mapSecond (Cmd.map TemplateMsg)
+                ParallelRandom _ ->
+                    ParallelRandom.init
+                        |> mapFirst (ParallelRandom << Just)
+                        |> mapSecond (Cmd.map ParallelRandomMsg)
     in
         ( { route = first routeMsg
           , status = Nothing
@@ -56,9 +62,10 @@ type Msg
     = NavigateTo Location
     | Menu Action
     | PlotterStatus String
+    | OpenFileMsg OpenFile.Msg
     | CurtainMsg Curtain.Msg
     | LandscapeMsg Landscape.Msg
-    | TemplateMsg Template.Msg
+    | ParallelRandomMsg ParallelRandom.Msg
 
 
 type Action
@@ -69,9 +76,10 @@ type Action
 
 
 type Route
-    = Curtain (Maybe Curtain.Model)
+    = OpenFile (Maybe OpenFile.Model)
+    | Curtain (Maybe Curtain.Model)
     | Landscape (Maybe Landscape.Model)
-    | Template (Maybe Template.Model)
+    | ParallelRandom (Maybe ParallelRandom.Model)
 
 
 type alias Model =
@@ -90,10 +98,11 @@ view model =
         []
         [ nav
             []
-            [ p [] [ text "Make your own" ]
-            , a [ href "/#template" ] [ text "Template" ]
+            [ p [] [ text "Filesystem" ]
+            , a [ href "/#open-file" ] [ text "Open File" ]
             , p [] [ text "Accumulation" ]
             , a [ href "/#curtain" ] [ text "Curtain" ]
+            , a [ href "/#parallel-random" ] [ text "Parallel Random" ]
             , a [ href "/#landscape" ] [ text "Landscape" ]
             ]
         , article
@@ -126,6 +135,10 @@ view model =
 render : Route -> Html Msg
 render route =
     case route of
+        OpenFile (Just pageModel) ->
+            OpenFile.view pageModel
+                |> Html.map OpenFileMsg
+
         Curtain (Just pageModel) ->
             Curtain.view pageModel
                 |> Html.map CurtainMsg
@@ -134,9 +147,9 @@ render route =
             Landscape.view pageModel
                 |> Html.map LandscapeMsg
 
-        Template (Just pageModel) ->
-            Template.view pageModel
-                |> Html.map TemplateMsg
+        ParallelRandom (Just pageModel) ->
+            ParallelRandom.view pageModel
+                |> Html.map ParallelRandomMsg
 
         _ ->
             text "404 Not Found"
@@ -173,6 +186,11 @@ update msg model =
             let
                 routeMsg =
                     case ( msg, route ) of
+                        ( OpenFileMsg pageMsg, OpenFile (Just pageModel) ) ->
+                            OpenFile.update pageMsg pageModel
+                                |> mapFirst (OpenFile << Just)
+                                |> mapSecond (Cmd.map OpenFileMsg)
+
                         ( CurtainMsg pageMsg, Curtain (Just pageModel) ) ->
                             Curtain.update pageMsg pageModel
                                 |> mapFirst (Curtain << Just)
@@ -183,10 +201,10 @@ update msg model =
                                 |> mapFirst (Landscape << Just)
                                 |> mapSecond (Cmd.map LandscapeMsg)
 
-                        ( TemplateMsg pageMsg, Template (Just pageModel) ) ->
-                            Template.update pageMsg pageModel
-                                |> mapFirst (Template << Just)
-                                |> mapSecond (Cmd.map TemplateMsg)
+                        ( ParallelRandomMsg pageMsg, ParallelRandom (Just pageModel) ) ->
+                            ParallelRandom.update pageMsg pageModel
+                                |> mapFirst (ParallelRandom << Just)
+                                |> mapSecond (Cmd.map ParallelRandomMsg)
 
                         _ ->
                             ( route, Cmd.none )
@@ -241,10 +259,11 @@ subscriptions route =
 matchers : Parser (Route -> a) a
 matchers =
     oneOf
-        [ UrlParser.map (Template Nothing) top
-        , UrlParser.map (Template Nothing) (s "template")
+        [ UrlParser.map (Curtain Nothing) top
+        , UrlParser.map (OpenFile Nothing) (s "open-file")
         , UrlParser.map (Curtain Nothing) (s "curtain")
         , UrlParser.map (Landscape Nothing) (s "landscape")
+        , UrlParser.map (ParallelRandom Nothing) (s "parallel-random")
         ]
 
 

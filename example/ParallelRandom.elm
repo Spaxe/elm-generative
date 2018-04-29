@@ -1,6 +1,6 @@
-module Example.Template exposing (..)
+module Example.ParallelRandom exposing (..)
 
-{-| You can follow the structure of this module to create your own.
+{-| Random rows of squiggle
 -}
 
 import Html exposing (Html, div, text)

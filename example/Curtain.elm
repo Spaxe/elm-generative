@@ -20,7 +20,7 @@ init =
 initialiseLines : Int -> List (List ( Float, Float ))
 initialiseLines n =
     List.map (\y -> makePath 100 10 y 210 y) <|
-        List.Extra.initialize n (toFloat >> (*) 1.5)
+        List.Extra.initialize n (toFloat >> (*) 1.0)
 
 
 type Msg
