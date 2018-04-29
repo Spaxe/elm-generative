@@ -62,6 +62,10 @@ button:hover {
     color: #67c;
 }
 
+button:focus {
+    outline: 0;
+}
+
 article > .options > .status {
     margin: 0 1rem;
 }

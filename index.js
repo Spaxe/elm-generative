@@ -15304,29 +15304,6 @@ var _creative$elm_generative$Example_Landscape$init = A2(
 		0,
 		{ctor: '[]'}));
 
-var _creative$elm_generative$Example_OpenFile$update = F2(
-	function (msg, model) {
-		var _p0 = msg;
-		if (_p0.ctor === 'AwaitUpload') {
-			return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-		} else {
-			return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-		}
-	});
-var _creative$elm_generative$Example_OpenFile$view = function (model) {
-	return A2(
-		_creative$elm_generative$Draw$a4Landscape,
-		{ctor: '[]'},
-		{ctor: '[]'});
-};
-var _creative$elm_generative$Example_OpenFile$Model = {};
-var _creative$elm_generative$Example_OpenFile$Print = {ctor: 'Print'};
-var _creative$elm_generative$Example_OpenFile$AwaitUpload = {ctor: 'AwaitUpload'};
-var _creative$elm_generative$Example_OpenFile$init = A2(
-	_creative$elm_generative$Example_OpenFile$update,
-	_creative$elm_generative$Example_OpenFile$AwaitUpload,
-	{});
-
 var _creative$elm_generative$Example_ParallelRandom$gap = 10;
 var _creative$elm_generative$Example_ParallelRandom$numberOfSegments = 100;
 var _creative$elm_generative$Example_ParallelRandom$setup = function (n) {
@@ -16749,6 +16726,11 @@ var _creative$elm_generative$Main$print = _elm_lang$core$Native_Platform.outgoin
 	function (v) {
 		return v;
 	});
+var _creative$elm_generative$Main$openFile = _elm_lang$core$Native_Platform.outgoingPort(
+	'openFile',
+	function (v) {
+		return v;
+	});
 var _creative$elm_generative$Main$download = _elm_lang$core$Native_Platform.outgoingPort(
 	'download',
 	function (v) {
@@ -16767,23 +16749,11 @@ var _creative$elm_generative$Main$LandscapeMsg = function (a) {
 var _creative$elm_generative$Main$CurtainMsg = function (a) {
 	return {ctor: 'CurtainMsg', _0: a};
 };
-var _creative$elm_generative$Main$OpenFileMsg = function (a) {
-	return {ctor: 'OpenFileMsg', _0: a};
-};
 var _creative$elm_generative$Main$render = function (route) {
 	var _p1 = route;
-	_v1_4:
+	_v1_3:
 	do {
 		switch (_p1.ctor) {
-			case 'OpenFile':
-				if (_p1._0.ctor === 'Just') {
-					return A2(
-						_elm_lang$html$Html$map,
-						_creative$elm_generative$Main$OpenFileMsg,
-						_creative$elm_generative$Example_OpenFile$view(_p1._0._0));
-				} else {
-					break _v1_4;
-				}
 			case 'Curtain':
 				if (_p1._0.ctor === 'Just') {
 					return A2(
@@ -16791,7 +16761,7 @@ var _creative$elm_generative$Main$render = function (route) {
 						_creative$elm_generative$Main$CurtainMsg,
 						_creative$elm_generative$Example_Curtain$view(_p1._0._0));
 				} else {
-					break _v1_4;
+					break _v1_3;
 				}
 			case 'Landscape':
 				if (_p1._0.ctor === 'Just') {
@@ -16800,7 +16770,7 @@ var _creative$elm_generative$Main$render = function (route) {
 						_creative$elm_generative$Main$LandscapeMsg,
 						_creative$elm_generative$Example_Landscape$view(_p1._0._0));
 				} else {
-					break _v1_4;
+					break _v1_3;
 				}
 			default:
 				if (_p1._0.ctor === 'Just') {
@@ -16809,7 +16779,7 @@ var _creative$elm_generative$Main$render = function (route) {
 						_creative$elm_generative$Main$ParallelRandomMsg,
 						_creative$elm_generative$Example_ParallelRandom$view(_p1._0._0));
 				} else {
-					break _v1_4;
+					break _v1_3;
 				}
 		}
 	} while(false);
@@ -16818,7 +16788,7 @@ var _creative$elm_generative$Main$render = function (route) {
 var _creative$elm_generative$Main$PlotterStatus = function (a) {
 	return {ctor: 'PlotterStatus', _0: a};
 };
-var _creative$elm_generative$Main$subscriptions = function (route) {
+var _creative$elm_generative$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$batch(
 		{
 			ctor: '::',
@@ -16833,6 +16803,7 @@ var _creative$elm_generative$Main$NavigateTo = function (a) {
 	return {ctor: 'NavigateTo', _0: a};
 };
 var _creative$elm_generative$Main$Download = {ctor: 'Download'};
+var _creative$elm_generative$Main$OpenFile = {ctor: 'OpenFile'};
 var _creative$elm_generative$Main$Print = {ctor: 'Print'};
 var _creative$elm_generative$Main$DisableMotor = {ctor: 'DisableMotor'};
 var _creative$elm_generative$Main$RaiseLowerPen = {ctor: 'RaiseLowerPen'};
@@ -16852,7 +16823,7 @@ var _creative$elm_generative$Main$view = function (model) {
 						{ctor: '[]'},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('Filesystem'),
+							_0: _elm_lang$html$Html$text('Accumulation'),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
@@ -16861,22 +16832,26 @@ var _creative$elm_generative$Main$view = function (model) {
 							_elm_lang$html$Html$a,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href('/#open-file'),
+								_0: _elm_lang$html$Html_Attributes$href('/#curtain'),
 								_1: {ctor: '[]'}
 							},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Open File'),
+								_0: _elm_lang$html$Html$text('Curtain'),
 								_1: {ctor: '[]'}
 							}),
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$p,
-								{ctor: '[]'},
+								_elm_lang$html$Html$a,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Accumulation'),
+									_0: _elm_lang$html$Html_Attributes$href('/#parallel-random'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Parallel Random'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
@@ -16885,45 +16860,15 @@ var _creative$elm_generative$Main$view = function (model) {
 									_elm_lang$html$Html$a,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$href('/#curtain'),
+										_0: _elm_lang$html$Html_Attributes$href('/#landscape'),
 										_1: {ctor: '[]'}
 									},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('Curtain'),
+										_0: _elm_lang$html$Html$text('Landscape'),
 										_1: {ctor: '[]'}
 									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$a,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('/#parallel-random'),
-											_1: {ctor: '[]'}
-										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Parallel Random'),
-											_1: {ctor: '[]'}
-										}),
-									_1: {
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$a,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$href('/#landscape'),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Landscape'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}
-								}
+								_1: {ctor: '[]'}
 							}
 						}
 					}
@@ -16954,7 +16899,7 @@ var _creative$elm_generative$Main$view = function (model) {
 									},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('↕️ Raise/Lower'),
+										_0: _elm_lang$html$Html$text('↕️ Raise/Lower pen'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -16969,7 +16914,7 @@ var _creative$elm_generative$Main$view = function (model) {
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('🛑 Disable motor'),
+											_0: _elm_lang$html$Html$text('🚫 Disable motor'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {
@@ -16990,18 +16935,26 @@ var _creative$elm_generative$Main$view = function (model) {
 										_1: {
 											ctor: '::',
 											_0: A2(
-												_elm_lang$html$Html$div,
+												_elm_lang$html$Html$input,
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('status'),
-													_1: {ctor: '[]'}
+													_0: _elm_lang$html$Html_Attributes$id('svgFile'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$type_('file'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$style(
+																{
+																	ctor: '::',
+																	_0: {ctor: '_Tuple2', _0: 'display', _1: 'none'},
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}
 												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text(
-														A2(_elm_lang$core$Maybe$withDefault, '', model.status)),
-													_1: {ctor: '[]'}
-												}),
+												{ctor: '[]'}),
 											_1: {
 												ctor: '::',
 												_0: A2(
@@ -17009,15 +16962,47 @@ var _creative$elm_generative$Main$view = function (model) {
 													{
 														ctor: '::',
 														_0: _elm_lang$html$Html_Events$onClick(
-															_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$Download)),
+															_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$OpenFile)),
 														_1: {ctor: '[]'}
 													},
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html$text('💾 Download'),
+														_0: _elm_lang$html$Html$text('✨ Upload'),
 														_1: {ctor: '[]'}
 													}),
-												_1: {ctor: '[]'}
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$button,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Events$onClick(
+																_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$Download)),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('💾 Download'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$div,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$class('status'),
+																_1: {ctor: '[]'}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text(
+																	A2(_elm_lang$core$Maybe$withDefault, '', model.status)),
+																_1: {ctor: '[]'}
+															}),
+														_1: {ctor: '[]'}
+													}
+												}
 											}
 										}
 									}
@@ -17053,9 +17038,6 @@ var _creative$elm_generative$Main$Landscape = function (a) {
 var _creative$elm_generative$Main$Curtain = function (a) {
 	return {ctor: 'Curtain', _0: a};
 };
-var _creative$elm_generative$Main$OpenFile = function (a) {
-	return {ctor: 'OpenFile', _0: a};
-};
 var _creative$elm_generative$Main$matchers = _evancz$url_parser$UrlParser$oneOf(
 	{
 		ctor: '::',
@@ -17067,28 +17049,21 @@ var _creative$elm_generative$Main$matchers = _evancz$url_parser$UrlParser$oneOf(
 			ctor: '::',
 			_0: A2(
 				_evancz$url_parser$UrlParser$map,
-				_creative$elm_generative$Main$OpenFile(_elm_lang$core$Maybe$Nothing),
-				_evancz$url_parser$UrlParser$s('open-file')),
+				_creative$elm_generative$Main$Curtain(_elm_lang$core$Maybe$Nothing),
+				_evancz$url_parser$UrlParser$s('curtain')),
 			_1: {
 				ctor: '::',
 				_0: A2(
 					_evancz$url_parser$UrlParser$map,
-					_creative$elm_generative$Main$Curtain(_elm_lang$core$Maybe$Nothing),
-					_evancz$url_parser$UrlParser$s('curtain')),
+					_creative$elm_generative$Main$Landscape(_elm_lang$core$Maybe$Nothing),
+					_evancz$url_parser$UrlParser$s('landscape')),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_evancz$url_parser$UrlParser$map,
-						_creative$elm_generative$Main$Landscape(_elm_lang$core$Maybe$Nothing),
-						_evancz$url_parser$UrlParser$s('landscape')),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_evancz$url_parser$UrlParser$map,
-							_creative$elm_generative$Main$ParallelRandom(_elm_lang$core$Maybe$Nothing),
-							_evancz$url_parser$UrlParser$s('parallel-random')),
-						_1: {ctor: '[]'}
-					}
+						_creative$elm_generative$Main$ParallelRandom(_elm_lang$core$Maybe$Nothing),
+						_evancz$url_parser$UrlParser$s('parallel-random')),
+					_1: {ctor: '[]'}
 				}
 			}
 		}
@@ -17105,26 +17080,15 @@ var _creative$elm_generative$Main$init = function (location) {
 	var routeMsg = function () {
 		var _p3 = _creative$elm_generative$Main$parseLocation(location);
 		switch (_p3.ctor) {
-			case 'OpenFile':
-				return A2(
-					_elm_lang$core$Tuple$mapSecond,
-					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$OpenFileMsg),
-					A2(
-						_elm_lang$core$Tuple$mapFirst,
-						function (_p4) {
-							return _creative$elm_generative$Main$OpenFile(
-								_elm_lang$core$Maybe$Just(_p4));
-						},
-						_creative$elm_generative$Example_OpenFile$init));
 			case 'Curtain':
 				return A2(
 					_elm_lang$core$Tuple$mapSecond,
 					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
 					A2(
 						_elm_lang$core$Tuple$mapFirst,
-						function (_p5) {
+						function (_p4) {
 							return _creative$elm_generative$Main$Curtain(
-								_elm_lang$core$Maybe$Just(_p5));
+								_elm_lang$core$Maybe$Just(_p4));
 						},
 						_creative$elm_generative$Example_Curtain$init));
 			case 'Landscape':
@@ -17133,9 +17097,9 @@ var _creative$elm_generative$Main$init = function (location) {
 					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
 					A2(
 						_elm_lang$core$Tuple$mapFirst,
-						function (_p6) {
+						function (_p5) {
 							return _creative$elm_generative$Main$Landscape(
-								_elm_lang$core$Maybe$Just(_p6));
+								_elm_lang$core$Maybe$Just(_p5));
 						},
 						_creative$elm_generative$Example_Landscape$init));
 			default:
@@ -17144,9 +17108,9 @@ var _creative$elm_generative$Main$init = function (location) {
 					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$ParallelRandomMsg),
 					A2(
 						_elm_lang$core$Tuple$mapFirst,
-						function (_p7) {
+						function (_p6) {
 							return _creative$elm_generative$Main$ParallelRandom(
-								_elm_lang$core$Maybe$Just(_p7));
+								_elm_lang$core$Maybe$Just(_p6));
 						},
 						_creative$elm_generative$Example_ParallelRandom$init));
 		}
@@ -17162,13 +17126,13 @@ var _creative$elm_generative$Main$init = function (location) {
 };
 var _creative$elm_generative$Main$update = F2(
 	function (msg, model) {
-		var _p8 = {ctor: '_Tuple2', _0: msg, _1: model.route};
-		switch (_p8._0.ctor) {
+		var _p7 = {ctor: '_Tuple2', _0: msg, _1: model.route};
+		switch (_p7._0.ctor) {
 			case 'NavigateTo':
-				return _creative$elm_generative$Main$init(_p8._0._0);
+				return _creative$elm_generative$Main$init(_p7._0._0);
 			case 'Menu':
-				var _p9 = _p8._0._0;
-				switch (_p9.ctor) {
+				var _p8 = _p7._0._0;
+				switch (_p8.ctor) {
 					case 'RaiseLowerPen':
 						return {
 							ctor: '_Tuple2',
@@ -17187,6 +17151,12 @@ var _creative$elm_generative$Main$update = F2(
 							_0: model,
 							_1: _creative$elm_generative$Main$print('')
 						};
+					case 'OpenFile':
+						return {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _creative$elm_generative$Main$openFile('')
+						};
 					default:
 						return {
 							ctor: '_Tuple2',
@@ -17202,84 +17172,69 @@ var _creative$elm_generative$Main$update = F2(
 						model,
 						{
 							status: _elm_lang$core$Maybe$Just(
-								_creative$elm_generative$Main$decodePlotterStatus(_p8._0._0))
+								_creative$elm_generative$Main$decodePlotterStatus(_p7._0._0))
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				var _p15 = _p8._1;
+				var _p13 = _p7._1;
 				var routeMsg = function () {
-					var _p10 = {ctor: '_Tuple2', _0: _p8._0, _1: _p15};
-					_v6_4:
+					var _p9 = {ctor: '_Tuple2', _0: _p7._0, _1: _p13};
+					_v6_3:
 					do {
-						if (_p10.ctor === '_Tuple2') {
-							switch (_p10._1.ctor) {
-								case 'OpenFile':
-									if ((_p10._0.ctor === 'OpenFileMsg') && (_p10._1._0.ctor === 'Just')) {
-										return A2(
-											_elm_lang$core$Tuple$mapSecond,
-											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$OpenFileMsg),
-											A2(
-												_elm_lang$core$Tuple$mapFirst,
-												function (_p11) {
-													return _creative$elm_generative$Main$OpenFile(
-														_elm_lang$core$Maybe$Just(_p11));
-												},
-												A2(_creative$elm_generative$Example_OpenFile$update, _p10._0._0, _p10._1._0._0)));
-									} else {
-										break _v6_4;
-									}
+						if (_p9.ctor === '_Tuple2') {
+							switch (_p9._1.ctor) {
 								case 'Curtain':
-									if ((_p10._0.ctor === 'CurtainMsg') && (_p10._1._0.ctor === 'Just')) {
+									if ((_p9._0.ctor === 'CurtainMsg') && (_p9._1._0.ctor === 'Just')) {
 										return A2(
 											_elm_lang$core$Tuple$mapSecond,
 											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
 											A2(
 												_elm_lang$core$Tuple$mapFirst,
-												function (_p12) {
+												function (_p10) {
 													return _creative$elm_generative$Main$Curtain(
-														_elm_lang$core$Maybe$Just(_p12));
+														_elm_lang$core$Maybe$Just(_p10));
 												},
-												A2(_creative$elm_generative$Example_Curtain$update, _p10._0._0, _p10._1._0._0)));
+												A2(_creative$elm_generative$Example_Curtain$update, _p9._0._0, _p9._1._0._0)));
 									} else {
-										break _v6_4;
+										break _v6_3;
 									}
 								case 'Landscape':
-									if ((_p10._0.ctor === 'LandscapeMsg') && (_p10._1._0.ctor === 'Just')) {
+									if ((_p9._0.ctor === 'LandscapeMsg') && (_p9._1._0.ctor === 'Just')) {
 										return A2(
 											_elm_lang$core$Tuple$mapSecond,
 											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
 											A2(
 												_elm_lang$core$Tuple$mapFirst,
-												function (_p13) {
+												function (_p11) {
 													return _creative$elm_generative$Main$Landscape(
-														_elm_lang$core$Maybe$Just(_p13));
+														_elm_lang$core$Maybe$Just(_p11));
 												},
-												A2(_creative$elm_generative$Example_Landscape$update, _p10._0._0, _p10._1._0._0)));
+												A2(_creative$elm_generative$Example_Landscape$update, _p9._0._0, _p9._1._0._0)));
 									} else {
-										break _v6_4;
+										break _v6_3;
 									}
 								default:
-									if ((_p10._0.ctor === 'ParallelRandomMsg') && (_p10._1._0.ctor === 'Just')) {
+									if ((_p9._0.ctor === 'ParallelRandomMsg') && (_p9._1._0.ctor === 'Just')) {
 										return A2(
 											_elm_lang$core$Tuple$mapSecond,
 											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$ParallelRandomMsg),
 											A2(
 												_elm_lang$core$Tuple$mapFirst,
-												function (_p14) {
+												function (_p12) {
 													return _creative$elm_generative$Main$ParallelRandom(
-														_elm_lang$core$Maybe$Just(_p14));
+														_elm_lang$core$Maybe$Just(_p12));
 												},
-												A2(_creative$elm_generative$Example_ParallelRandom$update, _p10._0._0, _p10._1._0._0)));
+												A2(_creative$elm_generative$Example_ParallelRandom$update, _p9._0._0, _p9._1._0._0)));
 									} else {
-										break _v6_4;
+										break _v6_3;
 									}
 							}
 						} else {
-							break _v6_4;
+							break _v6_3;
 						}
 					} while(false);
-					return {ctor: '_Tuple2', _0: _p15, _1: _elm_lang$core$Platform_Cmd$none};
+					return {ctor: '_Tuple2', _0: _p13, _1: _elm_lang$core$Platform_Cmd$none};
 				}();
 				return {
 					ctor: '_Tuple2',
@@ -17300,7 +17255,7 @@ var _creative$elm_generative$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Landscape.Model":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Model"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"NavigateTo":["Navigation.Location"],"OpenFileMsg":["Example.OpenFile.Msg"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Model"],"Generate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}},"Example.OpenFile.Msg":{"args":[],"tags":{"Print":[],"AwaitUpload":[]}},"Example.Curtain.Model":{"args":[],"tags":{"Empty":[],"Curtain":["List (List Float)","List (List Float)"]}}},"aliases":{"Example.ParallelRandom.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Landscape.Model":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Model"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"NavigateTo":["Navigation.Location"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Model"],"Generate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[],"OpenFile":[]}},"Example.Curtain.Model":{"args":[],"tags":{"Empty":[],"Curtain":["List (List Float)","List (List Float)"]}}},"aliases":{"Example.ParallelRandom.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

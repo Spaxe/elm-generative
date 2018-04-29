@@ -8,16 +8,35 @@ port module Main exposing (main)
 
 import Json.Decode exposing (field, string, decodeString)
 import Navigation exposing (Location)
-import Html exposing (Html, div, text, main_, nav, node, article, a, p, button)
+import Html
+    exposing
+        ( Html
+        , div
+        , text
+        , main_
+        , nav
+        , node
+        , article
+        , a
+        , p
+        , button
+        , input
+        )
 import Html.Events exposing (onClick)
-import Html.Attributes exposing (href, class)
+import Html.Attributes exposing (href, class, type_, style, id)
 import Tuple exposing (first, second, mapFirst, mapSecond)
-import UrlParser exposing (s, parseHash, Parser, oneOf, top)
+import UrlParser
+    exposing
+        ( s
+        , parseHash
+        , Parser
+        , oneOf
+        , top
+        )
 
 
 -- elm-generative examples
 
-import Example.OpenFile as OpenFile
 import Example.Curtain as Curtain
 import Example.Landscape as Landscape
 import Example.ParallelRandom as ParallelRandom
@@ -31,11 +50,6 @@ init location =
     let
         routeMsg =
             case parseLocation location of
-                OpenFile _ ->
-                    OpenFile.init
-                        |> mapFirst (OpenFile << Just)
-                        |> mapSecond (Cmd.map OpenFileMsg)
-
                 Curtain _ ->
                     Curtain.init
                         |> mapFirst (Curtain << Just)
@@ -62,7 +76,6 @@ type Msg
     = NavigateTo Location
     | Menu Action
     | PlotterStatus String
-    | OpenFileMsg OpenFile.Msg
     | CurtainMsg Curtain.Msg
     | LandscapeMsg Landscape.Msg
     | ParallelRandomMsg ParallelRandom.Msg
@@ -72,12 +85,12 @@ type Action
     = RaiseLowerPen
     | DisableMotor
     | Print
+    | OpenFile
     | Download
 
 
 type Route
-    = OpenFile (Maybe OpenFile.Model)
-    | Curtain (Maybe Curtain.Model)
+    = Curtain (Maybe Curtain.Model)
     | Landscape (Maybe Landscape.Model)
     | ParallelRandom (Maybe ParallelRandom.Model)
 
@@ -98,9 +111,7 @@ view model =
         []
         [ nav
             []
-            [ p [] [ text "Filesystem" ]
-            , a [ href "/#open-file" ] [ text "Open File" ]
-            , p [] [ text "Accumulation" ]
+            [ p [] [ text "Accumulation" ]
             , a [ href "/#curtain" ] [ text "Curtain" ]
             , a [ href "/#parallel-random" ] [ text "Parallel Random" ]
             , a [ href "/#landscape" ] [ text "Landscape" ]
@@ -111,19 +122,28 @@ view model =
                 [ class "options" ]
                 [ button
                     [ onClick (Menu RaiseLowerPen) ]
-                    [ text "↕️ Raise/Lower" ]
+                    [ text "↕️ Raise/Lower pen" ]
                 , button
                     [ onClick (Menu DisableMotor) ]
-                    [ text "\x1F6D1 Disable motor" ]
+                    [ text "🚫 Disable motor" ]
                 , button
                     [ onClick (Menu Print) ]
                     [ text "🖊 Print" ]
-                , div
-                    [ class "status" ]
-                    [ text <| Maybe.withDefault "" model.status ]
+                , input
+                    [ id "svgFile"
+                    , type_ "file"
+                    , style [ ( "display", "none" ) ]
+                    ]
+                    []
+                , button
+                    [ onClick (Menu OpenFile) ]
+                    [ text "✨ Upload" ]
                 , button
                     [ onClick (Menu Download) ]
                     [ text "💾 Download" ]
+                , div
+                    [ class "status" ]
+                    [ text <| Maybe.withDefault "" model.status ]
                 ]
             , div
                 [ class "main" ]
@@ -135,10 +155,6 @@ view model =
 render : Route -> Html Msg
 render route =
     case route of
-        OpenFile (Just pageModel) ->
-            OpenFile.view pageModel
-                |> Html.map OpenFileMsg
-
         Curtain (Just pageModel) ->
             Curtain.view pageModel
                 |> Html.map CurtainMsg
@@ -176,6 +192,9 @@ update msg model =
                 Print ->
                     ( model, print "" )
 
+                OpenFile ->
+                    ( model, openFile "" )
+
                 Download ->
                     ( model, download <| toString model.route )
 
@@ -186,11 +205,6 @@ update msg model =
             let
                 routeMsg =
                     case ( msg, route ) of
-                        ( OpenFileMsg pageMsg, OpenFile (Just pageModel) ) ->
-                            OpenFile.update pageMsg pageModel
-                                |> mapFirst (OpenFile << Just)
-                                |> mapSecond (Cmd.map OpenFileMsg)
-
                         ( CurtainMsg pageMsg, Curtain (Just pageModel) ) ->
                             Curtain.update pageMsg pageModel
                                 |> mapFirst (Curtain << Just)
@@ -238,6 +252,9 @@ port disableMotor : String -> Cmd msg
 port print : String -> Cmd msg
 
 
+port openFile : String -> Cmd msg
+
+
 port download : String -> Cmd msg
 
 
@@ -246,7 +263,7 @@ port download : String -> Cmd msg
 
 
 subscriptions : Model -> Sub Msg
-subscriptions route =
+subscriptions model =
     Sub.batch
         [ getPlotterStatus PlotterStatus
         ]
@@ -260,7 +277,6 @@ matchers : Parser (Route -> a) a
 matchers =
     oneOf
         [ UrlParser.map (Curtain Nothing) top
-        , UrlParser.map (OpenFile Nothing) (s "open-file")
         , UrlParser.map (Curtain Nothing) (s "curtain")
         , UrlParser.map (Landscape Nothing) (s "landscape")
         , UrlParser.map (ParallelRandom Nothing) (s "parallel-random")
