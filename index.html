@@ -38,6 +38,7 @@
           saveSvg(node, `${routeName}.svg`);
       });
 
+      // Get plotter status every 30 seconds
       window.setInterval( () => {
         http('GET', api(port, '/print'))
           .then(app.ports.getPlotterStatus.send)

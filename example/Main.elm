@@ -6,12 +6,13 @@ port module Main exposing (main)
 
 -}
 
+import Json.Decode exposing (field, string, decodeString)
 import Navigation exposing (Location)
 import Html exposing (Html, div, text, main_, nav, node, article, a, p, button)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (href, class)
 import Tuple exposing (first, second, mapFirst, mapSecond)
-import UrlParser exposing (..)
+import UrlParser exposing (s, parseHash, Parser, oneOf, top)
 
 
 -- elm-generative examples
@@ -165,8 +166,8 @@ update msg model =
                 Download ->
                     ( model, download <| toString model.route )
 
-        ( PlotterStatus s, _ ) ->
-            ( model, Cmd.none )
+        ( PlotterStatus value, _ ) ->
+            ( { model | status = Just <| decodePlotterStatus value }, Cmd.none )
 
         ( msg, route ) ->
             let
@@ -191,6 +192,16 @@ update msg model =
                             ( route, Cmd.none )
             in
                 ( { model | route = first routeMsg }, Cmd.none )
+
+
+decodePlotterStatus : String -> String
+decodePlotterStatus value =
+    case decodeString (field "version" string) value of
+        Ok s ->
+            s
+
+        Err e ->
+            toString e
 
 
 
@@ -230,10 +241,10 @@ subscriptions route =
 matchers : Parser (Route -> a) a
 matchers =
     oneOf
-        [ map (Template Nothing) top
-        , map (Template Nothing) (s "template")
-        , map (Curtain Nothing) (s "curtain")
-        , map (Landscape Nothing) (s "landscape")
+        [ UrlParser.map (Template Nothing) top
+        , UrlParser.map (Template Nothing) (s "template")
+        , UrlParser.map (Curtain Nothing) (s "curtain")
+        , UrlParser.map (Landscape Nothing) (s "landscape")
         ]
 
 

@@ -16699,6 +16699,17 @@ var _evancz$url_parser$UrlParser$intParam = function (name) {
 	return A2(_evancz$url_parser$UrlParser$customParam, name, _evancz$url_parser$UrlParser$intParamHelp);
 };
 
+var _creative$elm_generative$Main$decodePlotterStatus = function (value) {
+	var _p0 = A2(
+		_elm_lang$core$Json_Decode$decodeString,
+		A2(_elm_lang$core$Json_Decode$field, 'version', _elm_lang$core$Json_Decode$string),
+		value);
+	if (_p0.ctor === 'Ok') {
+		return _p0._0;
+	} else {
+		return _elm_lang$core$Basics$toString(_p0._0);
+	}
+};
 var _creative$elm_generative$Main$getPlotterStatus = _elm_lang$core$Native_Platform.incomingPort('getPlotterStatus', _elm_lang$core$Json_Decode$string);
 var _creative$elm_generative$Main$raiseLowerPen = _elm_lang$core$Native_Platform.outgoingPort(
 	'raiseLowerPen',
@@ -16734,36 +16745,36 @@ var _creative$elm_generative$Main$CurtainMsg = function (a) {
 	return {ctor: 'CurtainMsg', _0: a};
 };
 var _creative$elm_generative$Main$render = function (route) {
-	var _p0 = route;
-	_v0_3:
+	var _p1 = route;
+	_v1_3:
 	do {
-		switch (_p0.ctor) {
+		switch (_p1.ctor) {
 			case 'Curtain':
-				if (_p0._0.ctor === 'Just') {
+				if (_p1._0.ctor === 'Just') {
 					return A2(
 						_elm_lang$html$Html$map,
 						_creative$elm_generative$Main$CurtainMsg,
-						_creative$elm_generative$Example_Curtain$view(_p0._0._0));
+						_creative$elm_generative$Example_Curtain$view(_p1._0._0));
 				} else {
-					break _v0_3;
+					break _v1_3;
 				}
 			case 'Landscape':
-				if (_p0._0.ctor === 'Just') {
+				if (_p1._0.ctor === 'Just') {
 					return A2(
 						_elm_lang$html$Html$map,
 						_creative$elm_generative$Main$LandscapeMsg,
-						_creative$elm_generative$Example_Landscape$view(_p0._0._0));
+						_creative$elm_generative$Example_Landscape$view(_p1._0._0));
 				} else {
-					break _v0_3;
+					break _v1_3;
 				}
 			default:
-				if (_p0._0.ctor === 'Just') {
+				if (_p1._0.ctor === 'Just') {
 					return A2(
 						_elm_lang$html$Html$map,
 						_creative$elm_generative$Main$TemplateMsg,
-						_creative$elm_generative$Example_Template$view(_p0._0._0));
+						_creative$elm_generative$Example_Template$view(_p1._0._0));
 				} else {
-					break _v0_3;
+					break _v1_3;
 				}
 		}
 	} while(false);
@@ -17023,26 +17034,26 @@ var _creative$elm_generative$Main$matchers = _evancz$url_parser$UrlParser$oneOf(
 		}
 	});
 var _creative$elm_generative$Main$parseLocation = function (location) {
-	var _p1 = A2(_evancz$url_parser$UrlParser$parseHash, _creative$elm_generative$Main$matchers, location);
-	if (_p1.ctor === 'Just') {
-		return _p1._0;
+	var _p2 = A2(_evancz$url_parser$UrlParser$parseHash, _creative$elm_generative$Main$matchers, location);
+	if (_p2.ctor === 'Just') {
+		return _p2._0;
 	} else {
 		return _creative$elm_generative$Main$Curtain(_elm_lang$core$Maybe$Nothing);
 	}
 };
 var _creative$elm_generative$Main$init = function (location) {
 	var routeMsg = function () {
-		var _p2 = _creative$elm_generative$Main$parseLocation(location);
-		switch (_p2.ctor) {
+		var _p3 = _creative$elm_generative$Main$parseLocation(location);
+		switch (_p3.ctor) {
 			case 'Curtain':
 				return A2(
 					_elm_lang$core$Tuple$mapSecond,
 					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
 					A2(
 						_elm_lang$core$Tuple$mapFirst,
-						function (_p3) {
+						function (_p4) {
 							return _creative$elm_generative$Main$Curtain(
-								_elm_lang$core$Maybe$Just(_p3));
+								_elm_lang$core$Maybe$Just(_p4));
 						},
 						_creative$elm_generative$Example_Curtain$init));
 			case 'Landscape':
@@ -17051,9 +17062,9 @@ var _creative$elm_generative$Main$init = function (location) {
 					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
 					A2(
 						_elm_lang$core$Tuple$mapFirst,
-						function (_p4) {
+						function (_p5) {
 							return _creative$elm_generative$Main$Landscape(
-								_elm_lang$core$Maybe$Just(_p4));
+								_elm_lang$core$Maybe$Just(_p5));
 						},
 						_creative$elm_generative$Example_Landscape$init));
 			default:
@@ -17062,9 +17073,9 @@ var _creative$elm_generative$Main$init = function (location) {
 					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$TemplateMsg),
 					A2(
 						_elm_lang$core$Tuple$mapFirst,
-						function (_p5) {
+						function (_p6) {
 							return _creative$elm_generative$Main$Template(
-								_elm_lang$core$Maybe$Just(_p5));
+								_elm_lang$core$Maybe$Just(_p6));
 						},
 						_creative$elm_generative$Example_Template$init));
 		}
@@ -17080,13 +17091,13 @@ var _creative$elm_generative$Main$init = function (location) {
 };
 var _creative$elm_generative$Main$update = F2(
 	function (msg, model) {
-		var _p6 = {ctor: '_Tuple2', _0: msg, _1: model.route};
-		switch (_p6._0.ctor) {
+		var _p7 = {ctor: '_Tuple2', _0: msg, _1: model.route};
+		switch (_p7._0.ctor) {
 			case 'NavigateTo':
-				return _creative$elm_generative$Main$init(_p6._0._0);
+				return _creative$elm_generative$Main$init(_p7._0._0);
 			case 'Menu':
-				var _p7 = _p6._0._0;
-				switch (_p7.ctor) {
+				var _p8 = _p7._0._0;
+				switch (_p8.ctor) {
 					case 'RaiseLowerPen':
 						return {
 							ctor: '_Tuple2',
@@ -17114,66 +17125,75 @@ var _creative$elm_generative$Main$update = F2(
 						};
 				}
 			case 'PlotterStatus':
-				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							status: _elm_lang$core$Maybe$Just(
+								_creative$elm_generative$Main$decodePlotterStatus(_p7._0._0))
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			default:
-				var _p12 = _p6._1;
+				var _p13 = _p7._1;
 				var routeMsg = function () {
-					var _p8 = {ctor: '_Tuple2', _0: _p6._0, _1: _p12};
-					_v5_3:
+					var _p9 = {ctor: '_Tuple2', _0: _p7._0, _1: _p13};
+					_v6_3:
 					do {
-						if (_p8.ctor === '_Tuple2') {
-							switch (_p8._1.ctor) {
+						if (_p9.ctor === '_Tuple2') {
+							switch (_p9._1.ctor) {
 								case 'Curtain':
-									if ((_p8._0.ctor === 'CurtainMsg') && (_p8._1._0.ctor === 'Just')) {
+									if ((_p9._0.ctor === 'CurtainMsg') && (_p9._1._0.ctor === 'Just')) {
 										return A2(
 											_elm_lang$core$Tuple$mapSecond,
 											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
 											A2(
 												_elm_lang$core$Tuple$mapFirst,
-												function (_p9) {
+												function (_p10) {
 													return _creative$elm_generative$Main$Curtain(
-														_elm_lang$core$Maybe$Just(_p9));
+														_elm_lang$core$Maybe$Just(_p10));
 												},
-												A2(_creative$elm_generative$Example_Curtain$update, _p8._0._0, _p8._1._0._0)));
+												A2(_creative$elm_generative$Example_Curtain$update, _p9._0._0, _p9._1._0._0)));
 									} else {
-										break _v5_3;
+										break _v6_3;
 									}
 								case 'Landscape':
-									if ((_p8._0.ctor === 'LandscapeMsg') && (_p8._1._0.ctor === 'Just')) {
+									if ((_p9._0.ctor === 'LandscapeMsg') && (_p9._1._0.ctor === 'Just')) {
 										return A2(
 											_elm_lang$core$Tuple$mapSecond,
 											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
 											A2(
 												_elm_lang$core$Tuple$mapFirst,
-												function (_p10) {
+												function (_p11) {
 													return _creative$elm_generative$Main$Landscape(
-														_elm_lang$core$Maybe$Just(_p10));
+														_elm_lang$core$Maybe$Just(_p11));
 												},
-												A2(_creative$elm_generative$Example_Landscape$update, _p8._0._0, _p8._1._0._0)));
+												A2(_creative$elm_generative$Example_Landscape$update, _p9._0._0, _p9._1._0._0)));
 									} else {
-										break _v5_3;
+										break _v6_3;
 									}
 								default:
-									if ((_p8._0.ctor === 'TemplateMsg') && (_p8._1._0.ctor === 'Just')) {
+									if ((_p9._0.ctor === 'TemplateMsg') && (_p9._1._0.ctor === 'Just')) {
 										return A2(
 											_elm_lang$core$Tuple$mapSecond,
 											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$TemplateMsg),
 											A2(
 												_elm_lang$core$Tuple$mapFirst,
-												function (_p11) {
+												function (_p12) {
 													return _creative$elm_generative$Main$Template(
-														_elm_lang$core$Maybe$Just(_p11));
+														_elm_lang$core$Maybe$Just(_p12));
 												},
-												A2(_creative$elm_generative$Example_Template$update, _p8._0._0, _p8._1._0._0)));
+												A2(_creative$elm_generative$Example_Template$update, _p9._0._0, _p9._1._0._0)));
 									} else {
-										break _v5_3;
+										break _v6_3;
 									}
 							}
 						} else {
-							break _v5_3;
+							break _v6_3;
 						}
 					} while(false);
-					return {ctor: '_Tuple2', _0: _p12, _1: _elm_lang$core$Platform_Cmd$none};
+					return {ctor: '_Tuple2', _0: _p13, _1: _elm_lang$core$Platform_Cmd$none};
 				}();
 				return {
 					ctor: '_Tuple2',
