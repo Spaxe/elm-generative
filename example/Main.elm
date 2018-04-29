@@ -1,4 +1,4 @@
-module Main exposing (main)
+port module Main exposing (main)
 
 {-| Single Gallery Application to display various examples of generative art.
 
@@ -7,9 +7,10 @@ module Main exposing (main)
 -}
 
 import Navigation exposing (Location)
-import Html exposing (Html, div, text, main_, nav, node, article, a, p)
-import Html.Attributes exposing (href)
-import Tuple exposing (first, mapFirst, mapSecond)
+import Html exposing (Html, div, text, main_, nav, node, article, a, p, button)
+import Html.Events exposing (onClick)
+import Html.Attributes exposing (href, class)
+import Tuple exposing (first, second, mapFirst, mapSecond)
 import UrlParser exposing (..)
 
 
@@ -23,30 +24,47 @@ import Example.Landscape as Landscape
 -- MODEL --
 
 
-init : Location -> ( Route, Cmd Msg )
+init : Location -> ( Model, Cmd Msg )
 init location =
-    case parseLocation location of
-        Curtain _ ->
-            Curtain.init
-                |> mapFirst (Curtain << Just)
-                |> mapSecond (Cmd.map CurtainMsg)
+    let
+        routeMsg =
+            case parseLocation location of
+                Curtain _ ->
+                    Curtain.init
+                        |> mapFirst (Curtain << Just)
+                        |> mapSecond (Cmd.map CurtainMsg)
 
-        Landscape _ ->
-            Landscape.init
-                |> mapFirst (Landscape << Just)
-                |> mapSecond (Cmd.map LandscapeMsg)
+                Landscape _ ->
+                    Landscape.init
+                        |> mapFirst (Landscape << Just)
+                        |> mapSecond (Cmd.map LandscapeMsg)
 
-        Template _ ->
-            Template.init
-                |> mapFirst (Template << Just)
-                |> mapSecond (Cmd.map TemplateMsg)
+                Template _ ->
+                    Template.init
+                        |> mapFirst (Template << Just)
+                        |> mapSecond (Cmd.map TemplateMsg)
+    in
+        ( { route = first routeMsg
+          , status = Nothing
+          }
+        , second routeMsg
+        )
 
 
 type Msg
     = NavigateTo Location
+    | Menu Action
+    | PlotterStatus String
     | CurtainMsg Curtain.Msg
     | LandscapeMsg Landscape.Msg
     | TemplateMsg Template.Msg
+
+
+type Action
+    = RaiseLowerPen
+    | DisableMotor
+    | Print
+    | Download
 
 
 type Route
@@ -55,18 +73,21 @@ type Route
     | Template (Maybe Template.Model)
 
 
+type alias Model =
+    { route : Route
+    , status : Maybe String
+    }
+
+
 
 -- VIEW --
 
 
-view : Route -> Html Msg
-view route =
+view : Model -> Html Msg
+view model =
     main_
         []
-        [ node "style"
-            []
-            [ text stylesheet ]
-        , nav
+        [ nav
             []
             [ p [] [ text "Make your own" ]
             , a [ href "/#template" ] [ text "Template" ]
@@ -76,7 +97,28 @@ view route =
             ]
         , article
             []
-            [ render route ]
+            [ div
+                [ class "options" ]
+                [ button
+                    [ onClick (Menu RaiseLowerPen) ]
+                    [ text "↕️ Raise/Lower" ]
+                , button
+                    [ onClick (Menu DisableMotor) ]
+                    [ text "\x1F6D1 Disable motor" ]
+                , button
+                    [ onClick (Menu Print) ]
+                    [ text "🖊 Print" ]
+                , div
+                    [ class "status" ]
+                    [ text <| Maybe.withDefault "" model.status ]
+                , button
+                    [ onClick (Menu Download) ]
+                    [ text "💾 Download" ]
+                ]
+            , div
+                [ class "main" ]
+                [ render model.route ]
+            ]
         ]
 
 
@@ -99,94 +141,86 @@ render route =
             text "404 Not Found"
 
 
-stylesheet : String
-stylesheet =
-    """
-body {
-    margin: 0;
-    padding: 0;
-}
-
-main {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-}
-
-nav {
-    flex: 0 0 10rem;
-    height: 100vh;
-    background: #F5F5F6;
-    position: relative;
-    padding: 1rem 2rem;
-    line-height: 1.5;
-}
-
-nav > p {
-    margin-bottom: 0;
-}
-
-nav > a {
-    color: #9af;
-    cursor: pointer;
-    display: block;
-    text-decoration: none;
-}
-
-article {
-    flex: 1 0 auto;
-    position: relative;
-    height: 100vh;
-}
-
-/* 1 cm = 1 rem */
-svg {
-    height: 100vh;
-    width: auto;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    background: #FAFAFB;
-}
-"""
-
-
 
 -- UPDATE --
 
 
-update : Msg -> Route -> ( Route, Cmd Msg )
-update msg route =
-    case ( msg, route ) of
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case ( msg, model.route ) of
         ( NavigateTo location, _ ) ->
             init location
 
-        ( CurtainMsg pageMsg, Curtain (Just pageModel) ) ->
-            Curtain.update pageMsg pageModel
-                |> mapFirst (Curtain << Just)
-                |> mapSecond (Cmd.map CurtainMsg)
+        ( Menu action, _ ) ->
+            case action of
+                RaiseLowerPen ->
+                    ( model, raiseLowerPen "" )
 
-        ( LandscapeMsg pageMsg, Landscape (Just pageModel) ) ->
-            Landscape.update pageMsg pageModel
-                |> mapFirst (Landscape << Just)
-                |> mapSecond (Cmd.map LandscapeMsg)
+                DisableMotor ->
+                    ( model, disableMotor "" )
 
-        ( TemplateMsg pageMsg, Template (Just pageModel) ) ->
-            Template.update pageMsg pageModel
-                |> mapFirst (Template << Just)
-                |> mapSecond (Cmd.map TemplateMsg)
+                Print ->
+                    ( model, print "" )
 
-        _ ->
-            ( route, Cmd.none )
+                Download ->
+                    ( model, download <| toString model.route )
+
+        ( PlotterStatus s, _ ) ->
+            ( model, Cmd.none )
+
+        ( msg, route ) ->
+            let
+                routeMsg =
+                    case ( msg, route ) of
+                        ( CurtainMsg pageMsg, Curtain (Just pageModel) ) ->
+                            Curtain.update pageMsg pageModel
+                                |> mapFirst (Curtain << Just)
+                                |> mapSecond (Cmd.map CurtainMsg)
+
+                        ( LandscapeMsg pageMsg, Landscape (Just pageModel) ) ->
+                            Landscape.update pageMsg pageModel
+                                |> mapFirst (Landscape << Just)
+                                |> mapSecond (Cmd.map LandscapeMsg)
+
+                        ( TemplateMsg pageMsg, Template (Just pageModel) ) ->
+                            Template.update pageMsg pageModel
+                                |> mapFirst (Template << Just)
+                                |> mapSecond (Cmd.map TemplateMsg)
+
+                        _ ->
+                            ( route, Cmd.none )
+            in
+                ( { model | route = first routeMsg }, Cmd.none )
+
+
+
+-- PORTS --
+
+
+port getPlotterStatus : (String -> msg) -> Sub msg
+
+
+port raiseLowerPen : String -> Cmd msg
+
+
+port disableMotor : String -> Cmd msg
+
+
+port print : String -> Cmd msg
+
+
+port download : String -> Cmd msg
 
 
 
 -- SUBSCRIPTIONS --
 
 
-subscriptions : Route -> Sub Msg
-subscriptions model =
-    Sub.none
+subscriptions : Model -> Sub Msg
+subscriptions route =
+    Sub.batch
+        [ getPlotterStatus PlotterStatus
+        ]
 
 
 
@@ -215,7 +249,7 @@ parseLocation location =
 
 {-| Program Entry.
 -}
-main : Program Never Route Msg
+main : Program Never Model Msg
 main =
     Navigation.program NavigateTo
         { init = init

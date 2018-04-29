@@ -15972,6 +15972,121 @@ var _elm_lang$navigation$Navigation$onEffects = F4(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
 
+var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
+var _elm_lang$html$Html_Events$targetChecked = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'checked',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$bool);
+var _elm_lang$html$Html_Events$targetValue = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'value',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
+var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
+var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
+var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$html$Html_Events$onFocus = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'focus',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onBlur = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'blur',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
+	_elm_lang$html$Html_Events$defaultOptions,
+	{preventDefault: true});
+var _elm_lang$html$Html_Events$onSubmit = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'submit',
+		_elm_lang$html$Html_Events$onSubmitOptions,
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onCheck = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
+};
+var _elm_lang$html$Html_Events$onInput = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'input',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
+};
+var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseout',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseover',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseleave',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseenter',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseup',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mousedown',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'dblclick',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$Options = F2(
+	function (a, b) {
+		return {stopPropagation: a, preventDefault: b};
+	});
+
 var _elm_lang$http$Native_Http = function() {
 
 
@@ -16584,10 +16699,31 @@ var _evancz$url_parser$UrlParser$intParam = function (name) {
 	return A2(_evancz$url_parser$UrlParser$customParam, name, _evancz$url_parser$UrlParser$intParamHelp);
 };
 
-var _creative$elm_generative$Main$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
-};
-var _creative$elm_generative$Main$stylesheet = '\nbody {\n    margin: 0;\n    padding: 0;\n}\n\nmain {\n    width: 100vw;\n    height: 100vh;\n    display: flex;\n}\n\nnav {\n    flex: 0 0 10rem;\n    height: 100vh;\n    background: #F5F5F6;\n    position: relative;\n    padding: 1rem 2rem;\n    line-height: 1.5;\n}\n\nnav > p {\n    margin-bottom: 0;\n}\n\nnav > a {\n    color: #9af;\n    cursor: pointer;\n    display: block;\n    text-decoration: none;\n}\n\narticle {\n    flex: 1 0 auto;\n    position: relative;\n    height: 100vh;\n}\n\n/* 1 cm = 1 rem */\nsvg {\n    height: 100vh;\n    width: auto;\n    justify-content: center;\n    align-items: center;\n    position: relative;\n    background: #FAFAFB;\n}\n';
+var _creative$elm_generative$Main$getPlotterStatus = _elm_lang$core$Native_Platform.incomingPort('getPlotterStatus', _elm_lang$core$Json_Decode$string);
+var _creative$elm_generative$Main$raiseLowerPen = _elm_lang$core$Native_Platform.outgoingPort(
+	'raiseLowerPen',
+	function (v) {
+		return v;
+	});
+var _creative$elm_generative$Main$disableMotor = _elm_lang$core$Native_Platform.outgoingPort(
+	'disableMotor',
+	function (v) {
+		return v;
+	});
+var _creative$elm_generative$Main$print = _elm_lang$core$Native_Platform.outgoingPort(
+	'print',
+	function (v) {
+		return v;
+	});
+var _creative$elm_generative$Main$download = _elm_lang$core$Native_Platform.outgoingPort(
+	'download',
+	function (v) {
+		return v;
+	});
+var _creative$elm_generative$Main$Model = F2(
+	function (a, b) {
+		return {route: a, status: b};
+	});
 var _creative$elm_generative$Main$TemplateMsg = function (a) {
 	return {ctor: 'TemplateMsg', _0: a};
 };
@@ -16633,58 +16769,82 @@ var _creative$elm_generative$Main$render = function (route) {
 	} while(false);
 	return _elm_lang$html$Html$text('404 Not Found');
 };
-var _creative$elm_generative$Main$view = function (route) {
+var _creative$elm_generative$Main$PlotterStatus = function (a) {
+	return {ctor: 'PlotterStatus', _0: a};
+};
+var _creative$elm_generative$Main$subscriptions = function (route) {
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: _creative$elm_generative$Main$getPlotterStatus(_creative$elm_generative$Main$PlotterStatus),
+			_1: {ctor: '[]'}
+		});
+};
+var _creative$elm_generative$Main$Menu = function (a) {
+	return {ctor: 'Menu', _0: a};
+};
+var _creative$elm_generative$Main$NavigateTo = function (a) {
+	return {ctor: 'NavigateTo', _0: a};
+};
+var _creative$elm_generative$Main$Download = {ctor: 'Download'};
+var _creative$elm_generative$Main$Print = {ctor: 'Print'};
+var _creative$elm_generative$Main$DisableMotor = {ctor: 'DisableMotor'};
+var _creative$elm_generative$Main$RaiseLowerPen = {ctor: 'RaiseLowerPen'};
+var _creative$elm_generative$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$main_,
 		{ctor: '[]'},
 		{
 			ctor: '::',
-			_0: A3(
-				_elm_lang$html$Html$node,
-				'style',
+			_0: A2(
+				_elm_lang$html$Html$nav,
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text(_creative$elm_generative$Main$stylesheet),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$nav,
-					{ctor: '[]'},
-					{
+					_0: A2(
+						_elm_lang$html$Html$p,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Make your own'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$p,
-							{ctor: '[]'},
+							_elm_lang$html$Html$a,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text('Make your own'),
+								_0: _elm_lang$html$Html_Attributes$href('/#template'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Template'),
 								_1: {ctor: '[]'}
 							}),
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$a,
+								_elm_lang$html$Html$p,
+								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$href('/#template'),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Template'),
+									_0: _elm_lang$html$Html$text('Accumulation'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$p,
-									{ctor: '[]'},
+									_elm_lang$html$Html$a,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text('Accumulation'),
+										_0: _elm_lang$html$Html_Attributes$href('/#curtain'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Curtain'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {
@@ -16693,51 +16853,135 @@ var _creative$elm_generative$Main$view = function (route) {
 										_elm_lang$html$Html$a,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('/#curtain'),
+											_0: _elm_lang$html$Html_Attributes$href('/#landscape'),
 											_1: {ctor: '[]'}
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('Curtain'),
+											_0: _elm_lang$html$Html$text('Landscape'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$article,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('options'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$RaiseLowerPen)),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('↕️ Raise/Lower'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$button,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onClick(
+												_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$DisableMotor)),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('🛑 Disable motor'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {
 										ctor: '::',
 										_0: A2(
-											_elm_lang$html$Html$a,
+											_elm_lang$html$Html$button,
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$href('/#landscape'),
+												_0: _elm_lang$html$Html_Events$onClick(
+													_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$Print)),
 												_1: {ctor: '[]'}
 											},
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html$text('Landscape'),
+												_0: _elm_lang$html$Html$text('🖊 Print'),
 												_1: {ctor: '[]'}
 											}),
-										_1: {ctor: '[]'}
+										_1: {
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$div,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('status'),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(
+														A2(_elm_lang$core$Maybe$withDefault, '', model.status)),
+													_1: {ctor: '[]'}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$button,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onClick(
+															_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$Download)),
+														_1: {ctor: '[]'}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('💾 Download'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}
+										}
 									}
 								}
-							}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('main'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _creative$elm_generative$Main$render(model.route),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
 						}
 					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$article,
-						{ctor: '[]'},
-						{
-							ctor: '::',
-							_0: _creative$elm_generative$Main$render(route),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
+				_1: {ctor: '[]'}
 			}
 		});
-};
-var _creative$elm_generative$Main$NavigateTo = function (a) {
-	return {ctor: 'NavigateTo', _0: a};
 };
 var _creative$elm_generative$Main$Template = function (a) {
 	return {ctor: 'Template', _0: a};
@@ -16787,103 +17031,160 @@ var _creative$elm_generative$Main$parseLocation = function (location) {
 	}
 };
 var _creative$elm_generative$Main$init = function (location) {
-	var _p2 = _creative$elm_generative$Main$parseLocation(location);
-	switch (_p2.ctor) {
-		case 'Curtain':
-			return A2(
-				_elm_lang$core$Tuple$mapSecond,
-				_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
-				A2(
-					_elm_lang$core$Tuple$mapFirst,
-					function (_p3) {
-						return _creative$elm_generative$Main$Curtain(
-							_elm_lang$core$Maybe$Just(_p3));
-					},
-					_creative$elm_generative$Example_Curtain$init));
-		case 'Landscape':
-			return A2(
-				_elm_lang$core$Tuple$mapSecond,
-				_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
-				A2(
-					_elm_lang$core$Tuple$mapFirst,
-					function (_p4) {
-						return _creative$elm_generative$Main$Landscape(
-							_elm_lang$core$Maybe$Just(_p4));
-					},
-					_creative$elm_generative$Example_Landscape$init));
-		default:
-			return A2(
-				_elm_lang$core$Tuple$mapSecond,
-				_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$TemplateMsg),
-				A2(
-					_elm_lang$core$Tuple$mapFirst,
-					function (_p5) {
-						return _creative$elm_generative$Main$Template(
-							_elm_lang$core$Maybe$Just(_p5));
-					},
-					_creative$elm_generative$Example_Template$init));
-	}
+	var routeMsg = function () {
+		var _p2 = _creative$elm_generative$Main$parseLocation(location);
+		switch (_p2.ctor) {
+			case 'Curtain':
+				return A2(
+					_elm_lang$core$Tuple$mapSecond,
+					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
+					A2(
+						_elm_lang$core$Tuple$mapFirst,
+						function (_p3) {
+							return _creative$elm_generative$Main$Curtain(
+								_elm_lang$core$Maybe$Just(_p3));
+						},
+						_creative$elm_generative$Example_Curtain$init));
+			case 'Landscape':
+				return A2(
+					_elm_lang$core$Tuple$mapSecond,
+					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
+					A2(
+						_elm_lang$core$Tuple$mapFirst,
+						function (_p4) {
+							return _creative$elm_generative$Main$Landscape(
+								_elm_lang$core$Maybe$Just(_p4));
+						},
+						_creative$elm_generative$Example_Landscape$init));
+			default:
+				return A2(
+					_elm_lang$core$Tuple$mapSecond,
+					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$TemplateMsg),
+					A2(
+						_elm_lang$core$Tuple$mapFirst,
+						function (_p5) {
+							return _creative$elm_generative$Main$Template(
+								_elm_lang$core$Maybe$Just(_p5));
+						},
+						_creative$elm_generative$Example_Template$init));
+		}
+	}();
+	return {
+		ctor: '_Tuple2',
+		_0: {
+			route: _elm_lang$core$Tuple$first(routeMsg),
+			status: _elm_lang$core$Maybe$Nothing
+		},
+		_1: _elm_lang$core$Tuple$second(routeMsg)
+	};
 };
 var _creative$elm_generative$Main$update = F2(
-	function (msg, route) {
-		var _p6 = {ctor: '_Tuple2', _0: msg, _1: route};
-		_v3_4:
-		do {
-			if (_p6.ctor === '_Tuple2') {
-				switch (_p6._0.ctor) {
-					case 'NavigateTo':
-						return _creative$elm_generative$Main$init(_p6._0._0);
-					case 'CurtainMsg':
-						if ((_p6._1.ctor === 'Curtain') && (_p6._1._0.ctor === 'Just')) {
-							return A2(
-								_elm_lang$core$Tuple$mapSecond,
-								_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
-								A2(
-									_elm_lang$core$Tuple$mapFirst,
-									function (_p7) {
-										return _creative$elm_generative$Main$Curtain(
-											_elm_lang$core$Maybe$Just(_p7));
-									},
-									A2(_creative$elm_generative$Example_Curtain$update, _p6._0._0, _p6._1._0._0)));
-						} else {
-							break _v3_4;
-						}
-					case 'LandscapeMsg':
-						if ((_p6._1.ctor === 'Landscape') && (_p6._1._0.ctor === 'Just')) {
-							return A2(
-								_elm_lang$core$Tuple$mapSecond,
-								_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
-								A2(
-									_elm_lang$core$Tuple$mapFirst,
-									function (_p8) {
-										return _creative$elm_generative$Main$Landscape(
-											_elm_lang$core$Maybe$Just(_p8));
-									},
-									A2(_creative$elm_generative$Example_Landscape$update, _p6._0._0, _p6._1._0._0)));
-						} else {
-							break _v3_4;
-						}
+	function (msg, model) {
+		var _p6 = {ctor: '_Tuple2', _0: msg, _1: model.route};
+		switch (_p6._0.ctor) {
+			case 'NavigateTo':
+				return _creative$elm_generative$Main$init(_p6._0._0);
+			case 'Menu':
+				var _p7 = _p6._0._0;
+				switch (_p7.ctor) {
+					case 'RaiseLowerPen':
+						return {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _creative$elm_generative$Main$raiseLowerPen('')
+						};
+					case 'DisableMotor':
+						return {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _creative$elm_generative$Main$disableMotor('')
+						};
+					case 'Print':
+						return {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _creative$elm_generative$Main$print('')
+						};
 					default:
-						if ((_p6._1.ctor === 'Template') && (_p6._1._0.ctor === 'Just')) {
-							return A2(
-								_elm_lang$core$Tuple$mapSecond,
-								_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$TemplateMsg),
-								A2(
-									_elm_lang$core$Tuple$mapFirst,
-									function (_p9) {
-										return _creative$elm_generative$Main$Template(
-											_elm_lang$core$Maybe$Just(_p9));
-									},
-									A2(_creative$elm_generative$Example_Template$update, _p6._0._0, _p6._1._0._0)));
-						} else {
-							break _v3_4;
-						}
+						return {
+							ctor: '_Tuple2',
+							_0: model,
+							_1: _creative$elm_generative$Main$download(
+								_elm_lang$core$Basics$toString(model.route))
+						};
 				}
-			} else {
-				break _v3_4;
-			}
-		} while(false);
-		return {ctor: '_Tuple2', _0: route, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'PlotterStatus':
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			default:
+				var _p12 = _p6._1;
+				var routeMsg = function () {
+					var _p8 = {ctor: '_Tuple2', _0: _p6._0, _1: _p12};
+					_v5_3:
+					do {
+						if (_p8.ctor === '_Tuple2') {
+							switch (_p8._1.ctor) {
+								case 'Curtain':
+									if ((_p8._0.ctor === 'CurtainMsg') && (_p8._1._0.ctor === 'Just')) {
+										return A2(
+											_elm_lang$core$Tuple$mapSecond,
+											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$CurtainMsg),
+											A2(
+												_elm_lang$core$Tuple$mapFirst,
+												function (_p9) {
+													return _creative$elm_generative$Main$Curtain(
+														_elm_lang$core$Maybe$Just(_p9));
+												},
+												A2(_creative$elm_generative$Example_Curtain$update, _p8._0._0, _p8._1._0._0)));
+									} else {
+										break _v5_3;
+									}
+								case 'Landscape':
+									if ((_p8._0.ctor === 'LandscapeMsg') && (_p8._1._0.ctor === 'Just')) {
+										return A2(
+											_elm_lang$core$Tuple$mapSecond,
+											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$LandscapeMsg),
+											A2(
+												_elm_lang$core$Tuple$mapFirst,
+												function (_p10) {
+													return _creative$elm_generative$Main$Landscape(
+														_elm_lang$core$Maybe$Just(_p10));
+												},
+												A2(_creative$elm_generative$Example_Landscape$update, _p8._0._0, _p8._1._0._0)));
+									} else {
+										break _v5_3;
+									}
+								default:
+									if ((_p8._0.ctor === 'TemplateMsg') && (_p8._1._0.ctor === 'Just')) {
+										return A2(
+											_elm_lang$core$Tuple$mapSecond,
+											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$TemplateMsg),
+											A2(
+												_elm_lang$core$Tuple$mapFirst,
+												function (_p11) {
+													return _creative$elm_generative$Main$Template(
+														_elm_lang$core$Maybe$Just(_p11));
+												},
+												A2(_creative$elm_generative$Example_Template$update, _p8._0._0, _p8._1._0._0)));
+									} else {
+										break _v5_3;
+									}
+							}
+						} else {
+							break _v5_3;
+						}
+					} while(false);
+					return {ctor: '_Tuple2', _0: _p12, _1: _elm_lang$core$Platform_Cmd$none};
+				}();
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							route: _elm_lang$core$Tuple$first(routeMsg)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
 	});
 var _creative$elm_generative$Main$main = A2(
 	_elm_lang$navigation$Navigation$program,
@@ -16893,7 +17194,7 @@ var _creative$elm_generative$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Landscape.Model":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"NavigateTo":["Navigation.Location"],"TemplateMsg":["Example.Template.Msg"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Model"],"Generate":[]}},"Example.Curtain.Model":{"args":[],"tags":{"Empty":[],"Curtain":["List (List Float)","List (List Float)"]}},"Example.Template.Msg":{"args":[],"tags":{"Draw":["Example.Template.Model"],"Generate":[]}}},"aliases":{"Example.Template.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Landscape.Model":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"NavigateTo":["Navigation.Location"],"TemplateMsg":["Example.Template.Msg"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Model"],"Generate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}},"Example.Curtain.Model":{"args":[],"tags":{"Empty":[],"Curtain":["List (List Float)","List (List Float)"]}},"Example.Template.Msg":{"args":[],"tags":{"Draw":["Example.Template.Model"],"Generate":[]}}},"aliases":{"Example.Template.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])
