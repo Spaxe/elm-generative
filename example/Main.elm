@@ -40,6 +40,7 @@ import UrlParser
 import Example.Curtain as Curtain
 import Example.Landscape as Landscape
 import Example.ParallelRandom as ParallelRandom
+import Example.Sun as Sun
 
 
 -- MODEL --
@@ -64,6 +65,11 @@ init location =
                     ParallelRandom.init
                         |> mapFirst (ParallelRandom << Just)
                         |> mapSecond (Cmd.map ParallelRandomMsg)
+
+                Sun _ ->
+                    Sun.init
+                        |> mapFirst (Sun << Just)
+                        |> mapSecond (Cmd.map SunMsg)
     in
         ( { route = first routeMsg
           , status = Nothing
@@ -79,6 +85,7 @@ type Msg
     | CurtainMsg Curtain.Msg
     | LandscapeMsg Landscape.Msg
     | ParallelRandomMsg ParallelRandom.Msg
+    | SunMsg Sun.Msg
 
 
 type Action
@@ -92,6 +99,7 @@ type Route
     = Curtain (Maybe Curtain.Model)
     | Landscape (Maybe Landscape.Model)
     | ParallelRandom (Maybe ParallelRandom.Model)
+    | Sun (Maybe Sun.Model)
 
 
 type alias Model =
@@ -114,6 +122,7 @@ view model =
             , a [ href "/#curtain" ] [ text "Curtain" ]
             , a [ href "/#parallel-random" ] [ text "Parallel Random" ]
             , a [ href "/#landscape" ] [ text "Landscape" ]
+            , a [ href "/#sun" ] [ text "Sun" ]
             ]
         , article
             []
@@ -162,6 +171,10 @@ render route =
         ParallelRandom (Just pageModel) ->
             ParallelRandom.view pageModel
                 |> Html.map ParallelRandomMsg
+
+        Sun (Just pageModel) ->
+            Sun.view pageModel
+                |> Html.map SunMsg
 
         _ ->
             text "404 Not Found"
@@ -212,6 +225,11 @@ update msg model =
                             ParallelRandom.update pageMsg pageModel
                                 |> mapFirst (ParallelRandom << Just)
                                 |> mapSecond (Cmd.map ParallelRandomMsg)
+
+                        ( SunMsg pageMsg, Sun (Just pageModel) ) ->
+                            Sun.update pageMsg pageModel
+                                |> mapFirst (Sun << Just)
+                                |> mapSecond (Cmd.map SunMsg)
 
                         _ ->
                             ( route, Cmd.none )
@@ -270,6 +288,7 @@ matchers =
         , UrlParser.map (Curtain Nothing) (s "curtain")
         , UrlParser.map (Landscape Nothing) (s "landscape")
         , UrlParser.map (ParallelRandom Nothing) (s "parallel-random")
+        , UrlParser.map (Sun Nothing) (s "sun")
         ]
 
 

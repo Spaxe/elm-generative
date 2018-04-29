@@ -8,17 +8,27 @@ import Random
 
 numberOfLines : Int
 numberOfLines =
-    10
+    128
 
 
 numberOfSegments : Int
 numberOfSegments =
-    1000
+    128
+
+
+radialSmallRadius : Float
+radialSmallRadius =
+    25
+
+
+radialLargeRadius : Float
+radialLargeRadius =
+    60
 
 
 type Model
     = Empty
-    | Sun ( Float, Float ) Float (List (List Float))
+    | Sun Float (List (List ( Float, Float )))
 
 
 init : ( Model, Cmd Msg )
@@ -29,11 +39,22 @@ init =
 initialiseLines : Int -> List (List ( Float, Float ))
 initialiseLines n =
     let
-        line y =
-            makePath numberOfSegments 10 y 210 y
+        line ( x1, y1 ) ( x2, y2 ) =
+            makePath numberOfSegments x1 y1 x2 y2
     in
-        List.map line <|
-            List.repeat n 0
+        List.range 1 n
+            |> List.map
+                (\x -> toFloat x / 48.0 * 360)
+            |> List.map
+                (\x ->
+                    line
+                        (fromPolar
+                            ( radialSmallRadius, x )
+                        )
+                        (fromPolar
+                            ( radialLargeRadius, x )
+                        )
+                )
 
 
 type Msg
@@ -44,30 +65,28 @@ type Msg
 view : Model -> Html Msg
 view model =
     case model of
-        Sun dSunPosition dSunSize crawl ->
+        Sun dSunSize crawl ->
             let
                 data =
                     initialiseLines numberOfLines
 
                 randomValues =
-                    List.map accumulate crawl
+                    List.map accumulateTuple crawl
 
                 shepherdedValues =
-                    accumulateList randomValues
+                    accumulateTupleList randomValues
 
                 transformed =
-                    List.map2 (map2Second (+)) shepherdedValues data
-
-                sunPosition =
-                    dSunPosition
+                    List.map2 (map2Tuple (+)) shepherdedValues data
 
                 sunSize =
-                    10 + dSunSize
+                    20 + dSunSize
             in
                 a4Landscape
                     []
-                    [ g [] (paths <| List.map (translateList 40 100) transformed)
-                    , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
+                    [ g [] (paths <| List.map (translateList 148 105) transformed)
+
+                    --, g [] [ circle 148 105 sunSize [] ]
                     ]
 
         _ ->
@@ -80,11 +99,13 @@ update msg model =
         Generate ->
             ( model
             , Random.generate Draw <|
-                Random.map3 Sun
-                    (Random.pair (random 100) (random 50))
-                    (random 10)
+                Random.map2 Sun
+                    (random 20)
                     (Random.list numberOfLines <|
-                        random1D numberOfSegments 1
+                        Random.list numberOfSegments <|
+                            Random.pair
+                                (random 0.5)
+                                (random 0.5)
                     )
             )
 

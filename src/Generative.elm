@@ -7,11 +7,14 @@ module Generative
         , secondList
         , map2First
         , map2Second
+        , map2Tuple
         , updateFirst
         , updateSecond
         , transpose
         , accumulate
+        , accumulateTuple
         , accumulateList
+        , accumulateTupleList
         , translate
         , translateList
         )
@@ -31,12 +34,12 @@ module Generative
 
 # Shape transformers
 
-@docs accumulate, accumulateList, translate, translateList
+@docs accumulate, accumulateTuple, accumulateList, accumulateTupleList, translate, translateList
 
 
 # Utils
 
-@docs firstList, secondList, map2First, map2Second, updateFirst, updateSecond
+@docs firstList, secondList, map2First, map2Second, map2Tuple, updateFirst, updateSecond
 
 @docs transpose
 
@@ -99,11 +102,25 @@ accumulate =
     scanl1 (+)
 
 
+{-| Adds every tuple to the next tuple so far and keep a running sum.
+-}
+accumulateTuple : List ( number, number ) -> List ( number, number )
+accumulateTuple =
+    scanl1 (\a b -> ( first a + first b, second a + second b ))
+
+
 {-| Adds every list to the next list so far and keep a running sum.
 -}
 accumulateList : List (List number) -> List (List number)
 accumulateList =
     scanl1 <| List.map2 (+)
+
+
+{-| Adds every list of tuples to the next list of tuples so far and keep a running sum.
+-}
+accumulateTupleList : List (List ( number, number )) -> List (List ( number, number ))
+accumulateTupleList =
+    scanl1 <| List.map2 (\a b -> ( first a + first b, second a + second b ))
 
 
 {-| Extracts the first elements of a list of tuples
@@ -166,6 +183,13 @@ return a new list only modifying the second values.
 map2Second : (a -> a -> a1) -> List a -> List ( b, a ) -> List ( b, a1 )
 map2Second f =
     List.map2 <| mapSecond << f
+
+
+{-| Map a function over a List of Tuples to a List of Tuples, and return a new list of tuples
+-}
+map2Tuple : (a -> a -> a1) -> List ( a, a ) -> List ( a, a ) -> List ( a1, a1 )
+map2Tuple f =
+    List.map2 (\a b -> ( f (first a) (first b), f (second a) (second b) ))
 
 
 {-| transpose a 2D list
