@@ -32,33 +32,6 @@
           .catch(console.error);
       });
 
-      app.ports.openFile.subscribe( () => {
-        const fileInput = document.getElementById('svgFile');
-
-        // Replace the scene with uploaded SVG when requested
-        // See https://stackoverflow.com/a/754398
-        const handler = fileInput.addEventListener('change', event => {
-          var file = event.target.files[0];
-          if (file) {
-            var reader = new FileReader();
-            reader.readAsText(file, 'UTF-8');
-            reader.onload = e => {
-              const parser = new DOMParser();
-              const svgDocument = parser.parseFromString(e.target.result, 'image/svg+xml');
-              const el = svgDocument.documentElement;
-              el.setAttribute('id', 'frame');
-              document.getElementById('frame').outerHTML = el.outerHTML;
-            }
-            reader.onerror = e => {
-              alert('error reading file: ' + e);
-            }
-            fileInput.removeEventListener('change', handler);
-          }
-        });
-
-        fileInput.click();
-      });
-
       app.ports.download.subscribe( name => {
         const node = document.getElementById('frame');
         const routeName = name.split(' ')[0];

@@ -85,7 +85,6 @@ type Action
     = RaiseLowerPen
     | DisableMotor
     | Print
-    | OpenFile
     | Download
 
 
@@ -135,9 +134,6 @@ view model =
                     , style [ ( "display", "none" ) ]
                     ]
                     []
-                , button
-                    [ onClick (Menu OpenFile) ]
-                    [ text "✨ Upload" ]
                 , button
                     [ onClick (Menu Download) ]
                     [ text "💾 Download" ]
@@ -191,9 +187,6 @@ update msg model =
 
                 Print ->
                     ( model, print "" )
-
-                OpenFile ->
-                    ( model, openFile "" )
 
                 Download ->
                     ( model, download <| toString model.route )
@@ -250,9 +243,6 @@ port disableMotor : String -> Cmd msg
 
 
 port print : String -> Cmd msg
-
-
-port openFile : String -> Cmd msg
 
 
 port download : String -> Cmd msg

@@ -16726,11 +16726,6 @@ var _creative$elm_generative$Main$print = _elm_lang$core$Native_Platform.outgoin
 	function (v) {
 		return v;
 	});
-var _creative$elm_generative$Main$openFile = _elm_lang$core$Native_Platform.outgoingPort(
-	'openFile',
-	function (v) {
-		return v;
-	});
 var _creative$elm_generative$Main$download = _elm_lang$core$Native_Platform.outgoingPort(
 	'download',
 	function (v) {
@@ -16803,7 +16798,6 @@ var _creative$elm_generative$Main$NavigateTo = function (a) {
 	return {ctor: 'NavigateTo', _0: a};
 };
 var _creative$elm_generative$Main$Download = {ctor: 'Download'};
-var _creative$elm_generative$Main$OpenFile = {ctor: 'OpenFile'};
 var _creative$elm_generative$Main$Print = {ctor: 'Print'};
 var _creative$elm_generative$Main$DisableMotor = {ctor: 'DisableMotor'};
 var _creative$elm_generative$Main$RaiseLowerPen = {ctor: 'RaiseLowerPen'};
@@ -16962,46 +16956,30 @@ var _creative$elm_generative$Main$view = function (model) {
 													{
 														ctor: '::',
 														_0: _elm_lang$html$Html_Events$onClick(
-															_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$OpenFile)),
+															_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$Download)),
 														_1: {ctor: '[]'}
 													},
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html$text('✨ Upload'),
+														_0: _elm_lang$html$Html$text('💾 Download'),
 														_1: {ctor: '[]'}
 													}),
 												_1: {
 													ctor: '::',
 													_0: A2(
-														_elm_lang$html$Html$button,
+														_elm_lang$html$Html$div,
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html_Events$onClick(
-																_creative$elm_generative$Main$Menu(_creative$elm_generative$Main$Download)),
+															_0: _elm_lang$html$Html_Attributes$class('status'),
 															_1: {ctor: '[]'}
 														},
 														{
 															ctor: '::',
-															_0: _elm_lang$html$Html$text('💾 Download'),
+															_0: _elm_lang$html$Html$text(
+																A2(_elm_lang$core$Maybe$withDefault, '', model.status)),
 															_1: {ctor: '[]'}
 														}),
-													_1: {
-														ctor: '::',
-														_0: A2(
-															_elm_lang$html$Html$div,
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$class('status'),
-																_1: {ctor: '[]'}
-															},
-															{
-																ctor: '::',
-																_0: _elm_lang$html$Html$text(
-																	A2(_elm_lang$core$Maybe$withDefault, '', model.status)),
-																_1: {ctor: '[]'}
-															}),
-														_1: {ctor: '[]'}
-													}
+													_1: {ctor: '[]'}
 												}
 											}
 										}
@@ -17151,12 +17129,6 @@ var _creative$elm_generative$Main$update = F2(
 							_0: model,
 							_1: _creative$elm_generative$Main$print('')
 						};
-					case 'OpenFile':
-						return {
-							ctor: '_Tuple2',
-							_0: model,
-							_1: _creative$elm_generative$Main$openFile('')
-						};
 					default:
 						return {
 							ctor: '_Tuple2',
@@ -17255,7 +17227,7 @@ var _creative$elm_generative$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Landscape.Model":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Model"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"NavigateTo":["Navigation.Location"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Model"],"Generate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[],"OpenFile":[]}},"Example.Curtain.Model":{"args":[],"tags":{"Empty":[],"Curtain":["List (List Float)","List (List Float)"]}}},"aliases":{"Example.ParallelRandom.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Landscape.Model":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Model"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"NavigateTo":["Navigation.Location"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Model"],"Generate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}},"Example.Curtain.Model":{"args":[],"tags":{"Empty":[],"Curtain":["List (List Float)","List (List Float)"]}}},"aliases":{"Example.ParallelRandom.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])
