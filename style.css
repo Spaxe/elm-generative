@@ -46,6 +46,7 @@ article > .options {
     flex: 0 0 2rem;
     display: flex;
     align-items: center;
+    font-size: 70%;
 }
 
 button {
@@ -53,11 +54,16 @@ button {
     border: none;
     color: #9af;
     margin: 0 0.5rem;
+    padding: 0;
     cursor: pointer;
 }
 
 button:hover {
     color: #67c;
+}
+
+article > .options > .status {
+    margin: 0 1rem;
 }
 
 article > .main {

@@ -9,20 +9,21 @@
     <script type="text/javascript" src="index.js"></script>
     <script type="text/javascript">
       const app = Elm.Main.fullscreen();
+      const port = 6743;
 
-      app.ports.raiseLowerPen.subscribe( port => {
+      app.ports.raiseLowerPen.subscribe( () => {
         http('PUT', api(port, '/print'), "")
           .then(console.log)
           .catch(console.error);
       });
 
-      app.ports.disableMotor.subscribe( port => {
+      app.ports.disableMotor.subscribe( () => {
         http('DELETE', api(port, '/print'), "")
           .then(console.log)
           .catch(console.error);
       });
 
-      app.ports.print.subscribe( port => {
+      app.ports.print.subscribe( () => {
         const node = document.querySelector('#frame');
         const payload = { svg: node.outerHTML };
         console.log(payload);
@@ -36,6 +37,12 @@
           const routeName = name.split(' ')[0];
           saveSvg(node, `${routeName}.svg`);
       });
+
+      window.setInterval( () => {
+        http('GET', api(port, '/print'))
+          .then(app.ports.getPlotterStatus.send)
+          .catch(console.error);
+      }, 1000);
 
       function api (port, endpoint) {
         return `//localhost:${port}${endpoint}`;

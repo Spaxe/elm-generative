@@ -1,4 +1,4 @@
-port module Main exposing (main)
+module Main exposing (main)
 
 {-| Single Gallery Application to display various examples of generative art.
 
@@ -7,9 +7,8 @@ port module Main exposing (main)
 -}
 
 import Navigation exposing (Location)
-import Html exposing (Html, div, text, main_, nav, node, article, a, p, button)
-import Html.Events exposing (onClick)
-import Html.Attributes exposing (href, class)
+import Html exposing (Html, div, text, main_, nav, node, article, a, p)
+import Html.Attributes exposing (href)
 import Tuple exposing (first, mapFirst, mapSecond)
 import UrlParser exposing (..)
 
@@ -45,17 +44,9 @@ init location =
 
 type Msg
     = NavigateTo Location
-    | Menu Action
     | CurtainMsg Curtain.Msg
     | LandscapeMsg Landscape.Msg
     | TemplateMsg Template.Msg
-
-
-type Action
-    = RaiseLowerPen
-    | DisableMotor
-    | Print
-    | Download
 
 
 type Route
@@ -72,7 +63,10 @@ view : Route -> Html Msg
 view route =
     main_
         []
-        [ nav
+        [ node "style"
+            []
+            [ text stylesheet ]
+        , nav
             []
             [ p [] [ text "Make your own" ]
             , a [ href "/#template" ] [ text "Template" ]
@@ -82,25 +76,7 @@ view route =
             ]
         , article
             []
-            [ div
-                [ class "options" ]
-                [ button
-                    [ onClick (Menu RaiseLowerPen) ]
-                    [ text "↕️ Raise/Lower" ]
-                , button
-                    [ onClick (Menu DisableMotor) ]
-                    [ text "\x1F6D1 Disable motor" ]
-                , button
-                    [ onClick (Menu Print) ]
-                    [ text "🖊 Print" ]
-                , button
-                    [ onClick (Menu Download) ]
-                    [ text "💾 Download" ]
-                ]
-            , div
-                [ class "main" ]
-                [ render route ]
-            ]
+            [ render route ]
         ]
 
 
@@ -121,6 +97,58 @@ render route =
 
         _ ->
             text "404 Not Found"
+
+
+stylesheet : String
+stylesheet =
+    """
+body {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+nav {
+    flex: 0 0 10rem;
+    height: 100vh;
+    background: #F5F5F6;
+    position: relative;
+    padding: 1rem 2rem;
+    line-height: 1.5;
+}
+
+nav > p {
+    margin-bottom: 0;
+}
+
+nav > a {
+    color: #9af;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+}
+
+article {
+    flex: 1 0 auto;
+    position: relative;
+    height: 100vh;
+}
+
+/* 1 cm = 1 rem */
+svg {
+    height: 100vh;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: #FAFAFB;
+}
+"""
 
 
 
@@ -148,38 +176,8 @@ update msg route =
                 |> mapFirst (Template << Just)
                 |> mapSecond (Cmd.map TemplateMsg)
 
-        ( Menu action, _ ) ->
-            case action of
-                RaiseLowerPen ->
-                    ( route, raiseLowerPen 6743 )
-
-                DisableMotor ->
-                    ( route, disableMotor 6743 )
-
-                Print ->
-                    ( route, print 6743 )
-
-                Download ->
-                    ( route, download <| toString route )
-
         _ ->
             ( route, Cmd.none )
-
-
-
--- PORTS --
-
-
-port raiseLowerPen : Int -> Cmd msg
-
-
-port disableMotor : Int -> Cmd msg
-
-
-port print : Int -> Cmd msg
-
-
-port download : String -> Cmd msg
 
 
 
