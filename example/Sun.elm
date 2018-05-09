@@ -74,7 +74,7 @@ view model =
                     List.map accumulateTuple crawl
 
                 shepherdedValues =
-                    accumulateTupleList randomValues
+                    accumulateListTuple randomValues
 
                 transformed =
                     List.map2 (map2Tuple (+)) shepherdedValues data

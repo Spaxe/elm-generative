@@ -9,7 +9,11 @@ import Random
 
 type Model
     = Empty
-    | Curtain (List (List Float)) (List (List Float))
+    | Model Curtain
+
+
+type Curtain
+    = Curtain (List (List Float)) (List (List Float))
 
 
 init : ( Model, Cmd Msg )
@@ -25,25 +29,27 @@ initialiseLines n =
 
 type Msg
     = Generate
-    | Draw Model
+    | Draw Curtain
 
 
 view : Model -> Html Msg
 view model =
     case model of
-        Curtain a b ->
+        Model (Curtain a b) ->
             let
                 dxs =
                     mapList ((*) 0.5) a
+                        |> accumulateList
 
                 dys =
                     mapList ((*) 0.5) b
+                        |> accumulateList
             in
             a4Landscape
                 []
                 (initialiseLines 100
-                    |> List.map2 (map2First (+)) (accumulateList dxs)
-                    |> List.map2 (map2Second (+)) (accumulateList dys)
+                    |> List.map2 (map2First (+)) dxs
+                    |> List.map2 (map2Second (+)) dys
                     |> List.map (translateList 40 30)
                     |> paths
                 )
@@ -63,5 +69,5 @@ update msg model =
                     (randomList2 100 200)
             )
 
-        Draw data ->
-            ( data, Cmd.none )
+        Draw curtain ->
+            ( Model curtain, Cmd.none )

@@ -4,86 +4,86 @@ import Draw exposing (..)
 import Generative exposing (..)
 import Html exposing (Html, div, text)
 import Random
-import Tuple exposing (mapFirst, mapSecond)
-
-
-numberOfLines : Int
-numberOfLines =
-    10
-
-
-numberOfSegments : Int
-numberOfSegments =
-    1000
 
 
 type Model
+    = Empty
+    | Model
+        { data : Landscape
+        , n : Int
+        , segments : Int
+        }
+
+
+type Landscape
     = Landscape ( Float, Float ) Float (List (List Float))
 
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate <| Landscape ( 0, 0 ) 0 []
+    update (Generate 10 1000) Empty
 
 
-initialiseLines : Int -> List (List ( Float, Float ))
-initialiseLines n =
-    let
-        line y =
-            makePath numberOfSegments 10 y 210 y
-    in
-    List.map line <|
+initialiseLines : Int -> Int -> List (List ( Float, Float ))
+initialiseLines n segments =
+    List.map (\y -> makePath segments 10 y 210 y) <|
         List.repeat n 0
 
 
 type Msg
-    = Generate
-    | Draw Model
+    = Generate Int Int
+    | Draw Landscape
 
 
 view : Model -> Html Msg
 view model =
     case model of
-        Landscape dSunPosition dSunSize crawl ->
-            let
-                data =
-                    initialiseLines numberOfLines
+        Model { data, n, segments } ->
+            case data of
+                Landscape dSunPosition dSunSize crawl ->
+                    let
+                        lines =
+                            initialiseLines n segments
 
-                randomValues =
-                    List.map accumulate crawl
+                        randomValues =
+                            List.map accumulate crawl
 
-                shepherdedValues =
-                    accumulateList randomValues
+                        shepherdedValues =
+                            accumulateList randomValues
 
-                transformed =
-                    List.map2 (map2Second (+)) shepherdedValues data
+                        transformed =
+                            List.map2 (map2Second (+)) shepherdedValues lines
 
-                sunPosition =
-                    dSunPosition
-                        |> mapFirst ((*) 100)
-                        |> mapSecond ((*) 50)
+                        sunPosition =
+                            mapTuple2 ((*) 100) ((*) 50) dSunPosition
 
-                sunSize =
-                    10 + dSunSize * 10
-            in
-            a4Landscape
-                []
-                [ g [] (paths <| List.map (translateList 40 100) transformed)
-                , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
-                ]
+                        sunSize =
+                            10 + dSunSize * 10
+                    in
+                    a4Landscape
+                        []
+                        [ g [] (paths <| List.map (translateList 40 100) transformed)
+                        , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
+                        ]
+
+        Empty ->
+            text ""
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        Generate ->
-            ( model
+    case ( msg, model ) of
+        ( Generate n segments, Model m ) ->
+            ( Model { m | n = n, segments = segments }
             , Random.generate Draw <|
                 Random.map3 Landscape
                     randomTuple
                     random
-                    (randomList2 numberOfLines numberOfSegments)
+                    (randomList2 n segments)
             )
 
-        Draw data ->
-            ( data, Cmd.none )
+        ( Draw landscape, Model m ) ->
+            ( Model { m | data = landscape }, Cmd.none )
+
+        ( _, Empty ) ->
+            ( Empty, Cmd.none )

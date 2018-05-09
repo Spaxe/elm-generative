@@ -15035,7 +15035,6 @@ var _creative$elm_generative$Generative$makePath = F5(
 			return A2(_elm_community$list_extra$List_Extra$zip, xs, ys);
 		}
 	});
-var _creative$elm_generative$Generative$transpose = _elm_community$list_extra$List_Extra$transpose;
 var _creative$elm_generative$Generative$map2Tuple = function (f) {
 	return _elm_lang$core$List$map2(
 		F2(
@@ -15067,49 +15066,65 @@ var _creative$elm_generative$Generative$map2First = function (f) {
 				f(_p3));
 		});
 };
-var _creative$elm_generative$Generative$translate = F3(
-	function (x, y, point) {
+var _creative$elm_generative$Generative$mapTuple2 = F2(
+	function (f, g) {
+		return function (_p4) {
+			return A2(
+				_elm_lang$core$Tuple$mapFirst,
+				f,
+				A2(_elm_lang$core$Tuple$mapSecond, g, _p4));
+		};
+	});
+var _creative$elm_generative$Generative$translate = F2(
+	function (x, y) {
 		return A2(
-			_elm_lang$core$Tuple$mapSecond,
+			_creative$elm_generative$Generative$mapTuple2,
 			F2(
 				function (x, y) {
 					return x + y;
-				})(y),
-			A2(
-				_elm_lang$core$Tuple$mapFirst,
-				F2(
-					function (x, y) {
-						return x + y;
-					})(x),
-				point));
+				})(x),
+			F2(
+				function (x, y) {
+					return x + y;
+				})(y));
 	});
-var _creative$elm_generative$Generative$updateSecond = function (f) {
+var _creative$elm_generative$Generative$mapTuple = function (f) {
+	return function (_p5) {
+		return A2(
+			_elm_lang$core$Tuple$mapFirst,
+			f,
+			A2(_elm_lang$core$Tuple$mapSecond, f, _p5));
+	};
+};
+var _creative$elm_generative$Generative$mapSecondList = function (f) {
 	return _elm_lang$core$List$map(
 		_elm_lang$core$Tuple$mapSecond(f));
 };
-var _creative$elm_generative$Generative$updateFirst = function (f) {
+var _creative$elm_generative$Generative$mapFirstList = function (f) {
 	return _elm_lang$core$List$map(
 		_elm_lang$core$Tuple$mapFirst(f));
 };
-var _creative$elm_generative$Generative$translateList = F3(
-	function (x, y, points) {
-		return A2(
-			_creative$elm_generative$Generative$updateSecond,
-			F2(
-				function (x, y) {
-					return x + y;
-				})(y),
-			A2(
-				_creative$elm_generative$Generative$updateFirst,
+var _creative$elm_generative$Generative$translateList = F2(
+	function (x, y) {
+		return function (_p6) {
+			return A2(
+				_creative$elm_generative$Generative$mapFirstList,
 				F2(
 					function (x, y) {
 						return x + y;
 					})(x),
-				points));
+				A2(
+					_creative$elm_generative$Generative$mapSecondList,
+					F2(
+						function (x, y) {
+							return x + y;
+						})(y),
+					_p6));
+		};
 	});
 var _creative$elm_generative$Generative$secondList = _elm_lang$core$List$map(_elm_lang$core$Tuple$second);
 var _creative$elm_generative$Generative$firstList = _elm_lang$core$List$map(_elm_lang$core$Tuple$first);
-var _creative$elm_generative$Generative$accumulateTupleList = _elm_community$list_extra$List_Extra$scanl1(
+var _creative$elm_generative$Generative$accumulateListTuple = _elm_community$list_extra$List_Extra$scanl1(
 	_elm_lang$core$List$map2(
 		F2(
 			function (a, b) {
@@ -15139,9 +15154,9 @@ var _creative$elm_generative$Generative$accumulate = _elm_community$list_extra$L
 		function (x, y) {
 			return x + y;
 		}));
-var _creative$elm_generative$Generative$mapList = function (_p4) {
+var _creative$elm_generative$Generative$mapList = function (_p7) {
 	return _elm_lang$core$List$map(
-		_elm_lang$core$List$map(_p4));
+		_elm_lang$core$List$map(_p7));
 };
 var _creative$elm_generative$Generative$random = A2(_elm_lang$core$Random$float, -0.5, 0.5);
 var _creative$elm_generative$Generative$randomTuple = A2(_elm_lang$core$Random$pair, _creative$elm_generative$Generative$random, _creative$elm_generative$Generative$random);
@@ -15187,21 +15202,23 @@ var _creative$elm_generative$Example_Curtain$initialiseLines = function (n) {
 };
 var _creative$elm_generative$Example_Curtain$view = function (model) {
 	var _p1 = model;
-	if (_p1.ctor === 'Curtain') {
-		var dys = A2(
-			_creative$elm_generative$Generative$mapList,
-			F2(
-				function (x, y) {
-					return x * y;
-				})(0.5),
-			_p1._1);
-		var dxs = A2(
-			_creative$elm_generative$Generative$mapList,
-			F2(
-				function (x, y) {
-					return x * y;
-				})(0.5),
-			_p1._0);
+	if (_p1.ctor === 'Model') {
+		var dys = _creative$elm_generative$Generative$accumulateList(
+			A2(
+				_creative$elm_generative$Generative$mapList,
+				F2(
+					function (x, y) {
+						return x * y;
+					})(0.5),
+				_p1._0._1));
+		var dxs = _creative$elm_generative$Generative$accumulateList(
+			A2(
+				_creative$elm_generative$Generative$mapList,
+				F2(
+					function (x, y) {
+						return x * y;
+					})(0.5),
+				_p1._0._0));
 		return A2(
 			_creative$elm_generative$Draw$a4Landscape,
 			{ctor: '[]'},
@@ -15216,7 +15233,7 @@ var _creative$elm_generative$Example_Curtain$view = function (model) {
 								function (x, y) {
 									return x + y;
 								})),
-						_creative$elm_generative$Generative$accumulateList(dys),
+						dys,
 						A3(
 							_elm_lang$core$List$map2,
 							_creative$elm_generative$Generative$map2First(
@@ -15224,17 +15241,20 @@ var _creative$elm_generative$Example_Curtain$view = function (model) {
 									function (x, y) {
 										return x + y;
 									})),
-							_creative$elm_generative$Generative$accumulateList(dxs),
+							dxs,
 							_creative$elm_generative$Example_Curtain$initialiseLines(100))))));
 	} else {
 		return _elm_lang$html$Html$text('');
 	}
 };
+var _creative$elm_generative$Example_Curtain$Model = function (a) {
+	return {ctor: 'Model', _0: a};
+};
+var _creative$elm_generative$Example_Curtain$Empty = {ctor: 'Empty'};
 var _creative$elm_generative$Example_Curtain$Curtain = F2(
 	function (a, b) {
 		return {ctor: 'Curtain', _0: a, _1: b};
 	});
-var _creative$elm_generative$Example_Curtain$Empty = {ctor: 'Empty'};
 var _creative$elm_generative$Example_Curtain$Draw = function (a) {
 	return {ctor: 'Draw', _0: a};
 };
@@ -15255,83 +15275,92 @@ var _creative$elm_generative$Example_Curtain$update = F2(
 						A2(_creative$elm_generative$Generative$randomList2, 100, 200)))
 			};
 		} else {
-			return {ctor: '_Tuple2', _0: _p2._0, _1: _elm_lang$core$Platform_Cmd$none};
+			return {
+				ctor: '_Tuple2',
+				_0: _creative$elm_generative$Example_Curtain$Model(_p2._0),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
 		}
 	});
 var _creative$elm_generative$Example_Curtain$Generate = {ctor: 'Generate'};
 var _creative$elm_generative$Example_Curtain$init = A2(_creative$elm_generative$Example_Curtain$update, _creative$elm_generative$Example_Curtain$Generate, _creative$elm_generative$Example_Curtain$Empty);
 
-var _creative$elm_generative$Example_Landscape$numberOfSegments = 1000;
-var _creative$elm_generative$Example_Landscape$initialiseLines = function (n) {
-	var line = function (y) {
-		return A5(_creative$elm_generative$Generative$makePath, _creative$elm_generative$Example_Landscape$numberOfSegments, 10, y, 210, y);
-	};
-	return A2(
-		_elm_lang$core$List$map,
-		line,
-		A2(_elm_lang$core$List$repeat, n, 0));
-};
-var _creative$elm_generative$Example_Landscape$numberOfLines = 10;
+var _creative$elm_generative$Example_Landscape$initialiseLines = F2(
+	function (n, segments) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (y) {
+				return A5(_creative$elm_generative$Generative$makePath, segments, 10, y, 210, y);
+			},
+			A2(_elm_lang$core$List$repeat, n, 0));
+	});
 var _creative$elm_generative$Example_Landscape$view = function (model) {
 	var _p0 = model;
-	var sunSize = 10 + (_p0._1 * 10);
-	var sunPosition = A2(
-		_elm_lang$core$Tuple$mapSecond,
-		F2(
-			function (x, y) {
-				return x * y;
-			})(50),
-		A2(
-			_elm_lang$core$Tuple$mapFirst,
+	if (_p0.ctor === 'Model') {
+		var _p1 = _p0._0.data;
+		var sunSize = 10 + (_p1._1 * 10);
+		var sunPosition = A3(
+			_creative$elm_generative$Generative$mapTuple2,
 			F2(
 				function (x, y) {
 					return x * y;
 				})(100),
-			_p0._0));
-	var randomValues = A2(_elm_lang$core$List$map, _creative$elm_generative$Generative$accumulate, _p0._2);
-	var shepherdedValues = _creative$elm_generative$Generative$accumulateList(randomValues);
-	var data = _creative$elm_generative$Example_Landscape$initialiseLines(_creative$elm_generative$Example_Landscape$numberOfLines);
-	var transformed = A3(
-		_elm_lang$core$List$map2,
-		_creative$elm_generative$Generative$map2Second(
 			F2(
 				function (x, y) {
-					return x + y;
-				})),
-		shepherdedValues,
-		data);
-	return A2(
-		_creative$elm_generative$Draw$a4Landscape,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_creative$elm_generative$Draw$g,
-				{ctor: '[]'},
-				_creative$elm_generative$Draw$paths(
-					A2(
-						_elm_lang$core$List$map,
-						A2(_creative$elm_generative$Generative$translateList, 40, 100),
-						transformed))),
-			_1: {
+					return x * y;
+				})(50),
+			_p1._0);
+		var randomValues = A2(_elm_lang$core$List$map, _creative$elm_generative$Generative$accumulate, _p1._2);
+		var shepherdedValues = _creative$elm_generative$Generative$accumulateList(randomValues);
+		var lines = A2(_creative$elm_generative$Example_Landscape$initialiseLines, _p0._0.n, _p0._0.segments);
+		var transformed = A3(
+			_elm_lang$core$List$map2,
+			_creative$elm_generative$Generative$map2Second(
+				F2(
+					function (x, y) {
+						return x + y;
+					})),
+			shepherdedValues,
+			lines);
+		return A2(
+			_creative$elm_generative$Draw$a4Landscape,
+			{ctor: '[]'},
+			{
 				ctor: '::',
 				_0: A2(
 					_creative$elm_generative$Draw$g,
 					{ctor: '[]'},
-					{
-						ctor: '::',
-						_0: A4(
-							_elm_lang$core$Basics$uncurry,
-							_creative$elm_generative$Draw$circle,
-							A3(_creative$elm_generative$Generative$translate, 150, 40, sunPosition),
-							sunSize,
-							{ctor: '[]'}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {ctor: '[]'}
-			}
-		});
+					_creative$elm_generative$Draw$paths(
+						A2(
+							_elm_lang$core$List$map,
+							A2(_creative$elm_generative$Generative$translateList, 40, 100),
+							transformed))),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_creative$elm_generative$Draw$g,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A4(
+								_elm_lang$core$Basics$uncurry,
+								_creative$elm_generative$Draw$circle,
+								A3(_creative$elm_generative$Generative$translate, 150, 40, sunPosition),
+								sunSize,
+								{ctor: '[]'}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	} else {
+		return _elm_lang$html$Html$text('');
+	}
 };
+var _creative$elm_generative$Example_Landscape$Model = function (a) {
+	return {ctor: 'Model', _0: a};
+};
+var _creative$elm_generative$Example_Landscape$Empty = {ctor: 'Empty'};
 var _creative$elm_generative$Example_Landscape$Landscape = F3(
 	function (a, b, c) {
 		return {ctor: 'Landscape', _0: a, _1: b, _2: c};
@@ -15341,34 +15370,49 @@ var _creative$elm_generative$Example_Landscape$Draw = function (a) {
 };
 var _creative$elm_generative$Example_Landscape$update = F2(
 	function (msg, model) {
-		var _p1 = msg;
-		if (_p1.ctor === 'Generate') {
-			return {
-				ctor: '_Tuple2',
-				_0: model,
-				_1: A2(
-					_elm_lang$core$Random$generate,
-					_creative$elm_generative$Example_Landscape$Draw,
-					A4(
-						_elm_lang$core$Random$map3,
-						_creative$elm_generative$Example_Landscape$Landscape,
-						_creative$elm_generative$Generative$randomTuple,
-						_creative$elm_generative$Generative$random,
-						A2(_creative$elm_generative$Generative$randomList2, _creative$elm_generative$Example_Landscape$numberOfLines, _creative$elm_generative$Example_Landscape$numberOfSegments)))
-			};
+		var _p2 = {ctor: '_Tuple2', _0: msg, _1: model};
+		if (_p2._1.ctor === 'Model') {
+			if (_p2._0.ctor === 'Generate') {
+				var _p4 = _p2._0._1;
+				var _p3 = _p2._0._0;
+				return {
+					ctor: '_Tuple2',
+					_0: _creative$elm_generative$Example_Landscape$Model(
+						_elm_lang$core$Native_Utils.update(
+							_p2._1._0,
+							{n: _p3, segments: _p4})),
+					_1: A2(
+						_elm_lang$core$Random$generate,
+						_creative$elm_generative$Example_Landscape$Draw,
+						A4(
+							_elm_lang$core$Random$map3,
+							_creative$elm_generative$Example_Landscape$Landscape,
+							_creative$elm_generative$Generative$randomTuple,
+							_creative$elm_generative$Generative$random,
+							A2(_creative$elm_generative$Generative$randomList2, _p3, _p4)))
+				};
+			} else {
+				return {
+					ctor: '_Tuple2',
+					_0: _creative$elm_generative$Example_Landscape$Model(
+						_elm_lang$core$Native_Utils.update(
+							_p2._1._0,
+							{data: _p2._0._0})),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			}
 		} else {
-			return {ctor: '_Tuple2', _0: _p1._0, _1: _elm_lang$core$Platform_Cmd$none};
+			return {ctor: '_Tuple2', _0: _creative$elm_generative$Example_Landscape$Empty, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
-var _creative$elm_generative$Example_Landscape$Generate = {ctor: 'Generate'};
+var _creative$elm_generative$Example_Landscape$Generate = F2(
+	function (a, b) {
+		return {ctor: 'Generate', _0: a, _1: b};
+	});
 var _creative$elm_generative$Example_Landscape$init = A2(
 	_creative$elm_generative$Example_Landscape$update,
-	_creative$elm_generative$Example_Landscape$Generate,
-	A3(
-		_creative$elm_generative$Example_Landscape$Landscape,
-		{ctor: '_Tuple2', _0: 0, _1: 0},
-		0,
-		{ctor: '[]'}));
+	A2(_creative$elm_generative$Example_Landscape$Generate, 10, 1000),
+	_creative$elm_generative$Example_Landscape$Empty);
 
 var _creative$elm_generative$Example_ParallelRandom$gap = 10;
 var _creative$elm_generative$Example_ParallelRandom$numberOfSegments = 100;
@@ -15481,7 +15525,7 @@ var _creative$elm_generative$Example_Sun$view = function (model) {
 	if (_p4.ctor === 'Sun') {
 		var sunSize = 20 + (_p4._0 * 20);
 		var randomValues = A2(_elm_lang$core$List$map, _creative$elm_generative$Generative$accumulateTuple, _p4._1);
-		var shepherdedValues = _creative$elm_generative$Generative$accumulateTupleList(randomValues);
+		var shepherdedValues = _creative$elm_generative$Generative$accumulateListTuple(randomValues);
 		var data = _creative$elm_generative$Example_Sun$initialiseLines(_creative$elm_generative$Example_Sun$numberOfLines);
 		var transformed = A3(
 			_elm_lang$core$List$map2,
@@ -15541,6 +15585,121 @@ var _creative$elm_generative$Example_Sun$update = F2(
 	});
 var _creative$elm_generative$Example_Sun$Generate = {ctor: 'Generate'};
 var _creative$elm_generative$Example_Sun$init = A2(_creative$elm_generative$Example_Sun$update, _creative$elm_generative$Example_Sun$Generate, _creative$elm_generative$Example_Sun$Empty);
+
+var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
+var _elm_lang$html$Html_Events$targetChecked = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'checked',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$bool);
+var _elm_lang$html$Html_Events$targetValue = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'value',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
+var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
+var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
+var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$html$Html_Events$onFocus = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'focus',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onBlur = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'blur',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
+	_elm_lang$html$Html_Events$defaultOptions,
+	{preventDefault: true});
+var _elm_lang$html$Html_Events$onSubmit = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'submit',
+		_elm_lang$html$Html_Events$onSubmitOptions,
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onCheck = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
+};
+var _elm_lang$html$Html_Events$onInput = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'input',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
+};
+var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseout',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseover',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseleave',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseenter',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseup',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mousedown',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'dblclick',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$Options = F2(
+	function (a, b) {
+		return {stopPropagation: a, preventDefault: b};
+	});
 
 var _elm_lang$dom$Native_Dom = function() {
 
@@ -16133,121 +16292,6 @@ var _elm_lang$navigation$Navigation$onEffects = F4(
 			stepState);
 	});
 _elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/navigation', init: _elm_lang$navigation$Navigation$init, onEffects: _elm_lang$navigation$Navigation$onEffects, onSelfMsg: _elm_lang$navigation$Navigation$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$navigation$Navigation$cmdMap, subMap: _elm_lang$navigation$Navigation$subMap};
-
-var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
-var _elm_lang$html$Html_Events$targetChecked = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'target',
-		_1: {
-			ctor: '::',
-			_0: 'checked',
-			_1: {ctor: '[]'}
-		}
-	},
-	_elm_lang$core$Json_Decode$bool);
-var _elm_lang$html$Html_Events$targetValue = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'target',
-		_1: {
-			ctor: '::',
-			_0: 'value',
-			_1: {ctor: '[]'}
-		}
-	},
-	_elm_lang$core$Json_Decode$string);
-var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
-var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
-var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
-var _elm_lang$html$Html_Events$onFocus = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'focus',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onBlur = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'blur',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
-	_elm_lang$html$Html_Events$defaultOptions,
-	{preventDefault: true});
-var _elm_lang$html$Html_Events$onSubmit = function (msg) {
-	return A3(
-		_elm_lang$html$Html_Events$onWithOptions,
-		'submit',
-		_elm_lang$html$Html_Events$onSubmitOptions,
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onCheck = function (tagger) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'change',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
-};
-var _elm_lang$html$Html_Events$onInput = function (tagger) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'input',
-		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
-};
-var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseout',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseover',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseleave',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseenter',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mouseup',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'mousedown',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'dblclick',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$onClick = function (msg) {
-	return A2(
-		_elm_lang$html$Html_Events$on,
-		'click',
-		_elm_lang$core$Json_Decode$succeed(msg));
-};
-var _elm_lang$html$Html_Events$Options = F2(
-	function (a, b) {
-		return {stopPropagation: a, preventDefault: b};
-	});
 
 var _elm_lang$http$Native_Http = function() {
 
@@ -17452,7 +17496,7 @@ var _creative$elm_generative$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Landscape.Model":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Model"],"Generate":[]}},"Example.Sun.Msg":{"args":[],"tags":{"Draw":["Example.Sun.Model"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"SunMsg":["Example.Sun.Msg"],"NavigateTo":["Navigation.Location"]}},"Example.Sun.Model":{"args":[],"tags":{"Empty":[],"Sun":["Float","List (List ( Float, Float ))"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Model"],"Generate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}},"Example.Curtain.Model":{"args":[],"tags":{"Empty":[],"Curtain":["List (List Float)","List (List Float)"]}}},"aliases":{"Example.ParallelRandom.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Curtain"],"Generate":[]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List (List Float)","List (List Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Sun.Msg":{"args":[],"tags":{"Draw":["Example.Sun.Model"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.Model"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"SunMsg":["Example.Sun.Msg"],"NavigateTo":["Navigation.Location"]}},"Example.Sun.Model":{"args":[],"tags":{"Empty":[],"Sun":["Float","List (List ( Float, Float ))"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Landscape"],"Generate":["Int","Int"]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}}},"aliases":{"Example.ParallelRandom.Model":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

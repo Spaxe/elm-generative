@@ -6,41 +6,39 @@ port module Main exposing (main)
 
 -}
 
-import Json.Decode exposing (field, string, decodeString)
-import Navigation exposing (Location)
-import Html
-    exposing
-        ( Html
-        , div
-        , text
-        , main_
-        , nav
-        , node
-        , article
-        , a
-        , p
-        , button
-        , input
-        )
-import Html.Events exposing (onClick)
-import Html.Attributes exposing (href, class, type_, style, id)
-import Tuple exposing (first, second, mapFirst, mapSecond)
-import UrlParser
-    exposing
-        ( s
-        , parseHash
-        , Parser
-        , oneOf
-        , top
-        )
-
-
 -- elm-generative examples
 
 import Example.Curtain as Curtain
 import Example.Landscape as Landscape
 import Example.ParallelRandom as ParallelRandom
 import Example.Sun as Sun
+import Html
+    exposing
+        ( Html
+        , a
+        , article
+        , button
+        , div
+        , input
+        , main_
+        , nav
+        , node
+        , p
+        , text
+        )
+import Html.Attributes exposing (class, href, id, style, type_)
+import Html.Events exposing (onClick)
+import Json.Decode exposing (decodeString, field, string)
+import Navigation exposing (Location)
+import Tuple exposing (first, mapFirst, mapSecond, second)
+import UrlParser
+    exposing
+        ( Parser
+        , oneOf
+        , parseHash
+        , s
+        , top
+        )
 
 
 -- MODEL --
@@ -71,11 +69,11 @@ init location =
                         |> mapFirst (Sun << Just)
                         |> mapSecond (Cmd.map SunMsg)
     in
-        ( { route = first routeMsg
-          , status = Nothing
-          }
-        , second routeMsg
-        )
+    ( { route = first routeMsg
+      , status = Nothing
+      }
+    , second routeMsg
+    )
 
 
 type Msg
@@ -234,7 +232,7 @@ update msg model =
                         _ ->
                             ( route, Cmd.none )
             in
-                ( { model | route = first routeMsg }, Cmd.none )
+            ( { model | route = first routeMsg }, Cmd.none )
 
 
 decodePlotterStatus : String -> String
