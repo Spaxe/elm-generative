@@ -7,7 +7,7 @@ import Random
 
 
 type Model
-    = Empty
+    = Configuration Int Int
     | Model
         { data : Landscape
         , n : Int
@@ -21,7 +21,7 @@ type Landscape
 
 init : ( Model, Cmd Msg )
 init =
-    update (Generate 10 1000) Empty
+    update Generate (Configuration 10 1000)
 
 
 initialiseLines : Int -> Int -> List (List ( Float, Float ))
@@ -31,7 +31,7 @@ initialiseLines n segments =
 
 
 type Msg
-    = Generate Int Int
+    = Generate
     | Draw Landscape
 
 
@@ -66,15 +66,15 @@ view model =
                         , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
                         ]
 
-        Empty ->
+        _ ->
             text ""
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case ( msg, model ) of
-        ( Generate n segments, Model m ) ->
-            ( Model { m | n = n, segments = segments }
+        ( Generate, Configuration n segments ) ->
+            ( model
             , Random.generate Draw <|
                 Random.map3 Landscape
                     randomTuple
@@ -82,8 +82,8 @@ update msg model =
                     (randomList2 n segments)
             )
 
-        ( Draw landscape, Model m ) ->
-            ( Model { m | data = landscape }, Cmd.none )
+        ( Draw landscape, Configuration n segments ) ->
+            ( Model { data = landscape, n = n, segments = segments }, Cmd.none )
 
-        ( _, Empty ) ->
-            ( Empty, Cmd.none )
+        _ ->
+            ( model, Cmd.none )

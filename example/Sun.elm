@@ -6,69 +6,49 @@ import Html exposing (Html, div, text)
 import Random
 
 
-numberOfLines : Int
-numberOfLines =
-    128
-
-
-numberOfSegments : Int
-numberOfSegments =
-    128
-
-
-radialSmallRadius : Float
-radialSmallRadius =
-    25
-
-
-radialLargeRadius : Float
-radialLargeRadius =
-    60
-
-
 type Model
-    = Empty
-    | Sun Float (List (List ( Float, Float )))
+    = Setup Configuration
+    | Model Configuration Sun
+
+
+type Configuration
+    = Configuration Int Int Float Float
+
+
+type Sun
+    = Sun Float (List (List ( Float, Float )))
 
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate <| Empty
+    update Generate (Setup <| Configuration 128 128 25 60)
 
 
-initialiseLines : Int -> List (List ( Float, Float ))
-initialiseLines n =
+initialiseLines : Configuration -> List (List ( Float, Float ))
+initialiseLines (Configuration n segments r1 r2) =
     let
         line ( x1, y1 ) ( x2, y2 ) =
-            makePath numberOfSegments x1 y1 x2 y2
+            makePath segments x1 y1 x2 y2
     in
     List.range 1 n
         |> List.map
             (\x -> toFloat x / 48.0 * 360)
         |> List.map
-            (\x ->
-                line
-                    (fromPolar
-                        ( radialSmallRadius, x )
-                    )
-                    (fromPolar
-                        ( radialLargeRadius, x )
-                    )
-            )
+            (\x -> line (fromPolar ( r1, x )) (fromPolar ( r2, x )))
 
 
 type Msg
     = Generate
-    | Draw Model
+    | Draw Sun
 
 
 view : Model -> Html Msg
 view model =
     case model of
-        Sun dSunSize crawl ->
+        Model config (Sun dSunSize crawl) ->
             let
                 data =
-                    initialiseLines numberOfLines
+                    initialiseLines config
 
                 randomValues =
                     List.map accumulateTuple crawl
@@ -93,14 +73,17 @@ view model =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        Generate ->
+    case ( msg, model ) of
+        ( Generate, Setup (Configuration n segments _ _) ) ->
             ( model
             , Random.generate Draw <|
                 Random.map2 Sun
                     random
-                    (randomListTuple2 numberOfLines numberOfSegments)
+                    (randomListTuple2 n segments)
             )
 
-        Draw data ->
-            ( data, Cmd.none )
+        ( Draw data, Setup config ) ->
+            ( Model config data, Cmd.none )
+
+        _ ->
+            ( model, Cmd.none )
