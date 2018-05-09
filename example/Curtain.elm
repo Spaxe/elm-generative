@@ -8,11 +8,8 @@ import Random
 
 
 type Model
-    = Configuration Int
-    | Model
-        { data : Curtain
-        , n : Int
-        }
+    = Setup Int
+    | Model Int Curtain
 
 
 type Curtain
@@ -21,7 +18,7 @@ type Curtain
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Configuration 100)
+    update Generate (Setup 100)
 
 
 initialiseLines : Int -> List (List ( Float, Float ))
@@ -38,26 +35,24 @@ type Msg
 view : Model -> Html Msg
 view model =
     case model of
-        Model { data, n } ->
-            case data of
-                Curtain a b ->
-                    let
-                        dxs =
-                            mapList ((*) 0.5) a
-                                |> accumulateList
+        Model n (Curtain a b) ->
+            let
+                dxs =
+                    mapList ((*) 0.5) a
+                        |> accumulateList
 
-                        dys =
-                            mapList ((*) 0.5) b
-                                |> accumulateList
-                    in
-                    a4Landscape
-                        []
-                        (initialiseLines 100
-                            |> List.map2 (map2First (+)) dxs
-                            |> List.map2 (map2Second (+)) dys
-                            |> List.map (translateList 40 30)
-                            |> paths
-                        )
+                dys =
+                    mapList ((*) 0.5) b
+                        |> accumulateList
+            in
+            a4Landscape
+                []
+                (initialiseLines 100
+                    |> List.map2 (map2First (+)) dxs
+                    |> List.map2 (map2Second (+)) dys
+                    |> List.map (translateList 40 30)
+                    |> paths
+                )
 
         _ ->
             text ""
@@ -66,7 +61,7 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case ( msg, model ) of
-        ( Generate, Configuration n ) ->
+        ( Generate, Setup n ) ->
             ( model
             , Random.generate Draw <|
                 Random.map2 Curtain
@@ -74,8 +69,8 @@ update msg model =
                     (randomList2 n 200)
             )
 
-        ( Draw curtain, Configuration n ) ->
-            ( Model { data = curtain, n = n }, Cmd.none )
+        ( Draw data, Setup n ) ->
+            ( Model n data, Cmd.none )
 
         _ ->
             ( model, Cmd.none )

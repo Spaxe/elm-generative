@@ -7,12 +7,8 @@ import Random
 
 
 type Model
-    = Configuration Int Int
-    | Model
-        { data : Landscape
-        , n : Int
-        , segments : Int
-        }
+    = Setup Int Int
+    | Model Int Int Landscape
 
 
 type Landscape
@@ -21,7 +17,7 @@ type Landscape
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Configuration 10 1000)
+    update Generate (Setup 10 1000)
 
 
 initialiseLines : Int -> Int -> List (List ( Float, Float ))
@@ -38,33 +34,31 @@ type Msg
 view : Model -> Html Msg
 view model =
     case model of
-        Model { data, n, segments } ->
-            case data of
-                Landscape dSunPosition dSunSize crawl ->
-                    let
-                        lines =
-                            initialiseLines n segments
+        Model n segments (Landscape dSunPosition dSunSize crawl) ->
+            let
+                lines =
+                    initialiseLines n segments
 
-                        randomValues =
-                            List.map accumulate crawl
+                randomValues =
+                    List.map accumulate crawl
 
-                        shepherdedValues =
-                            accumulateList randomValues
+                shepherdedValues =
+                    accumulateList randomValues
 
-                        transformed =
-                            List.map2 (map2Second (+)) shepherdedValues lines
+                transformed =
+                    List.map2 (map2Second (+)) shepherdedValues lines
 
-                        sunPosition =
-                            mapTuple2 ((*) 100) ((*) 50) dSunPosition
+                sunPosition =
+                    mapTuple2 ((*) 100) ((*) 50) dSunPosition
 
-                        sunSize =
-                            10 + dSunSize * 10
-                    in
-                    a4Landscape
-                        []
-                        [ g [] (paths <| List.map (translateList 40 100) transformed)
-                        , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
-                        ]
+                sunSize =
+                    10 + dSunSize * 10
+            in
+            a4Landscape
+                []
+                [ g [] (paths <| List.map (translateList 40 100) transformed)
+                , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
+                ]
 
         _ ->
             text ""
@@ -73,7 +67,7 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case ( msg, model ) of
-        ( Generate, Configuration n segments ) ->
+        ( Generate, Setup n segments ) ->
             ( model
             , Random.generate Draw <|
                 Random.map3 Landscape
@@ -82,8 +76,8 @@ update msg model =
                     (randomList2 n segments)
             )
 
-        ( Draw landscape, Configuration n segments ) ->
-            ( Model { data = landscape, n = n, segments = segments }, Cmd.none )
+        ( Draw data, Setup n segments ) ->
+            ( Model n segments data, Cmd.none )
 
         _ ->
             ( model, Cmd.none )
