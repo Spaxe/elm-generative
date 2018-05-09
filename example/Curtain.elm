@@ -31,12 +31,19 @@ type Msg
 view : Model -> Html Msg
 view model =
     case model of
-        Curtain verticalDrape horizontalShift ->
+        Curtain a b ->
+            let
+                dxs =
+                    mapList ((*) 0.5) a
+
+                dys =
+                    mapList ((*) 0.5) b
+            in
             a4Landscape
                 []
                 (initialiseLines 100
-                    |> List.map2 (map2First (+)) (accumulateList horizontalShift)
-                    |> List.map2 (map2Second (+)) (accumulateList verticalDrape)
+                    |> List.map2 (map2First (+)) (accumulateList dxs)
+                    |> List.map2 (map2Second (+)) (accumulateList dys)
                     |> List.map (translateList 40 30)
                     |> paths
                 )
@@ -52,12 +59,8 @@ update msg model =
             ( model
             , Random.generate Draw <|
                 Random.map2 Curtain
-                    (Random.list 100 <|
-                        randomList 200
-                    )
-                    (Random.list 100 <|
-                        randomList 200
-                    )
+                    (randomList2 100 200)
+                    (randomList2 100 200)
             )
 
         Draw data ->

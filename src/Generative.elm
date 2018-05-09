@@ -9,8 +9,12 @@ module Generative
         , map2First
         , map2Second
         , map2Tuple
+        , mapList
         , random
         , randomList
+        , randomList2
+        , randomListTuple
+        , randomListTuple2
         , randomTuple
         , secondList
         , translate
@@ -25,7 +29,7 @@ module Generative
 
 # Random generators
 
-@docs random, randomTuple, randomList
+@docs random, randomTuple, randomList, randomList2, randomListTuple, randomListTuple2
 
 
 # Shape creators
@@ -40,7 +44,7 @@ module Generative
 
 # Utils
 
-@docs firstList, secondList, map2First, map2Second, map2Tuple, updateFirst, updateSecond
+@docs firstList, secondList, mapList, map2First, map2Second, map2Tuple, updateFirst, updateSecond
 
 @docs transpose
 
@@ -65,39 +69,39 @@ randomTuple =
     Random.pair random random
 
 
-{-| Generates a list of random amplitudes
+{-| Generates a list of random floats
 -}
 randomList : Int -> Generator (List Float)
 randomList n =
     Random.list n random
 
 
-{-| Creates a straight line from (x1, y1) to (x2, y2) with n segments.
-
-If n < 1, returns an empty list.
-
+{-| Generates a nested list of random floats
 -}
-makePath : Int -> Float -> Float -> Float -> Float -> List ( Float, Float )
-makePath n x1 y1 x2 y2 =
-    if n < 1 then
-        []
-    else
-        let
-            dx =
-                (x2 - x1) / toFloat n
+randomList2 : Int -> Int -> Generator (List (List Float))
+randomList2 m n =
+    Random.list m <| Random.list n random
 
-            dy =
-                (y2 - y1) / toFloat n
 
-            xs =
-                List.range 0 n
-                    |> List.map (toFloat >> (*) dx >> (+) x1)
+{-| Generates a list of random tuples
+-}
+randomListTuple : Int -> Generator (List ( Float, Float ))
+randomListTuple n =
+    Random.list n randomTuple
 
-            ys =
-                List.range 0 n
-                    |> List.map (toFloat >> (*) dy >> (+) y1)
-        in
-        zip xs ys
+
+{-| Generates a list of lists of random tuples
+-}
+randomListTuple2 : Int -> Int -> Generator (List (List ( Float, Float )))
+randomListTuple2 m n =
+    Random.list n <| randomListTuple n
+
+
+{-| Maps a function over a list of lists
+-}
+mapList : (a -> a) -> List (List a) -> List (List a)
+mapList =
+    List.map << List.map
 
 
 {-| Adds every number in the list so far and keep a running sum.
@@ -202,3 +206,31 @@ map2Tuple f =
 transpose : List (List a) -> List (List a)
 transpose =
     List.Extra.transpose
+
+
+{-| Creates a straight line from (x1, y1) to (x2, y2) with n segments.
+
+If n < 1, returns an empty list.
+
+-}
+makePath : Int -> Float -> Float -> Float -> Float -> List ( Float, Float )
+makePath n x1 y1 x2 y2 =
+    if n < 1 then
+        []
+    else
+        let
+            dx =
+                (x2 - x1) / toFloat n
+
+            dy =
+                (y2 - y1) / toFloat n
+
+            xs =
+                List.range 0 n
+                    |> List.map (toFloat >> (*) dx >> (+) x1)
+
+            ys =
+                List.range 0 n
+                    |> List.map (toFloat >> (*) dy >> (+) y1)
+        in
+        zip xs ys

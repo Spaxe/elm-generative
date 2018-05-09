@@ -99,10 +99,7 @@ update msg model =
             , Random.generate Draw <|
                 Random.map2 Sun
                     random
-                    (Random.list numberOfLines <|
-                        Random.list numberOfSegments <|
-                            randomTuple
-                    )
+                    (randomListTuple2 numberOfLines numberOfSegments)
             )
 
         Draw data ->

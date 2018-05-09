@@ -82,9 +82,7 @@ update msg model =
                 Random.map3 Landscape
                     randomTuple
                     random
-                    (Random.list numberOfLines <|
-                        randomList numberOfSegments
-                    )
+                    (randomList2 numberOfLines numberOfSegments)
             )
 
         Draw data ->

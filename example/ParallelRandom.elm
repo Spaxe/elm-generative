@@ -99,8 +99,7 @@ update msg model =
         Generate ->
             ( model
             , Random.generate Draw <|
-                Random.list numberOfLines <|
-                    randomList numberOfSegments
+                randomList2 numberOfLines numberOfSegments
             )
 
         Draw data ->
