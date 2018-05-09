@@ -3,10 +3,10 @@ module Example.ParallelRandom exposing (..)
 {-| Random rows of squiggle
 -}
 
-import Html exposing (Html, div, text)
 import Draw exposing (..)
-import List.Extra
 import Generative exposing (..)
+import Html exposing (Html, div, text)
+import List.Extra
 import Random
 
 
@@ -64,8 +64,8 @@ setup n =
         line y =
             makePath numberOfSegments 0 y 110 y
     in
-        List.map line <|
-            List.Extra.initialize n (toFloat << (*) gap)
+    List.map line <|
+        List.Extra.initialize n (toFloat << (*) gap)
 
 
 
@@ -79,14 +79,14 @@ view model =
             setup numberOfLines
 
         randomValues =
-            model
+            List.map (List.map ((*) (toFloat gap))) model
 
         transformed =
             List.map2 (map2Second (+)) randomValues data
     in
-        a4Landscape
-            []
-            (paths <| List.map (translateList 90 50) transformed)
+    a4Landscape
+        []
+        (paths <| List.map (translateList 90 50) transformed)
 
 
 
@@ -100,7 +100,7 @@ update msg model =
             ( model
             , Random.generate Draw <|
                 Random.list numberOfLines <|
-                    random1D numberOfSegments (toFloat gap)
+                    randomList numberOfSegments
             )
 
         Draw data ->

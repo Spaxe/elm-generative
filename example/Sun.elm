@@ -1,8 +1,8 @@
 module Example.Sun exposing (..)
 
-import Html exposing (Html, div, text)
 import Draw exposing (..)
 import Generative exposing (..)
+import Html exposing (Html, div, text)
 import Random
 
 
@@ -42,19 +42,19 @@ initialiseLines n =
         line ( x1, y1 ) ( x2, y2 ) =
             makePath numberOfSegments x1 y1 x2 y2
     in
-        List.range 1 n
-            |> List.map
-                (\x -> toFloat x / 48.0 * 360)
-            |> List.map
-                (\x ->
-                    line
-                        (fromPolar
-                            ( radialSmallRadius, x )
-                        )
-                        (fromPolar
-                            ( radialLargeRadius, x )
-                        )
-                )
+    List.range 1 n
+        |> List.map
+            (\x -> toFloat x / 48.0 * 360)
+        |> List.map
+            (\x ->
+                line
+                    (fromPolar
+                        ( radialSmallRadius, x )
+                    )
+                    (fromPolar
+                        ( radialLargeRadius, x )
+                    )
+            )
 
 
 type Msg
@@ -80,14 +80,12 @@ view model =
                     List.map2 (map2Tuple (+)) shepherdedValues data
 
                 sunSize =
-                    20 + dSunSize
+                    20 + dSunSize * 20
             in
-                a4Landscape
-                    []
-                    [ g [] (paths <| List.map (translateList 148 105) transformed)
-
-                    --, g [] [ circle 148 105 sunSize [] ]
-                    ]
+            a4Landscape
+                []
+                [ g [] (paths <| List.map (translateList 148 105) transformed)
+                ]
 
         _ ->
             text ""
@@ -100,12 +98,10 @@ update msg model =
             ( model
             , Random.generate Draw <|
                 Random.map2 Sun
-                    (random 20)
+                    random
                     (Random.list numberOfLines <|
                         Random.list numberOfSegments <|
-                            Random.pair
-                                (random 0.5)
-                                (random 0.5)
+                            randomTuple
                     )
             )
 

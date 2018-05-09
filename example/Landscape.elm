@@ -1,9 +1,10 @@
 module Example.Landscape exposing (..)
 
-import Html exposing (Html, div, text)
 import Draw exposing (..)
 import Generative exposing (..)
+import Html exposing (Html, div, text)
 import Random
+import Tuple exposing (mapFirst, mapSecond)
 
 
 numberOfLines : Int
@@ -31,8 +32,8 @@ initialiseLines n =
         line y =
             makePath numberOfSegments 10 y 210 y
     in
-        List.map line <|
-            List.repeat n 0
+    List.map line <|
+        List.repeat n 0
 
 
 type Msg
@@ -59,15 +60,17 @@ view model =
 
                 sunPosition =
                     dSunPosition
+                        |> mapFirst ((*) 100)
+                        |> mapSecond ((*) 50)
 
                 sunSize =
-                    10 + dSunSize
+                    10 + dSunSize * 10
             in
-                a4Landscape
-                    []
-                    [ g [] (paths <| List.map (translateList 40 100) transformed)
-                    , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
-                    ]
+            a4Landscape
+                []
+                [ g [] (paths <| List.map (translateList 40 100) transformed)
+                , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
+                ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -77,10 +80,10 @@ update msg model =
             ( model
             , Random.generate Draw <|
                 Random.map3 Landscape
-                    (Random.pair (random 100) (random 50))
-                    (random 10)
+                    randomTuple
+                    random
                     (Random.list numberOfLines <|
-                        random1D numberOfSegments 1
+                        randomList numberOfSegments
                     )
             )
 

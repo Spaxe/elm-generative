@@ -1,9 +1,9 @@
 module Example.Curtain exposing (..)
 
-import Html exposing (Html, div, text)
 import Draw exposing (..)
-import List.Extra
 import Generative exposing (..)
+import Html exposing (Html, div, text)
+import List.Extra
 import Random
 
 
@@ -14,7 +14,7 @@ type Model
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate <| Empty
+    update Generate Empty
 
 
 initialiseLines : Int -> List (List ( Float, Float ))
@@ -53,10 +53,10 @@ update msg model =
             , Random.generate Draw <|
                 Random.map2 Curtain
                     (Random.list 100 <|
-                        random1D 200 0.6
+                        randomList 200
                     )
                     (Random.list 100 <|
-                        random1D 200 0.4
+                        randomList 200
                     )
             )
 

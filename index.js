@@ -15139,16 +15139,11 @@ var _creative$elm_generative$Generative$makePath = F5(
 			return A2(_elm_community$list_extra$List_Extra$zip, xs, ys);
 		}
 	});
-var _creative$elm_generative$Generative$random = function (amplitude) {
-	return A2(_elm_lang$core$Random$float, (0 - amplitude) / 2, amplitude / 2);
+var _creative$elm_generative$Generative$random = A2(_elm_lang$core$Random$float, -0.5, 0.5);
+var _creative$elm_generative$Generative$randomTuple = A2(_elm_lang$core$Random$pair, _creative$elm_generative$Generative$random, _creative$elm_generative$Generative$random);
+var _creative$elm_generative$Generative$randomList = function (n) {
+	return A2(_elm_lang$core$Random$list, n, _creative$elm_generative$Generative$random);
 };
-var _creative$elm_generative$Generative$random1D = F2(
-	function (n, amplitude) {
-		return A2(
-			_elm_lang$core$Random$list,
-			n,
-			_creative$elm_generative$Generative$random(amplitude));
-	});
 
 var _creative$elm_generative$Example_Curtain$initialiseLines = function (n) {
 	return A2(
@@ -15224,11 +15219,11 @@ var _creative$elm_generative$Example_Curtain$update = F2(
 						A2(
 							_elm_lang$core$Random$list,
 							100,
-							A2(_creative$elm_generative$Generative$random1D, 200, 0.6)),
+							_creative$elm_generative$Generative$randomList(200)),
 						A2(
 							_elm_lang$core$Random$list,
 							100,
-							A2(_creative$elm_generative$Generative$random1D, 200, 0.4))))
+							_creative$elm_generative$Generative$randomList(200))))
 			};
 		} else {
 			return {ctor: '_Tuple2', _0: _p2._0, _1: _elm_lang$core$Platform_Cmd$none};
@@ -15250,8 +15245,20 @@ var _creative$elm_generative$Example_Landscape$initialiseLines = function (n) {
 var _creative$elm_generative$Example_Landscape$numberOfLines = 10;
 var _creative$elm_generative$Example_Landscape$view = function (model) {
 	var _p0 = model;
-	var sunSize = 10 + _p0._1;
-	var sunPosition = _p0._0;
+	var sunSize = 10 + (_p0._1 * 10);
+	var sunPosition = A2(
+		_elm_lang$core$Tuple$mapSecond,
+		F2(
+			function (x, y) {
+				return x * y;
+			})(50),
+		A2(
+			_elm_lang$core$Tuple$mapFirst,
+			F2(
+				function (x, y) {
+					return x * y;
+				})(100),
+			_p0._0));
 	var randomValues = A2(_elm_lang$core$List$map, _creative$elm_generative$Generative$accumulate, _p0._2);
 	var shepherdedValues = _creative$elm_generative$Generative$accumulateList(randomValues);
 	var data = _creative$elm_generative$Example_Landscape$initialiseLines(_creative$elm_generative$Example_Landscape$numberOfLines);
@@ -15316,15 +15323,12 @@ var _creative$elm_generative$Example_Landscape$update = F2(
 					A4(
 						_elm_lang$core$Random$map3,
 						_creative$elm_generative$Example_Landscape$Landscape,
-						A2(
-							_elm_lang$core$Random$pair,
-							_creative$elm_generative$Generative$random(100),
-							_creative$elm_generative$Generative$random(50)),
-						_creative$elm_generative$Generative$random(10),
+						_creative$elm_generative$Generative$randomTuple,
+						_creative$elm_generative$Generative$random,
 						A2(
 							_elm_lang$core$Random$list,
 							_creative$elm_generative$Example_Landscape$numberOfLines,
-							A2(_creative$elm_generative$Generative$random1D, _creative$elm_generative$Example_Landscape$numberOfSegments, 1))))
+							_creative$elm_generative$Generative$randomList(_creative$elm_generative$Example_Landscape$numberOfSegments))))
 			};
 		} else {
 			return {ctor: '_Tuple2', _0: _p1._0, _1: _elm_lang$core$Platform_Cmd$none};
@@ -15365,7 +15369,15 @@ var _creative$elm_generative$Example_ParallelRandom$setup = function (n) {
 };
 var _creative$elm_generative$Example_ParallelRandom$numberOfLines = 10;
 var _creative$elm_generative$Example_ParallelRandom$view = function (model) {
-	var randomValues = model;
+	var randomValues = A2(
+		_elm_lang$core$List$map,
+		_elm_lang$core$List$map(
+			F2(
+				function (x, y) {
+					return x * y;
+				})(
+				_elm_lang$core$Basics$toFloat(_creative$elm_generative$Example_ParallelRandom$gap))),
+		model);
 	var data = _creative$elm_generative$Example_ParallelRandom$setup(_creative$elm_generative$Example_ParallelRandom$numberOfLines);
 	var transformed = A3(
 		_elm_lang$core$List$map2,
@@ -15401,10 +15413,7 @@ var _creative$elm_generative$Example_ParallelRandom$update = F2(
 					A2(
 						_elm_lang$core$Random$list,
 						_creative$elm_generative$Example_ParallelRandom$numberOfLines,
-						A2(
-							_creative$elm_generative$Generative$random1D,
-							_creative$elm_generative$Example_ParallelRandom$numberOfSegments,
-							_elm_lang$core$Basics$toFloat(_creative$elm_generative$Example_ParallelRandom$gap))))
+						_creative$elm_generative$Generative$randomList(_creative$elm_generative$Example_ParallelRandom$numberOfSegments)))
 			};
 		} else {
 			return {ctor: '_Tuple2', _0: _p1._0, _1: _elm_lang$core$Platform_Cmd$none};
@@ -15447,7 +15456,7 @@ var _creative$elm_generative$Example_Sun$numberOfLines = 128;
 var _creative$elm_generative$Example_Sun$view = function (model) {
 	var _p4 = model;
 	if (_p4.ctor === 'Sun') {
-		var sunSize = 20 + _p4._0;
+		var sunSize = 20 + (_p4._0 * 20);
 		var randomValues = A2(_elm_lang$core$List$map, _creative$elm_generative$Generative$accumulateTuple, _p4._1);
 		var shepherdedValues = _creative$elm_generative$Generative$accumulateTupleList(randomValues);
 		var data = _creative$elm_generative$Example_Sun$initialiseLines(_creative$elm_generative$Example_Sun$numberOfLines);
@@ -15500,17 +15509,11 @@ var _creative$elm_generative$Example_Sun$update = F2(
 					A3(
 						_elm_lang$core$Random$map2,
 						_creative$elm_generative$Example_Sun$Sun,
-						_creative$elm_generative$Generative$random(20),
+						_creative$elm_generative$Generative$random,
 						A2(
 							_elm_lang$core$Random$list,
 							_creative$elm_generative$Example_Sun$numberOfLines,
-							A2(
-								_elm_lang$core$Random$list,
-								_creative$elm_generative$Example_Sun$numberOfSegments,
-								A2(
-									_elm_lang$core$Random$pair,
-									_creative$elm_generative$Generative$random(0.5),
-									_creative$elm_generative$Generative$random(0.5))))))
+							A2(_elm_lang$core$Random$list, _creative$elm_generative$Example_Sun$numberOfSegments, _creative$elm_generative$Generative$randomTuple))))
 			};
 		} else {
 			return {ctor: '_Tuple2', _0: _p5._0, _1: _elm_lang$core$Platform_Cmd$none};

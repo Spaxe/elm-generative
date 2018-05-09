@@ -1,22 +1,23 @@
 module Generative
     exposing
-        ( random
-        , random1D
-        , makePath
+        ( accumulate
+        , accumulateList
+        , accumulateTuple
+        , accumulateTupleList
         , firstList
-        , secondList
+        , makePath
         , map2First
         , map2Second
         , map2Tuple
-        , updateFirst
-        , updateSecond
-        , transpose
-        , accumulate
-        , accumulateTuple
-        , accumulateList
-        , accumulateTupleList
+        , random
+        , randomList
+        , randomTuple
+        , secondList
         , translate
         , translateList
+        , transpose
+        , updateFirst
+        , updateSecond
         )
 
 {-| Tools to help you tinker.
@@ -24,7 +25,7 @@ module Generative
 
 # Random generators
 
-@docs random, random1D
+@docs random, randomTuple, randomList
 
 
 # Shape creators
@@ -45,26 +46,30 @@ module Generative
 
 -}
 
-import Random exposing (Generator, float, list)
+import List.Extra exposing (scanl1, zip)
+import Random exposing (Generator)
 import Tuple exposing (..)
-import List.Extra exposing (zip, scanl1)
 
 
-{-| Generates one random value at most `amplitude` apart, centred around 0.
-
-    For example, `random 1` generates a value between `-0.5` and `0.5`.
-
+{-| Generates a float between -0.5 and 0.5.
 -}
-random : Float -> Generator Float
-random amplitude =
-    float (-amplitude / 2) (amplitude / 2)
+random : Generator Float
+random =
+    Random.float -0.5 0.5
+
+
+{-| Generates one random tuple between (-0.5, -0.5) and (0.5, 0.5)
+-}
+randomTuple : Generator ( Float, Float )
+randomTuple =
+    Random.pair random random
 
 
 {-| Generates a list of random amplitudes
 -}
-random1D : Int -> Float -> Generator (List Float)
-random1D n amplitude =
-    list n <| random amplitude
+randomList : Int -> Generator (List Float)
+randomList n =
+    Random.list n random
 
 
 {-| Creates a straight line from (x1, y1) to (x2, y2) with n segments.
@@ -79,10 +84,10 @@ makePath n x1 y1 x2 y2 =
     else
         let
             dx =
-                (x2 - x1) / (toFloat n)
+                (x2 - x1) / toFloat n
 
             dy =
-                (y2 - y1) / (toFloat n)
+                (y2 - y1) / toFloat n
 
             xs =
                 List.range 0 n
@@ -92,7 +97,7 @@ makePath n x1 y1 x2 y2 =
                 List.range 0 n
                     |> List.map (toFloat >> (*) dy >> (+) y1)
         in
-            zip xs ys
+        zip xs ys
 
 
 {-| Adds every number in the list so far and keep a running sum.
