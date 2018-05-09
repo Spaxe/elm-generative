@@ -15470,25 +15470,23 @@ var _creative$elm_generative$Example_ParallelRandom$Model = F2(
 var _creative$elm_generative$Example_ParallelRandom$Setup = function (a) {
 	return {ctor: 'Setup', _0: a};
 };
-var _creative$elm_generative$Example_ParallelRandom$Configuration = F3(
-	function (a, b, c) {
-		return {ctor: 'Configuration', _0: a, _1: b, _2: c};
+var _creative$elm_generative$Example_ParallelRandom$Configuration = F4(
+	function (a, b, c, d) {
+		return {ctor: 'Configuration', _0: a, _1: b, _2: c, _3: d};
 	});
 var _creative$elm_generative$Example_ParallelRandom$view = function (model) {
 	var _p3 = model;
 	if (_p3.ctor === 'Model') {
-		var _p4 = _p3._0._2;
+		var _p4 = _p3._0._3;
 		var randomValues = A2(
-			_elm_lang$core$List$map,
-			_elm_lang$core$List$map(
-				F2(
-					function (x, y) {
-						return x * y;
-					})(
-					_elm_lang$core$Basics$toFloat(_p4))),
+			_creative$elm_generative$Generative$mapList,
+			F2(
+				function (x, y) {
+					return x * y;
+				})(_p4),
 			_p3._1);
 		var data = _creative$elm_generative$Example_ParallelRandom$setup(
-			A3(_creative$elm_generative$Example_ParallelRandom$Configuration, _p3._0._0, _p3._0._1, _p4));
+			A4(_creative$elm_generative$Example_ParallelRandom$Configuration, _p3._0._0, _p3._0._1, _p3._0._2, _p4));
 		var transformed = A3(
 			_elm_lang$core$List$map2,
 			_creative$elm_generative$Generative$map2Second(
@@ -15554,7 +15552,7 @@ var _creative$elm_generative$Example_ParallelRandom$init = A2(
 	_creative$elm_generative$Example_ParallelRandom$update,
 	_creative$elm_generative$Example_ParallelRandom$Generate,
 	_creative$elm_generative$Example_ParallelRandom$Setup(
-		A3(_creative$elm_generative$Example_ParallelRandom$Configuration, 10, 100, 10)));
+		A4(_creative$elm_generative$Example_ParallelRandom$Configuration, 10, 100, 10, 10)));
 
 var _creative$elm_generative$Example_Sun$initialiseLines = function (_p0) {
 	var _p1 = _p0;

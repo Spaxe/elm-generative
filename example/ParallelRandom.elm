@@ -19,7 +19,7 @@ type Model
 
 
 type Configuration
-    = Configuration Int Int Int
+    = Configuration Int Int Int Float
 
 
 type alias ParallelLines =
@@ -41,7 +41,7 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Setup <| Configuration 10 100 10)
+    update Generate (Setup <| Configuration 10 100 10 10)
 
 
 
@@ -49,7 +49,7 @@ init =
 
 
 setup : Configuration -> List (List ( Float, Float ))
-setup (Configuration n segments gap) =
+setup (Configuration n segments gap _) =
     let
         line y =
             makePath segments 0 y 110 y
@@ -65,13 +65,13 @@ setup (Configuration n segments gap) =
 view : Model -> Html Msg
 view model =
     case model of
-        Model (Configuration n semgents gap) lines ->
+        Model (Configuration n semgents gap amp) lines ->
             let
                 data =
-                    setup (Configuration n semgents gap)
+                    setup (Configuration n semgents gap amp)
 
                 randomValues =
-                    List.map (List.map ((*) (toFloat gap))) lines
+                    mapList ((*) amp) lines
 
                 transformed =
                     List.map2 (map2Second (+)) randomValues data
@@ -91,7 +91,7 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case ( msg, model ) of
-        ( Generate, Setup (Configuration n segments gap) ) ->
+        ( Generate, Setup (Configuration n segments _ _) ) ->
             ( model
             , Random.generate Draw <|
                 randomList2 n segments
