@@ -6,11 +6,13 @@ module Generative
         , accumulateTuple
         , firstList
         , makePath
+        , makeGrid
         , map2First
         , map2Second
         , map2Tuple
         , mapFirstList
         , mapList
+        , mapList2
         , mapSecondList
         , mapTuple
         , mapTuple2
@@ -35,7 +37,7 @@ module Generative
 
 # Shape creators
 
-@docs makePath
+@docs makePath, makeGrid
 
 
 # Shape transformers
@@ -45,7 +47,7 @@ module Generative
 
 # Utils
 
-@docs firstList, secondList, mapList, map2First, map2Second, map2Tuple, mapFirstList, mapSecondList, mapTuple, mapTuple2
+@docs firstList, secondList, mapList, mapList2, map2First, map2Second, map2Tuple, mapFirstList, mapSecondList, mapTuple, mapTuple2
 
 -}
 
@@ -105,9 +107,16 @@ randomListTuple2 m n =
 
 {-| Maps a function over a list of lists
 -}
-mapList : (a -> a1) -> List (List a) -> List (List a1)
+mapList : (a -> b) -> List (List a) -> List (List b)
 mapList =
     List.map << List.map
+
+
+{-| Maps a function over 2 lists of lists
+-}
+mapList2 : (a -> b -> c) -> List (List a) -> List (List b) -> List (List c)
+mapList2 =
+    List.map2 << List.map2
 
 
 {-| Adds every number in the list so far and keep a running sum.
@@ -219,6 +228,26 @@ map2Second f =
 map2Tuple : (a -> a -> a1) -> List ( a, a ) -> List ( a, a ) -> List ( a1, a1 )
 map2Tuple f =
     List.map2 (\a b -> ( f (first a) (first b), f (second a) (second b) ))
+
+
+
+-- LIST CREATIONS --
+
+
+{-| Creates a 2D grid of size m x n, with diagnoals at (0, 0) and (m-1, n-1).
+-}
+makeGrid : Int -> Int -> List ( Float, Float )
+makeGrid m n =
+    let
+        xs =
+            List.Extra.initialize m toFloat
+
+        ys =
+            List.Extra.initialize n toFloat
+    in
+        xs
+            |> List.Extra.andThen
+                (\x -> ys |> List.Extra.andThen (\y -> [ ( x, y ) ]))
 
 
 

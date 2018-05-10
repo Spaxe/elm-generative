@@ -6,8 +6,7 @@ port module Main exposing (main)
 
 -}
 
--- elm-generative examples
-
+import Example.Grid as Grid
 import Example.Curtain as Curtain
 import Example.Landscape as Landscape
 import Example.ParallelRandom as ParallelRandom
@@ -29,6 +28,7 @@ import Html
 import Html.Attributes exposing (class, href, id, style, type_)
 import Html.Events exposing (onClick)
 import Json.Decode exposing (decodeString, field, string)
+import Generative exposing (..)
 import Navigation exposing (Location)
 import Tuple exposing (first, mapFirst, mapSecond, second)
 import UrlParser
@@ -49,37 +49,38 @@ init location =
     let
         routeMsg =
             case parseLocation location of
+                Grid _ ->
+                    Grid.init
+                        |> mapTuple2 (Grid << Just) (Cmd.map GridMsg)
+
                 Curtain _ ->
                     Curtain.init
-                        |> mapFirst (Curtain << Just)
-                        |> mapSecond (Cmd.map CurtainMsg)
+                        |> mapTuple2 (Curtain << Just) (Cmd.map CurtainMsg)
 
                 Landscape _ ->
                     Landscape.init
-                        |> mapFirst (Landscape << Just)
-                        |> mapSecond (Cmd.map LandscapeMsg)
+                        |> mapTuple2 (Landscape << Just) (Cmd.map LandscapeMsg)
 
                 ParallelRandom _ ->
                     ParallelRandom.init
-                        |> mapFirst (ParallelRandom << Just)
-                        |> mapSecond (Cmd.map ParallelRandomMsg)
+                        |> mapTuple2 (ParallelRandom << Just) (Cmd.map ParallelRandomMsg)
 
                 Sun _ ->
                     Sun.init
-                        |> mapFirst (Sun << Just)
-                        |> mapSecond (Cmd.map SunMsg)
+                        |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
     in
-    ( { route = first routeMsg
-      , status = Nothing
-      }
-    , second routeMsg
-    )
+        ( { route = first routeMsg
+          , status = Nothing
+          }
+        , second routeMsg
+        )
 
 
 type Msg
     = NavigateTo Location
     | Menu Action
     | PlotterStatus String
+    | GridMsg Grid.Msg
     | CurtainMsg Curtain.Msg
     | LandscapeMsg Landscape.Msg
     | ParallelRandomMsg ParallelRandom.Msg
@@ -94,7 +95,8 @@ type Action
 
 
 type Route
-    = Curtain (Maybe Curtain.Model)
+    = Grid (Maybe Grid.Model)
+    | Curtain (Maybe Curtain.Model)
     | Landscape (Maybe Landscape.Model)
     | ParallelRandom (Maybe ParallelRandom.Model)
     | Sun (Maybe Sun.Model)
@@ -116,9 +118,11 @@ view model =
         []
         [ nav
             []
-            [ p [] [ text "Accumulation" ]
-            , a [ href "/#curtain" ] [ text "Curtain" ]
+            [ p [] [ text "Repetition" ]
+            , a [ href "/#grid" ] [ text "Grid" ]
+            , p [] [ text "Accumulation" ]
             , a [ href "/#parallel-random" ] [ text "Parallel Random" ]
+            , a [ href "/#curtain" ] [ text "Curtain" ]
             , a [ href "/#landscape" ] [ text "Landscape" ]
             , a [ href "/#sun" ] [ text "Sun" ]
             ]
@@ -158,6 +162,14 @@ view model =
 render : Route -> Html Msg
 render route =
     case route of
+        Grid (Just pageModel) ->
+            Grid.view pageModel
+                |> Html.map GridMsg
+
+        ParallelRandom (Just pageModel) ->
+            ParallelRandom.view pageModel
+                |> Html.map ParallelRandomMsg
+
         Curtain (Just pageModel) ->
             Curtain.view pageModel
                 |> Html.map CurtainMsg
@@ -165,10 +177,6 @@ render route =
         Landscape (Just pageModel) ->
             Landscape.view pageModel
                 |> Html.map LandscapeMsg
-
-        ParallelRandom (Just pageModel) ->
-            ParallelRandom.view pageModel
-                |> Html.map ParallelRandomMsg
 
         Sun (Just pageModel) ->
             Sun.view pageModel
@@ -209,30 +217,30 @@ update msg model =
             let
                 routeMsg =
                     case ( msg, route ) of
-                        ( CurtainMsg pageMsg, Curtain (Just pageModel) ) ->
-                            Curtain.update pageMsg pageModel
-                                |> mapFirst (Curtain << Just)
-                                |> mapSecond (Cmd.map CurtainMsg)
-
-                        ( LandscapeMsg pageMsg, Landscape (Just pageModel) ) ->
-                            Landscape.update pageMsg pageModel
-                                |> mapFirst (Landscape << Just)
-                                |> mapSecond (Cmd.map LandscapeMsg)
+                        ( GridMsg pageMsg, Grid (Just pageModel) ) ->
+                            Grid.update pageMsg pageModel
+                                |> mapTuple2 (Grid << Just) (Cmd.map GridMsg)
 
                         ( ParallelRandomMsg pageMsg, ParallelRandom (Just pageModel) ) ->
                             ParallelRandom.update pageMsg pageModel
-                                |> mapFirst (ParallelRandom << Just)
-                                |> mapSecond (Cmd.map ParallelRandomMsg)
+                                |> mapTuple2 (ParallelRandom << Just) (Cmd.map ParallelRandomMsg)
+
+                        ( CurtainMsg pageMsg, Curtain (Just pageModel) ) ->
+                            Curtain.update pageMsg pageModel
+                                |> mapTuple2 (Curtain << Just) (Cmd.map CurtainMsg)
+
+                        ( LandscapeMsg pageMsg, Landscape (Just pageModel) ) ->
+                            Landscape.update pageMsg pageModel
+                                |> mapTuple2 (Landscape << Just) (Cmd.map LandscapeMsg)
 
                         ( SunMsg pageMsg, Sun (Just pageModel) ) ->
                             Sun.update pageMsg pageModel
-                                |> mapFirst (Sun << Just)
-                                |> mapSecond (Cmd.map SunMsg)
+                                |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
 
                         _ ->
                             ( route, Cmd.none )
             in
-            ( { model | route = first routeMsg }, Cmd.none )
+                ( { model | route = first routeMsg }, Cmd.none )
 
 
 decodePlotterStatus : String -> String
@@ -283,9 +291,10 @@ matchers : Parser (Route -> a) a
 matchers =
     oneOf
         [ UrlParser.map (Curtain Nothing) top
+        , UrlParser.map (Grid Nothing) (s "grid")
+        , UrlParser.map (ParallelRandom Nothing) (s "parallel-random")
         , UrlParser.map (Curtain Nothing) (s "curtain")
         , UrlParser.map (Landscape Nothing) (s "landscape")
-        , UrlParser.map (ParallelRandom Nothing) (s "parallel-random")
         , UrlParser.map (Sun Nothing) (s "sun")
         ]
 

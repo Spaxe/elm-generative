@@ -4,6 +4,9 @@ module Draw
         , a4Portrait
         , rect
         , g
+        , translate
+        , scale
+        , rotate
         , circle
         , line
         , path
@@ -40,9 +43,30 @@ g =
     Svg.g
 
 
+{-| Constructs the transform property for translate
+-}
+translate : Float -> Float -> String
+translate x y =
+    " translate(" ++ toString x ++ "," ++ toString y ++ ") "
+
+
+{-| Constructs the transform property for rotate
+-}
+rotate : Float -> String
+rotate degree =
+    " rotate(" ++ toString degree ++ ") "
+
+
+{-| Constructs the transform property for scale
+-}
+scale : Float -> String
+scale ratio =
+    " scale(" ++ toString ratio ++ ") "
+
+
 {-| Draw a rectangle
 -}
-rect : Float -> Float -> Float -> Float -> List (Svg msg) -> Svg msg
+rect : Float -> Float -> Float -> Float -> Svg msg
 rect x y width height =
     Svg.rect
         [ Attributes.x <| toString x
@@ -50,22 +74,24 @@ rect x y width height =
         , Attributes.width <| toString width
         , Attributes.height <| toString height
         ]
+        []
 
 
 {-| Draw a circle
 -}
-circle : Float -> Float -> Float -> List (Svg msg) -> Svg msg
+circle : Float -> Float -> Float -> Svg msg
 circle x y r =
     Svg.circle
         [ Attributes.cx <| toString x
         , Attributes.cy <| toString y
         , Attributes.r <| toString r
         ]
+        []
 
 
 {-| Draw a line
 -}
-line : Float -> Float -> Float -> Float -> List (Svg msg) -> Svg msg
+line : Float -> Float -> Float -> Float -> Svg msg
 line x1 y1 x2 y2 =
     Svg.line
         [ Attributes.x1 <| toString x1
@@ -73,6 +99,7 @@ line x1 y1 x2 y2 =
         , Attributes.x2 <| toString x2
         , Attributes.y2 <| toString y2
         ]
+        []
 
 
 {-| Draw lines from a list of points
@@ -124,6 +151,8 @@ frame width height unit attributes =
                 ++ (toString height)
         , Attributes.fill "none"
         , Attributes.stroke "black"
+        , Attributes.strokeLinecap "round"
+        , Attributes.strokeLinejoin "round"
         , Attributes.id "frame"
         , Attributes.strokeWidth "0.4"
         , Attributes.width <| (toString width) ++ unit

@@ -54,11 +54,11 @@ view model =
                 sunSize =
                     10 + dSunSize * 10
             in
-            a4Landscape
-                []
-                [ g [] (paths <| List.map (translateList 40 100) transformed)
-                , g [] [ uncurry circle (translate 150 40 sunPosition) sunSize [] ]
-                ]
+                a4Landscape
+                    []
+                    [ g [] (paths <| List.map (translateList 40 100) transformed)
+                    , g [] [ uncurry circle (Generative.translate 150 40 sunPosition) sunSize ]
+                    ]
 
         _ ->
             text ""
