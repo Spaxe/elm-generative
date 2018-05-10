@@ -15582,9 +15582,20 @@ var _creative$elm_generative$Example_Sun$initialiseLines = function (_p0) {
 var _creative$elm_generative$Example_Sun$view = function (model) {
 	var _p6 = model;
 	if (_p6.ctor === 'Model') {
-		var sunSize = 20 + (_p6._1._0 * 20);
-		var randomValues = A2(_elm_lang$core$List$map, _creative$elm_generative$Generative$accumulateTuple, _p6._1._1);
-		var shepherdedValues = _creative$elm_generative$Generative$accumulateListTuple(randomValues);
+		var shepherdLines = function (x) {
+			return A2(_elm_lang$core$List$map, _creative$elm_generative$Generative$accumulateTuple, x);
+		};
+		var amplitude = function (a) {
+			return _creative$elm_generative$Generative$mapList(
+				_creative$elm_generative$Generative$mapTuple(
+					F2(
+						function (x, y) {
+							return x * y;
+						})(a)));
+		};
+		var shepherdedValues = _creative$elm_generative$Generative$accumulateListTuple(
+			shepherdLines(
+				A2(amplitude, 0.5, _p6._1._0)));
 		var data = _creative$elm_generative$Example_Sun$initialiseLines(_p6._0);
 		var transformed = A3(
 			_elm_lang$core$List$map2,
@@ -15625,10 +15636,9 @@ var _creative$elm_generative$Example_Sun$Configuration = F4(
 	function (a, b, c, d) {
 		return {ctor: 'Configuration', _0: a, _1: b, _2: c, _3: d};
 	});
-var _creative$elm_generative$Example_Sun$Sun = F2(
-	function (a, b) {
-		return {ctor: 'Sun', _0: a, _1: b};
-	});
+var _creative$elm_generative$Example_Sun$Sun = function (a) {
+	return {ctor: 'Sun', _0: a};
+};
 var _creative$elm_generative$Example_Sun$Draw = function (a) {
 	return {ctor: 'Draw', _0: a};
 };
@@ -15646,10 +15656,9 @@ var _creative$elm_generative$Example_Sun$update = F2(
 							_1: A2(
 								_elm_lang$core$Random$generate,
 								_creative$elm_generative$Example_Sun$Draw,
-								A3(
-									_elm_lang$core$Random$map2,
+								A2(
+									_elm_lang$core$Random$map,
 									_creative$elm_generative$Example_Sun$Sun,
-									_creative$elm_generative$Generative$random,
 									A2(_creative$elm_generative$Generative$randomListTuple2, _p7._1._0._0, _p7._1._0._1)))
 						};
 					} else {
@@ -17589,7 +17598,7 @@ var _creative$elm_generative$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Curtain"],"Generate":[]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List (List Float)","List (List Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Sun.Sun":{"args":[],"tags":{"Sun":["Float","List (List ( Float, Float ))"]}},"Example.Sun.Msg":{"args":[],"tags":{"Draw":["Example.Sun.Sun"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.ParallelLines"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"SunMsg":["Example.Sun.Msg"],"NavigateTo":["Navigation.Location"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Landscape"],"Generate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}}},"aliases":{"Example.ParallelRandom.ParallelLines":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Curtain"],"Generate":[]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List (List Float)","List (List Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Sun.Sun":{"args":[],"tags":{"Sun":["List (List ( Float, Float ))"]}},"Example.Sun.Msg":{"args":[],"tags":{"Draw":["Example.Sun.Sun"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.ParallelLines"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"SunMsg":["Example.Sun.Msg"],"NavigateTo":["Navigation.Location"]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Landscape"],"Generate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}}},"aliases":{"Example.ParallelRandom.ParallelLines":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

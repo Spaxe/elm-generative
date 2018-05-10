@@ -16,7 +16,7 @@ type Configuration
 
 
 type Sun
-    = Sun Float (List (List ( Float, Float )))
+    = Sun (List (List ( Float, Float )))
 
 
 init : ( Model, Cmd Msg )
@@ -30,11 +30,11 @@ initialiseLines (Configuration n segments r1 r2) =
         line ( x1, y1 ) ( x2, y2 ) =
             makePath segments x1 y1 x2 y2
     in
-    List.range 1 n
-        |> List.map
-            (\x -> toFloat x / 48.0 * 360)
-        |> List.map
-            (\x -> line (fromPolar ( r1, x )) (fromPolar ( r2, x )))
+        List.range 1 n
+            |> List.map
+                (\x -> toFloat x / 48.0 * 360)
+            |> List.map
+                (\x -> line (fromPolar ( r1, x )) (fromPolar ( r2, x )))
 
 
 type Msg
@@ -45,27 +45,27 @@ type Msg
 view : Model -> Html Msg
 view model =
     case model of
-        Model config (Sun dSunSize crawl) ->
+        Model config (Sun crawl) ->
             let
                 data =
                     initialiseLines config
 
-                randomValues =
-                    List.map accumulateTuple crawl
+                amplitude a =
+                    mapList <| mapTuple <| (*) a
+
+                shepherdLines x =
+                    List.map accumulateTuple x
 
                 shepherdedValues =
-                    accumulateListTuple randomValues
+                    accumulateListTuple <| shepherdLines <| amplitude 0.5 crawl
 
                 transformed =
                     List.map2 (map2Tuple (+)) shepherdedValues data
-
-                sunSize =
-                    20 + dSunSize * 20
             in
-            a4Landscape
-                []
-                [ g [] (paths <| List.map (translateList 148 105) transformed)
-                ]
+                a4Landscape
+                    []
+                    [ g [] (paths <| List.map (translateList 148 105) transformed)
+                    ]
 
         _ ->
             text ""
@@ -77,8 +77,7 @@ update msg model =
         ( Generate, Setup (Configuration n segments _ _) ) ->
             ( model
             , Random.generate Draw <|
-                Random.map2 Sun
-                    random
+                Random.map Sun
                     (randomListTuple2 n segments)
             )
 

@@ -105,7 +105,7 @@ randomListTuple2 m n =
 
 {-| Maps a function over a list of lists
 -}
-mapList : (a -> a) -> List (List a) -> List (List a)
+mapList : (a -> a1) -> List (List a) -> List (List a1)
 mapList =
     List.map << List.map
 
@@ -250,4 +250,4 @@ makePath n x1 y1 x2 y2 =
                 List.range 0 n
                     |> List.map (toFloat >> (*) dy >> (+) y1)
         in
-        zip xs ys
+            zip xs ys
