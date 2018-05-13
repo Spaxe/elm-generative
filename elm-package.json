@@ -11,7 +11,7 @@
         "Generative"
     ],
     "dependencies": {
-        "Spaxe/elm-lsystem": "1.0.1 <= v < 2.0.0",
+        "Spaxe/elm-lsystem": "1.1.1 <= v < 2.0.0",
         "Spaxe/svg-pathd": "1.0.0 <= v < 2.0.0",
         "elm-community/basics-extra": "3.0.1 <= v < 4.0.0",
         "elm-community/list-extra": "7.1.0 <= v < 8.0.0",

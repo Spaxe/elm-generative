@@ -2,8 +2,8 @@ module Example.Turtle exposing (..)
 
 import Draw exposing (..)
 import LSystem
-import List.Extra exposing (mapAccuml)
-import Svg.PathD as PathD exposing (Segment(..), d_)
+import LSystem.Turtle exposing (State(..), turtle)
+import Svg.PathD as PathD exposing (d_)
 import Svg exposing (Svg)
 import Svg.Attributes exposing (transform)
 import Html exposing (Html, text)
@@ -15,13 +15,6 @@ type Model
 
 type Configuration
     = Configuration ( Float, Float ) Float
-
-
-type State
-    = D -- | Draw forward
-    | S -- | Skip foward without drawing
-    | L -- | Turn left by a degrees
-    | R -- | Turn right by a degrees
 
 
 rule : LSystem.Rule State
@@ -53,33 +46,10 @@ init =
 draw : Model -> Configuration -> Svg Msg
 draw (Model _ states) (Configuration p0 a0) =
     Svg.path
-        [ d_ <| [ PathD.M p0 ] ++ turtle states (Configuration p0 a0)
+        [ d_ <| [ PathD.M p0 ] ++ turtle states p0 a0
         , Svg.Attributes.strokeWidth "0.2"
         ]
         []
-
-
-turtle : List State -> Configuration -> List Segment
-turtle states (Configuration p0 a0) =
-    let
-        next ( x, y ) a =
-            ( x + cos (degrees a), y + sin (degrees a) )
-
-        f ( p, a ) state =
-            case state of
-                D ->
-                    ( ( next p a, a ), [ PathD.L (next p a) ] )
-
-                S ->
-                    ( ( next p a, a ), [ PathD.M (next p a) ] )
-
-                L ->
-                    ( ( p, a - 90 ), [] )
-
-                R ->
-                    ( ( p, a + 90 ), [] )
-    in
-        List.concat (Tuple.second <| mapAccuml f ( p0, a0 ) states)
 
 
 view : Model -> Html Msg
