@@ -63,7 +63,7 @@ draw model start =
                                 (Draw.scale s)
                                     ++ (Draw.translate dx dy)
                                     ++ (Draw.rotate (flip r))
-                            , Svg.Attributes.strokeWidth <| toString (1 / s)
+                            , Svg.Attributes.style <| "stroke-width: " ++ toString (0.5 / s) ++ "px"
                             ]
                             [ line x1 y1 x2 y2 ]
                     )

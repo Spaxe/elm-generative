@@ -15409,8 +15409,14 @@ var _creative$elm_generative$Example_Grid$draw = F2(
 												flip(r))))),
 								_1: {
 									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$strokeWidth(
-										_elm_lang$core$Basics$toString(1 / s)),
+									_0: _elm_lang$svg$Svg_Attributes$style(
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											'stroke-width: ',
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												_elm_lang$core$Basics$toString(0.5 / s),
+												'px'))),
 									_1: {ctor: '[]'}
 								}
 							},
