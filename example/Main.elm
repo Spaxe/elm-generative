@@ -8,6 +8,7 @@ port module Main exposing (main)
 
 import Example.Grid as Grid
 import Example.Crescent as Crescent
+import Example.Turtle as Turtle
 import Example.Curtain as Curtain
 import Example.Landscape as Landscape
 import Example.ParallelRandom as ParallelRandom
@@ -73,6 +74,10 @@ init location =
                 Sun _ ->
                     Sun.init
                         |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
+
+                Turtle _ ->
+                    Turtle.init
+                        |> mapTuple2 (Turtle << Just) (Cmd.map TurtleMsg)
     in
         ( { route = first routeMsg
           , status = Nothing
@@ -91,6 +96,7 @@ type Msg
     | LandscapeMsg Landscape.Msg
     | ParallelRandomMsg ParallelRandom.Msg
     | SunMsg Sun.Msg
+    | TurtleMsg Turtle.Msg
 
 
 type Action
@@ -107,6 +113,7 @@ type Route
     | Landscape (Maybe Landscape.Model)
     | ParallelRandom (Maybe ParallelRandom.Model)
     | Sun (Maybe Sun.Model)
+    | Turtle (Maybe Turtle.Model)
 
 
 type alias Model =
@@ -133,6 +140,8 @@ view model =
             , a [ href "/#curtain" ] [ text "Curtain" ]
             , a [ href "/#landscape" ] [ text "Landscape" ]
             , a [ href "/#sun" ] [ text "Sun" ]
+            , p [] [ text "L-Systems" ]
+            , a [ href "/#turtle" ] [ text "Test" ]
             ]
         , article
             []
@@ -194,6 +203,10 @@ render route =
             Sun.view pageModel
                 |> Html.map SunMsg
 
+        Turtle (Just pageModel) ->
+            Turtle.view pageModel
+                |> Html.map TurtleMsg
+
         _ ->
             text "404 Not Found"
 
@@ -252,6 +265,10 @@ update msg model =
                         ( SunMsg pageMsg, Sun (Just pageModel) ) ->
                             Sun.update pageMsg pageModel
                                 |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
+
+                        ( TurtleMsg pageMsg, Turtle (Just pageModel) ) ->
+                            Turtle.update pageMsg pageModel
+                                |> mapTuple2 (Turtle << Just) (Cmd.map TurtleMsg)
 
                         _ ->
                             ( route, Cmd.none )
@@ -313,6 +330,7 @@ matchers =
         , UrlParser.map (Curtain Nothing) (s "curtain")
         , UrlParser.map (Landscape Nothing) (s "landscape")
         , UrlParser.map (Sun Nothing) (s "sun")
+        , UrlParser.map (Turtle Nothing) (s "turtle")
         ]
 
 
