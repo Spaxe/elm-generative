@@ -6,11 +6,11 @@ module Draw
         , g
         , translate
         , scale
+        , strokeWidth
         , rotate
         , circle
         , line
-        , path
-        , paths
+        , lines
         )
 
 {-| SVG Drawing helper functions
@@ -64,6 +64,13 @@ scale ratio =
     " scale(" ++ toString ratio ++ ") "
 
 
+{-| Constructs the style property for stroke-width
+-}
+strokeWidth : Float -> String
+strokeWidth x =
+    "stroke-width: " ++ toString x ++ "px"
+
+
 {-| Draw a rectangle
 -}
 rect : Float -> Float -> Float -> Float -> Svg msg
@@ -104,8 +111,8 @@ line x1 y1 x2 y2 =
 
 {-| Draw lines from a list of points
 -}
-path : List ( Float, Float ) -> Svg msg
-path points =
+lines : List ( Float, Float ) -> Svg msg
+lines points =
     let
         coords ( x, y ) =
             (toString x) ++ ", " ++ (toString y)
@@ -117,13 +124,6 @@ path points =
                 |> Attributes.d
             ]
             []
-
-
-{-| Draw a list of paths
--}
-paths : List (List ( Float, Float )) -> List (Svg msg)
-paths pointsList =
-    List.map path pointsList
 
 
 {-| A fixed sized SVG container.

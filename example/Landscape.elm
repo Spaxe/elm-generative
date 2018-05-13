@@ -56,7 +56,7 @@ view model =
             in
                 a4Landscape
                     []
-                    [ g [] (paths <| List.map (translateList 40 100) transformed)
+                    [ g [] (List.map Draw.lines <| List.map (translateList 40 100) transformed)
                     , g [] [ uncurry circle (Generative.translate 150 40 sunPosition) sunSize ]
                     ]
 

@@ -7,6 +7,7 @@ port module Main exposing (main)
 -}
 
 import Example.Grid as Grid
+import Example.Crescent as Crescent
 import Example.Curtain as Curtain
 import Example.Landscape as Landscape
 import Example.ParallelRandom as ParallelRandom
@@ -49,6 +50,10 @@ init location =
     let
         routeMsg =
             case parseLocation location of
+                Crescent _ ->
+                    Crescent.init
+                        |> mapTuple2 (Crescent << Just) (Cmd.map CrescentMsg)
+
                 Grid _ ->
                     Grid.init
                         |> mapTuple2 (Grid << Just) (Cmd.map GridMsg)
@@ -80,6 +85,7 @@ type Msg
     = NavigateTo Location
     | Menu Action
     | PlotterStatus String
+    | CrescentMsg Crescent.Msg
     | GridMsg Grid.Msg
     | CurtainMsg Curtain.Msg
     | LandscapeMsg Landscape.Msg
@@ -95,7 +101,8 @@ type Action
 
 
 type Route
-    = Grid (Maybe Grid.Model)
+    = Crescent (Maybe Crescent.Model)
+    | Grid (Maybe Grid.Model)
     | Curtain (Maybe Curtain.Model)
     | Landscape (Maybe Landscape.Model)
     | ParallelRandom (Maybe ParallelRandom.Model)
@@ -120,6 +127,7 @@ view model =
             []
             [ p [] [ text "Repetition" ]
             , a [ href "/#grid" ] [ text "Grid" ]
+            , a [ href "/#crescent" ] [ text "Crescent" ]
             , p [] [ text "Accumulation" ]
             , a [ href "/#parallel-random" ] [ text "Parallel Random" ]
             , a [ href "/#curtain" ] [ text "Curtain" ]
@@ -162,6 +170,10 @@ view model =
 render : Route -> Html Msg
 render route =
     case route of
+        Crescent (Just pageModel) ->
+            Crescent.view pageModel
+                |> Html.map CrescentMsg
+
         Grid (Just pageModel) ->
             Grid.view pageModel
                 |> Html.map GridMsg
@@ -217,6 +229,10 @@ update msg model =
             let
                 routeMsg =
                     case ( msg, route ) of
+                        ( CrescentMsg pageMsg, Crescent (Just pageModel) ) ->
+                            Crescent.update pageMsg pageModel
+                                |> mapTuple2 (Crescent << Just) (Cmd.map CrescentMsg)
+
                         ( GridMsg pageMsg, Grid (Just pageModel) ) ->
                             Grid.update pageMsg pageModel
                                 |> mapTuple2 (Grid << Just) (Cmd.map GridMsg)
@@ -292,6 +308,7 @@ matchers =
     oneOf
         [ UrlParser.map (Curtain Nothing) top
         , UrlParser.map (Grid Nothing) (s "grid")
+        , UrlParser.map (Crescent Nothing) (s "crescent")
         , UrlParser.map (ParallelRandom Nothing) (s "parallel-random")
         , UrlParser.map (Curtain Nothing) (s "curtain")
         , UrlParser.map (Landscape Nothing) (s "landscape")

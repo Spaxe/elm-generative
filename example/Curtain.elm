@@ -45,14 +45,14 @@ view model =
                     mapList ((*) 0.5) b
                         |> accumulateList
             in
-            a4Landscape
-                []
-                (initialiseLines 100
-                    |> List.map2 (map2First (+)) dxs
-                    |> List.map2 (map2Second (+)) dys
-                    |> List.map (translateList 40 30)
-                    |> paths
-                )
+                a4Landscape
+                    []
+                    (initialiseLines 100
+                        |> List.map2 (map2First (+)) dxs
+                        |> List.map2 (map2Second (+)) dys
+                        |> List.map (translateList 40 30)
+                        |> List.map Draw.lines
+                    )
 
         _ ->
             text ""

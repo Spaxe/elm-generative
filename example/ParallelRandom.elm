@@ -54,8 +54,8 @@ setup (Configuration n segments gap _) =
         line y =
             makePath segments 0 y 110 y
     in
-    List.map line <|
-        List.Extra.initialize n (toFloat << (*) gap)
+        List.map line <|
+            List.Extra.initialize n (toFloat << (*) gap)
 
 
 
@@ -76,9 +76,9 @@ view model =
                 transformed =
                     List.map2 (map2Second (+)) randomValues data
             in
-            a4Landscape
-                []
-                (paths <| List.map (translateList 90 50) transformed)
+                a4Landscape
+                    []
+                    (List.map Draw.lines <| List.map (translateList 90 50) transformed)
 
         _ ->
             text ""

@@ -64,7 +64,7 @@ view model =
             in
                 a4Landscape
                     []
-                    [ g [] (paths <| List.map (translateList 148 105) transformed)
+                    [ g [] (List.map Draw.lines <| List.map (translateList 148 105) transformed)
                     ]
 
         _ ->
