@@ -1,4 +1,4 @@
-module Example.Turtle exposing (..)
+module Example.HilbertCurve exposing (..)
 
 import Draw exposing (..)
 import LSystem
@@ -17,11 +17,16 @@ type Configuration
     = Configuration ( Float, Float ) Float
 
 
+{-| See <https://en.wikipedia.org/wiki/Hilbert_curve#Representation_as_Lindenmayer_system>
+-}
 rule : LSystem.Rule State
 rule state =
     case state of
-        D ->
-            [ D, D, R, D, L, D, R, D, R, D, D ]
+        A ->
+            [ R, B, D, L, A, D, A, L, D, B, R ]
+
+        B ->
+            [ L, A, D, R, B, D, B, R, D, A, L ]
 
         s ->
             [ s ]
@@ -34,7 +39,7 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Iterate (Model 4 [ D, R, D, R, D, R, D ])
+    update Iterate (Model 6 [ A ])
 
 
 draw : Model -> Configuration -> Svg Msg
@@ -53,7 +58,7 @@ view model =
             a4Landscape
                 []
                 [ g
-                    [ transform <| Draw.translate 125 70 ++ Draw.scale 2 ]
+                    [ transform <| Draw.translate 80 30 ++ Draw.scale 2 ]
                     [ draw model (Configuration ( 0, 0 ) 0) ]
                 ]
 

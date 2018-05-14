@@ -9,6 +9,7 @@ port module Main exposing (main)
 import Example.Grid as Grid
 import Example.Crescent as Crescent
 import Example.Turtle as Turtle
+import Example.HilbertCurve as HilbertCurve
 import Example.Curtain as Curtain
 import Example.Landscape as Landscape
 import Example.ParallelRandom as ParallelRandom
@@ -46,6 +47,44 @@ import UrlParser
 -- MODEL --
 
 
+type Action
+    = RaiseLowerPen
+    | DisableMotor
+    | Print
+    | Download
+
+
+type Route
+    = Crescent (Maybe Crescent.Model)
+    | Grid (Maybe Grid.Model)
+    | Curtain (Maybe Curtain.Model)
+    | Landscape (Maybe Landscape.Model)
+    | ParallelRandom (Maybe ParallelRandom.Model)
+    | Sun (Maybe Sun.Model)
+    | Turtle (Maybe Turtle.Model)
+    | HilbertCurve (Maybe HilbertCurve.Model)
+
+
+type alias Model =
+    { route : Route
+    , status : Maybe String
+    }
+
+
+type Msg
+    = NavigateTo Location
+    | Menu Action
+    | PlotterStatus String
+    | CrescentMsg Crescent.Msg
+    | GridMsg Grid.Msg
+    | CurtainMsg Curtain.Msg
+    | LandscapeMsg Landscape.Msg
+    | ParallelRandomMsg ParallelRandom.Msg
+    | SunMsg Sun.Msg
+    | TurtleMsg Turtle.Msg
+    | HilbertCurveMsg HilbertCurve.Msg
+
+
 init : Location -> ( Model, Cmd Msg )
 init location =
     let
@@ -78,48 +117,16 @@ init location =
                 Turtle _ ->
                     Turtle.init
                         |> mapTuple2 (Turtle << Just) (Cmd.map TurtleMsg)
+
+                HilbertCurve _ ->
+                    HilbertCurve.init
+                        |> mapTuple2 (HilbertCurve << Just) (Cmd.map HilbertCurveMsg)
     in
         ( { route = first routeMsg
           , status = Nothing
           }
         , second routeMsg
         )
-
-
-type Msg
-    = NavigateTo Location
-    | Menu Action
-    | PlotterStatus String
-    | CrescentMsg Crescent.Msg
-    | GridMsg Grid.Msg
-    | CurtainMsg Curtain.Msg
-    | LandscapeMsg Landscape.Msg
-    | ParallelRandomMsg ParallelRandom.Msg
-    | SunMsg Sun.Msg
-    | TurtleMsg Turtle.Msg
-
-
-type Action
-    = RaiseLowerPen
-    | DisableMotor
-    | Print
-    | Download
-
-
-type Route
-    = Crescent (Maybe Crescent.Model)
-    | Grid (Maybe Grid.Model)
-    | Curtain (Maybe Curtain.Model)
-    | Landscape (Maybe Landscape.Model)
-    | ParallelRandom (Maybe ParallelRandom.Model)
-    | Sun (Maybe Sun.Model)
-    | Turtle (Maybe Turtle.Model)
-
-
-type alias Model =
-    { route : Route
-    , status : Maybe String
-    }
 
 
 
@@ -141,7 +148,8 @@ view model =
             , a [ href "/#landscape" ] [ text "Landscape" ]
             , a [ href "/#sun" ] [ text "Sun" ]
             , p [] [ text "L-Systems" ]
-            , a [ href "/#turtle" ] [ text "Test" ]
+            , a [ href "/#turtle" ] [ text "Rectangles" ]
+            , a [ href "/#hilbert-curve" ] [ text "Hilbert Curve" ]
             ]
         , article
             []
@@ -207,6 +215,10 @@ render route =
             Turtle.view pageModel
                 |> Html.map TurtleMsg
 
+        HilbertCurve (Just pageModel) ->
+            HilbertCurve.view pageModel
+                |> Html.map HilbertCurveMsg
+
         _ ->
             text "404 Not Found"
 
@@ -270,6 +282,10 @@ update msg model =
                             Turtle.update pageMsg pageModel
                                 |> mapTuple2 (Turtle << Just) (Cmd.map TurtleMsg)
 
+                        ( HilbertCurveMsg pageMsg, HilbertCurve (Just pageModel) ) ->
+                            HilbertCurve.update pageMsg pageModel
+                                |> mapTuple2 (HilbertCurve << Just) (Cmd.map HilbertCurveMsg)
+
                         _ ->
                             ( route, Cmd.none )
             in
@@ -331,6 +347,7 @@ matchers =
         , UrlParser.map (Landscape Nothing) (s "landscape")
         , UrlParser.map (Sun Nothing) (s "sun")
         , UrlParser.map (Turtle Nothing) (s "turtle")
+        , UrlParser.map (HilbertCurve Nothing) (s "hilbert-curve")
         ]
 
 
