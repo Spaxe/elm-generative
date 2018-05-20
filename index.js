@@ -16156,8 +16156,8 @@ var _creative$elm_generative$Example_Curtain$update = F2(
 								A3(
 									_elm_lang$core$Random$map2,
 									_creative$elm_generative$Example_Curtain$Curtain,
-									A2(_creative$elm_generative$Generative$randomList2, _p3, 200),
-									A2(_creative$elm_generative$Generative$randomList2, _p3, 200)))
+									A2(_creative$elm_generative$Generative$randomList2, _p3, 100),
+									A2(_creative$elm_generative$Generative$randomList2, _p3, 100)))
 						};
 					} else {
 						break _v1_2;

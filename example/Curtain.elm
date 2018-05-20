@@ -68,8 +68,8 @@ update msg model =
             ( model
             , Random.generate Draw <|
                 Random.map2 Curtain
-                    (randomList2 n 200)
-                    (randomList2 n 200)
+                    (randomList2 n 100)
+                    (randomList2 n 100)
             )
 
         ( Draw data, Setup n ) ->
