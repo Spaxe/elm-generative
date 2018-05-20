@@ -37,9 +37,7 @@ init =
 
 setup : Configuration -> List Line
 setup (Configuration m n _) =
-    List.map
-        (\_ -> ( ( -0.5, -0.5 ), ( 0.5, 0.5 ) ))
-        (List.range 0 (m * n - 1))
+    List.repeat (m * n) ( ( -0.5, -0.5 ), ( 0.5, 0.5 ) )
 
 
 draw : Model -> List Line -> List (Svg Msg)
@@ -52,7 +50,7 @@ draw model start =
                 90
     in
     case model of
-        Model (Configuration m n size) (Grid x) ->
+        Model (Configuration m n size) (Grid rs) ->
             List.map3
                 (\( ( x1, y1 ), ( x2, y2 ) ) r ( dx, dy ) ->
                     g
@@ -65,7 +63,7 @@ draw model start =
                         [ line x1 y1 x2 y2 ]
                 )
                 start
-                x
+                rs
                 (makeGrid m n)
 
         _ ->

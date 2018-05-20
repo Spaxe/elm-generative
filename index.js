@@ -16228,19 +16228,17 @@ var _creative$elm_generative$Example_Grid$draw = F2(
 var _creative$elm_generative$Example_Grid$setup = function (_p6) {
 	var _p7 = _p6;
 	return A2(
-		_elm_lang$core$List$map,
-		function (_p8) {
-			return {
-				ctor: '_Tuple2',
-				_0: {ctor: '_Tuple2', _0: -0.5, _1: -0.5},
-				_1: {ctor: '_Tuple2', _0: 0.5, _1: 0.5}
-			};
-		},
-		A2(_elm_lang$core$List$range, 0, (_p7._0 * _p7._1) - 1));
+		_elm_lang$core$List$repeat,
+		_p7._0 * _p7._1,
+		{
+			ctor: '_Tuple2',
+			_0: {ctor: '_Tuple2', _0: -0.5, _1: -0.5},
+			_1: {ctor: '_Tuple2', _0: 0.5, _1: 0.5}
+		});
 };
 var _creative$elm_generative$Example_Grid$view = function (model) {
-	var _p9 = model;
-	if (_p9.ctor === 'Model') {
+	var _p8 = model;
+	if (_p8.ctor === 'Model') {
 		return A2(
 			_creative$elm_generative$Draw$a4Landscape,
 			{ctor: '[]'},
@@ -16257,7 +16255,7 @@ var _creative$elm_generative$Example_Grid$view = function (model) {
 					A2(
 						_creative$elm_generative$Example_Grid$draw,
 						model,
-						_creative$elm_generative$Example_Grid$setup(_p9._0))),
+						_creative$elm_generative$Example_Grid$setup(_p8._0))),
 				_1: {ctor: '[]'}
 			});
 	} else {
@@ -16283,12 +16281,12 @@ var _creative$elm_generative$Example_Grid$Draw = function (a) {
 };
 var _creative$elm_generative$Example_Grid$update = F2(
 	function (msg, model) {
-		var _p10 = {ctor: '_Tuple2', _0: msg, _1: model};
+		var _p9 = {ctor: '_Tuple2', _0: msg, _1: model};
 		_v5_2:
 		do {
-			if (_p10.ctor === '_Tuple2') {
-				if (_p10._0.ctor === 'Generate') {
-					if (_p10._1.ctor === 'Setup') {
+			if (_p9.ctor === '_Tuple2') {
+				if (_p9._0.ctor === 'Generate') {
+					if (_p9._1.ctor === 'Setup') {
 						return {
 							ctor: '_Tuple2',
 							_0: model,
@@ -16298,16 +16296,16 @@ var _creative$elm_generative$Example_Grid$update = F2(
 								A2(
 									_elm_lang$core$Random$map,
 									_creative$elm_generative$Example_Grid$Grid,
-									_creative$elm_generative$Generative$randomList(_p10._1._0._0 * _p10._1._0._1)))
+									_creative$elm_generative$Generative$randomList(_p9._1._0._0 * _p9._1._0._1)))
 						};
 					} else {
 						break _v5_2;
 					}
 				} else {
-					if (_p10._1.ctor === 'Setup') {
+					if (_p9._1.ctor === 'Setup') {
 						return {
 							ctor: '_Tuple2',
-							_0: A2(_creative$elm_generative$Example_Grid$Model, _p10._1._0, _p10._0._0),
+							_0: A2(_creative$elm_generative$Example_Grid$Model, _p9._1._0, _p9._0._0),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
