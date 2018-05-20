@@ -6,14 +6,15 @@ port module Main exposing (main)
 
 -}
 
-import Example.Grid as Grid
 import Example.Crescent as Crescent
-import Example.Turtle as Turtle
-import Example.HilbertCurve as HilbertCurve
 import Example.Curtain as Curtain
+import Example.Grid as Grid
+import Example.HilbertCurve as HilbertCurve
 import Example.Landscape as Landscape
 import Example.ParallelRandom as ParallelRandom
+import Example.Rectangles as Rectangles
 import Example.Sun as Sun
+import Generative exposing (..)
 import Html
     exposing
         ( Html
@@ -31,7 +32,6 @@ import Html
 import Html.Attributes exposing (class, href, id, style, type_)
 import Html.Events exposing (onClick)
 import Json.Decode exposing (decodeString, field, string)
-import Generative exposing (..)
 import Navigation exposing (Location)
 import Tuple exposing (first, mapFirst, mapSecond, second)
 import UrlParser
@@ -61,7 +61,7 @@ type Route
     | Landscape (Maybe Landscape.Model)
     | ParallelRandom (Maybe ParallelRandom.Model)
     | Sun (Maybe Sun.Model)
-    | Turtle (Maybe Turtle.Model)
+    | Rectangles (Maybe Rectangles.Model)
     | HilbertCurve (Maybe HilbertCurve.Model)
 
 
@@ -81,7 +81,7 @@ type Msg
     | LandscapeMsg Landscape.Msg
     | ParallelRandomMsg ParallelRandom.Msg
     | SunMsg Sun.Msg
-    | TurtleMsg Turtle.Msg
+    | RectanglesMsg Rectangles.Msg
     | HilbertCurveMsg HilbertCurve.Msg
 
 
@@ -114,19 +114,19 @@ init location =
                     Sun.init
                         |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
 
-                Turtle _ ->
-                    Turtle.init
-                        |> mapTuple2 (Turtle << Just) (Cmd.map TurtleMsg)
+                Rectangles _ ->
+                    Rectangles.init
+                        |> mapTuple2 (Rectangles << Just) (Cmd.map RectanglesMsg)
 
                 HilbertCurve _ ->
                     HilbertCurve.init
                         |> mapTuple2 (HilbertCurve << Just) (Cmd.map HilbertCurveMsg)
     in
-        ( { route = first routeMsg
-          , status = Nothing
-          }
-        , second routeMsg
-        )
+    ( { route = first routeMsg
+      , status = Nothing
+      }
+    , second routeMsg
+    )
 
 
 
@@ -148,7 +148,7 @@ view model =
             , a [ href "/#landscape" ] [ text "Landscape" ]
             , a [ href "/#sun" ] [ text "Sun" ]
             , p [] [ text "L-Systems" ]
-            , a [ href "/#turtle" ] [ text "Rectangles" ]
+            , a [ href "/#rectangles" ] [ text "Rectangles" ]
             , a [ href "/#hilbert-curve" ] [ text "Hilbert Curve" ]
             ]
         , article
@@ -211,9 +211,9 @@ render route =
             Sun.view pageModel
                 |> Html.map SunMsg
 
-        Turtle (Just pageModel) ->
-            Turtle.view pageModel
-                |> Html.map TurtleMsg
+        Rectangles (Just pageModel) ->
+            Rectangles.view pageModel
+                |> Html.map RectanglesMsg
 
         HilbertCurve (Just pageModel) ->
             HilbertCurve.view pageModel
@@ -278,9 +278,9 @@ update msg model =
                             Sun.update pageMsg pageModel
                                 |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
 
-                        ( TurtleMsg pageMsg, Turtle (Just pageModel) ) ->
-                            Turtle.update pageMsg pageModel
-                                |> mapTuple2 (Turtle << Just) (Cmd.map TurtleMsg)
+                        ( RectanglesMsg pageMsg, Rectangles (Just pageModel) ) ->
+                            Rectangles.update pageMsg pageModel
+                                |> mapTuple2 (Rectangles << Just) (Cmd.map RectanglesMsg)
 
                         ( HilbertCurveMsg pageMsg, HilbertCurve (Just pageModel) ) ->
                             HilbertCurve.update pageMsg pageModel
@@ -289,7 +289,7 @@ update msg model =
                         _ ->
                             ( route, Cmd.none )
             in
-                ( { model | route = first routeMsg }, Cmd.none )
+            ( { model | route = first routeMsg }, Cmd.none )
 
 
 decodePlotterStatus : String -> String
@@ -346,7 +346,7 @@ matchers =
         , UrlParser.map (Curtain Nothing) (s "curtain")
         , UrlParser.map (Landscape Nothing) (s "landscape")
         , UrlParser.map (Sun Nothing) (s "sun")
-        , UrlParser.map (Turtle Nothing) (s "turtle")
+        , UrlParser.map (Rectangles Nothing) (s "rectangles")
         , UrlParser.map (HilbertCurve Nothing) (s "hilbert-curve")
         ]
 

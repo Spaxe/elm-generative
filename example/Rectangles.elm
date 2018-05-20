@@ -1,12 +1,12 @@
-module Example.Turtle exposing (..)
+module Example.Rectangles exposing (..)
 
 import Draw exposing (..)
+import Html exposing (Html, text)
 import LSystem
 import LSystem.Turtle exposing (State(..), turtle)
-import Svg.PathD as PathD exposing (d_)
 import Svg exposing (Svg)
 import Svg.Attributes exposing (transform)
-import Html exposing (Html, text)
+import Svg.PathD as PathD exposing (d_)
 
 
 type Model
@@ -29,12 +29,11 @@ rule state =
 
 type Msg
     = Iterate
-    | Draw
 
 
 init : ( Model, Cmd Msg )
 init =
-    update Iterate (Model 4 [ D, R, D, R, D, R, D ])
+    update Iterate (Model 3 [ D, R, D, R, D, R, D ])
 
 
 draw : Model -> Configuration -> Svg Msg
@@ -53,7 +52,7 @@ view model =
             a4Landscape
                 []
                 [ g
-                    [ transform <| Draw.translate 125 70 ++ Draw.scale 2 ]
+                    [ transform <| Draw.translate 150 100 ++ Draw.scale 2 ]
                     [ draw model (Configuration ( 0, 0 ) 0) ]
                 ]
 
@@ -68,7 +67,4 @@ update msg model =
                         Model (n - 1) (LSystem.apply rule state)
 
                 False ->
-                    update Draw model
-
-        ( Draw, model ) ->
-            ( model, Cmd.none )
+                    ( model, Cmd.none )

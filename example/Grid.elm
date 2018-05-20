@@ -3,9 +3,9 @@ module Example.Grid exposing (..)
 import Draw exposing (..)
 import Generative exposing (..)
 import Html exposing (Html, div, text)
+import Random
 import Svg exposing (Svg)
 import Svg.Attributes exposing (transform)
-import Random
 
 
 type Model
@@ -32,7 +32,7 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Setup <| Configuration 16 16 1)
+    update Generate (Setup <| Configuration 16 16 10)
 
 
 setup : Configuration -> List Line
@@ -50,29 +50,26 @@ draw model start =
                 0
             else
                 90
-
-        s =
-            10
     in
-        case model of
-            Model (Configuration m n size) (Grid x) ->
-                List.map3
-                    (\( ( x1, y1 ), ( x2, y2 ) ) r ( dx, dy ) ->
-                        g
-                            [ transform <|
-                                (Draw.scale s)
-                                    ++ (Draw.translate dx dy)
-                                    ++ (Draw.rotate (flip r))
-                            , Svg.Attributes.style <| strokeWidth (0.5 / s)
-                            ]
-                            [ line x1 y1 x2 y2 ]
-                    )
-                    start
-                    x
-                    (makeGrid m n)
+    case model of
+        Model (Configuration m n size) (Grid x) ->
+            List.map3
+                (\( ( x1, y1 ), ( x2, y2 ) ) r ( dx, dy ) ->
+                    g
+                        [ transform <|
+                            Draw.scale size
+                                ++ Draw.translate dx dy
+                                ++ Draw.rotate (flip r)
+                        , Svg.Attributes.style <| strokeWidth (0.5 / size)
+                        ]
+                        [ line x1 y1 x2 y2 ]
+                )
+                start
+                x
+                (makeGrid m n)
 
-            _ ->
-                []
+        _ ->
+            []
 
 
 view : Model -> Html Msg

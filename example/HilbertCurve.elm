@@ -1,12 +1,12 @@
 module Example.HilbertCurve exposing (..)
 
 import Draw exposing (..)
+import Html exposing (Html, text)
 import LSystem
 import LSystem.Turtle exposing (State(..), turtle)
-import Svg.PathD as PathD exposing (d_)
 import Svg exposing (Svg)
 import Svg.Attributes exposing (transform)
-import Html exposing (Html, text)
+import Svg.PathD as PathD exposing (d_)
 
 
 type Model
@@ -39,7 +39,7 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Iterate (Model 6 [ A ])
+    update Iterate (Model 4 [ A ])
 
 
 draw : Model -> Configuration -> Svg Msg
@@ -58,7 +58,7 @@ view model =
             a4Landscape
                 []
                 [ g
-                    [ transform <| Draw.translate 80 30 ++ Draw.scale 2 ]
+                    [ transform <| Draw.translate 120 70 ++ Draw.scale 2 ]
                     [ draw model (Configuration ( 0, 0 ) 0) ]
                 ]
 

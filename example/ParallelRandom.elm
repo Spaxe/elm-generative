@@ -8,6 +8,7 @@ import Generative exposing (..)
 import Html exposing (Html, div, text)
 import List.Extra
 import Random
+import Svg.Attributes exposing (transform)
 
 
 -- Model contains the generative/random element
@@ -54,8 +55,8 @@ setup (Configuration n segments gap _) =
         line y =
             makePath segments 0 y 110 y
     in
-        List.map line <|
-            List.Extra.initialize n (toFloat << (*) gap)
+    List.map line <|
+        List.Extra.initialize n (toFloat << (*) gap)
 
 
 
@@ -76,9 +77,11 @@ view model =
                 transformed =
                     List.map2 (map2Second (+)) randomValues data
             in
-                a4Landscape
-                    []
-                    (List.map Draw.lines <| List.map (translateList 90 50) transformed)
+            a4Landscape
+                []
+                [ g [ transform <| Draw.translate 90 50 ]
+                    (List.map Draw.lines transformed)
+                ]
 
         _ ->
             text ""

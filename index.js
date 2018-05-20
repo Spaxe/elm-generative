@@ -16180,12 +16180,12 @@ var _creative$elm_generative$Example_Curtain$init = A2(
 
 var _creative$elm_generative$Example_Grid$draw = F2(
 	function (model, start) {
-		var s = 10;
 		var flip = function (r) {
 			return (_elm_lang$core$Native_Utils.cmp(r, 0) > 0) ? 0 : 90;
 		};
 		var _p0 = model;
 		if (_p0.ctor === 'Model') {
+			var _p5 = _p0._0._2;
 			return A4(
 				_elm_lang$core$List$map3,
 				F3(
@@ -16199,7 +16199,7 @@ var _creative$elm_generative$Example_Grid$draw = F2(
 								_0: _elm_lang$svg$Svg_Attributes$transform(
 									A2(
 										_elm_lang$core$Basics_ops['++'],
-										_creative$elm_generative$Draw$scale(s),
+										_creative$elm_generative$Draw$scale(_p5),
 										A2(
 											_elm_lang$core$Basics_ops['++'],
 											A2(_creative$elm_generative$Draw$translate, _p4._0, _p4._1),
@@ -16208,7 +16208,7 @@ var _creative$elm_generative$Example_Grid$draw = F2(
 								_1: {
 									ctor: '::',
 									_0: _elm_lang$svg$Svg_Attributes$style(
-										_creative$elm_generative$Draw$strokeWidth(0.5 / s)),
+										_creative$elm_generative$Draw$strokeWidth(0.5 / _p5)),
 									_1: {ctor: '[]'}
 								}
 							},
@@ -16225,22 +16225,22 @@ var _creative$elm_generative$Example_Grid$draw = F2(
 			return {ctor: '[]'};
 		}
 	});
-var _creative$elm_generative$Example_Grid$setup = function (_p5) {
-	var _p6 = _p5;
+var _creative$elm_generative$Example_Grid$setup = function (_p6) {
+	var _p7 = _p6;
 	return A2(
 		_elm_lang$core$List$map,
-		function (_p7) {
+		function (_p8) {
 			return {
 				ctor: '_Tuple2',
 				_0: {ctor: '_Tuple2', _0: -0.5, _1: -0.5},
 				_1: {ctor: '_Tuple2', _0: 0.5, _1: 0.5}
 			};
 		},
-		A2(_elm_lang$core$List$range, 0, (_p6._0 * _p6._1) - 1));
+		A2(_elm_lang$core$List$range, 0, (_p7._0 * _p7._1) - 1));
 };
 var _creative$elm_generative$Example_Grid$view = function (model) {
-	var _p8 = model;
-	if (_p8.ctor === 'Model') {
+	var _p9 = model;
+	if (_p9.ctor === 'Model') {
 		return A2(
 			_creative$elm_generative$Draw$a4Landscape,
 			{ctor: '[]'},
@@ -16257,7 +16257,7 @@ var _creative$elm_generative$Example_Grid$view = function (model) {
 					A2(
 						_creative$elm_generative$Example_Grid$draw,
 						model,
-						_creative$elm_generative$Example_Grid$setup(_p8._0))),
+						_creative$elm_generative$Example_Grid$setup(_p9._0))),
 				_1: {ctor: '[]'}
 			});
 	} else {
@@ -16283,12 +16283,12 @@ var _creative$elm_generative$Example_Grid$Draw = function (a) {
 };
 var _creative$elm_generative$Example_Grid$update = F2(
 	function (msg, model) {
-		var _p9 = {ctor: '_Tuple2', _0: msg, _1: model};
+		var _p10 = {ctor: '_Tuple2', _0: msg, _1: model};
 		_v5_2:
 		do {
-			if (_p9.ctor === '_Tuple2') {
-				if (_p9._0.ctor === 'Generate') {
-					if (_p9._1.ctor === 'Setup') {
+			if (_p10.ctor === '_Tuple2') {
+				if (_p10._0.ctor === 'Generate') {
+					if (_p10._1.ctor === 'Setup') {
 						return {
 							ctor: '_Tuple2',
 							_0: model,
@@ -16298,16 +16298,16 @@ var _creative$elm_generative$Example_Grid$update = F2(
 								A2(
 									_elm_lang$core$Random$map,
 									_creative$elm_generative$Example_Grid$Grid,
-									_creative$elm_generative$Generative$randomList(_p9._1._0._0 * _p9._1._0._1)))
+									_creative$elm_generative$Generative$randomList(_p10._1._0._0 * _p10._1._0._1)))
 						};
 					} else {
 						break _v5_2;
 					}
 				} else {
-					if (_p9._1.ctor === 'Setup') {
+					if (_p10._1.ctor === 'Setup') {
 						return {
 							ctor: '_Tuple2',
-							_0: A2(_creative$elm_generative$Example_Grid$Model, _p9._1._0, _p9._0._0),
+							_0: A2(_creative$elm_generative$Example_Grid$Model, _p10._1._0, _p10._0._0),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
@@ -16325,7 +16325,7 @@ var _creative$elm_generative$Example_Grid$init = A2(
 	_creative$elm_generative$Example_Grid$update,
 	_creative$elm_generative$Example_Grid$Generate,
 	_creative$elm_generative$Example_Grid$Setup(
-		A3(_creative$elm_generative$Example_Grid$Configuration, 16, 16, 1)));
+		A3(_creative$elm_generative$Example_Grid$Configuration, 16, 16, 10)));
 
 var _creative$elm_generative$Example_HilbertCurve$draw = F2(
 	function (_p1, _p0) {
@@ -16478,7 +16478,7 @@ var _creative$elm_generative$Example_HilbertCurve$view = function (model) {
 					_0: _elm_lang$svg$Svg_Attributes$transform(
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							A2(_creative$elm_generative$Draw$translate, 80, 30),
+							A2(_creative$elm_generative$Draw$translate, 120, 70),
 							_creative$elm_generative$Draw$scale(2))),
 					_1: {ctor: '[]'}
 				},
@@ -16532,7 +16532,7 @@ var _creative$elm_generative$Example_HilbertCurve$init = A2(
 	_creative$elm_generative$Example_HilbertCurve$Iterate,
 	A2(
 		_creative$elm_generative$Example_HilbertCurve$Model,
-		6,
+		4,
 		{
 			ctor: '::',
 			_0: _Spaxe$elm_lsystem$LSystem_Turtle$A,
@@ -16731,13 +16731,19 @@ var _creative$elm_generative$Example_ParallelRandom$view = function (model) {
 		return A2(
 			_creative$elm_generative$Draw$a4Landscape,
 			{ctor: '[]'},
-			A2(
-				_elm_lang$core$List$map,
-				_creative$elm_generative$Draw$lines,
-				A2(
-					_elm_lang$core$List$map,
-					A2(_creative$elm_generative$Generative$translateList, 90, 50),
-					transformed)));
+			{
+				ctor: '::',
+				_0: A2(
+					_creative$elm_generative$Draw$g,
+					{
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$transform(
+							A2(_creative$elm_generative$Draw$translate, 90, 50)),
+						_1: {ctor: '[]'}
+					},
+					A2(_elm_lang$core$List$map, _creative$elm_generative$Draw$lines, transformed)),
+				_1: {ctor: '[]'}
+			});
 	} else {
 		return _elm_lang$html$Html$text('');
 	}
@@ -16787,6 +16793,186 @@ var _creative$elm_generative$Example_ParallelRandom$init = A2(
 	_creative$elm_generative$Example_ParallelRandom$Generate,
 	_creative$elm_generative$Example_ParallelRandom$Setup(
 		A4(_creative$elm_generative$Example_ParallelRandom$Configuration, 10, 100, 10, 10)));
+
+var _creative$elm_generative$Example_Rectangles$draw = F2(
+	function (_p1, _p0) {
+		var _p2 = _p1;
+		var _p3 = _p0;
+		var _p4 = _p3._0;
+		return A2(
+			_elm_lang$svg$Svg$path,
+			{
+				ctor: '::',
+				_0: _Spaxe$svg_pathd$Svg_PathD$d_(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						{
+							ctor: '::',
+							_0: _Spaxe$svg_pathd$Svg_PathD$M(_p4),
+							_1: {ctor: '[]'}
+						},
+						A3(_Spaxe$elm_lsystem$LSystem_Turtle$turtle, _p2._1, _p4, _p3._1))),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$strokeWidth('0.2'),
+					_1: {ctor: '[]'}
+				}
+			},
+			{ctor: '[]'});
+	});
+var _creative$elm_generative$Example_Rectangles$rule = function (state) {
+	var _p5 = state;
+	if (_p5.ctor === 'D') {
+		return {
+			ctor: '::',
+			_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+			_1: {
+				ctor: '::',
+				_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+				_1: {
+					ctor: '::',
+					_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
+					_1: {
+						ctor: '::',
+						_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+						_1: {
+							ctor: '::',
+							_0: _Spaxe$elm_lsystem$LSystem_Turtle$L,
+							_1: {
+								ctor: '::',
+								_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+								_1: {
+									ctor: '::',
+									_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
+									_1: {
+										ctor: '::',
+										_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+										_1: {
+											ctor: '::',
+											_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
+											_1: {
+												ctor: '::',
+												_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+												_1: {
+													ctor: '::',
+													_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		};
+	} else {
+		return {
+			ctor: '::',
+			_0: _p5,
+			_1: {ctor: '[]'}
+		};
+	}
+};
+var _creative$elm_generative$Example_Rectangles$Model = F2(
+	function (a, b) {
+		return {ctor: 'Model', _0: a, _1: b};
+	});
+var _creative$elm_generative$Example_Rectangles$Configuration = F2(
+	function (a, b) {
+		return {ctor: 'Configuration', _0: a, _1: b};
+	});
+var _creative$elm_generative$Example_Rectangles$view = function (model) {
+	var _p6 = model;
+	return A2(
+		_creative$elm_generative$Draw$a4Landscape,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_creative$elm_generative$Draw$g,
+				{
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$transform(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A2(_creative$elm_generative$Draw$translate, 150, 100),
+							_creative$elm_generative$Draw$scale(2))),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_creative$elm_generative$Example_Rectangles$draw,
+						model,
+						A2(
+							_creative$elm_generative$Example_Rectangles$Configuration,
+							{ctor: '_Tuple2', _0: 0, _1: 0},
+							0)),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
+var _creative$elm_generative$Example_Rectangles$Iterate = {ctor: 'Iterate'};
+var _creative$elm_generative$Example_Rectangles$update = F2(
+	function (msg, model) {
+		update:
+		while (true) {
+			var _p7 = {ctor: '_Tuple2', _0: msg, _1: model};
+			var _p9 = _p7._1._0;
+			var _p8 = _elm_lang$core$Native_Utils.cmp(_p9, 0) > 0;
+			if (_p8 === true) {
+				var _v6 = _creative$elm_generative$Example_Rectangles$Iterate,
+					_v7 = A2(
+					_creative$elm_generative$Example_Rectangles$Model,
+					_p9 - 1,
+					A2(_Spaxe$elm_lsystem$LSystem$apply, _creative$elm_generative$Example_Rectangles$rule, _p7._1._1));
+				msg = _v6;
+				model = _v7;
+				continue update;
+			} else {
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			}
+		}
+	});
+var _creative$elm_generative$Example_Rectangles$init = A2(
+	_creative$elm_generative$Example_Rectangles$update,
+	_creative$elm_generative$Example_Rectangles$Iterate,
+	A2(
+		_creative$elm_generative$Example_Rectangles$Model,
+		3,
+		{
+			ctor: '::',
+			_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+			_1: {
+				ctor: '::',
+				_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
+				_1: {
+					ctor: '::',
+					_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+					_1: {
+						ctor: '::',
+						_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
+						_1: {
+							ctor: '::',
+							_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+							_1: {
+								ctor: '::',
+								_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
+								_1: {
+									ctor: '::',
+									_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}
+		}));
 
 var _creative$elm_generative$Example_Sun$initialiseLines = function (_p0) {
 	var _p1 = _p0;
@@ -16923,195 +17109,6 @@ var _creative$elm_generative$Example_Sun$init = A2(
 	_creative$elm_generative$Example_Sun$Generate,
 	_creative$elm_generative$Example_Sun$Setup(
 		A4(_creative$elm_generative$Example_Sun$Configuration, 128, 128, 25, 60)));
-
-var _creative$elm_generative$Example_Turtle$draw = F2(
-	function (_p1, _p0) {
-		var _p2 = _p1;
-		var _p3 = _p0;
-		var _p4 = _p3._0;
-		return A2(
-			_elm_lang$svg$Svg$path,
-			{
-				ctor: '::',
-				_0: _Spaxe$svg_pathd$Svg_PathD$d_(
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						{
-							ctor: '::',
-							_0: _Spaxe$svg_pathd$Svg_PathD$M(_p4),
-							_1: {ctor: '[]'}
-						},
-						A3(_Spaxe$elm_lsystem$LSystem_Turtle$turtle, _p2._1, _p4, _p3._1))),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$strokeWidth('0.2'),
-					_1: {ctor: '[]'}
-				}
-			},
-			{ctor: '[]'});
-	});
-var _creative$elm_generative$Example_Turtle$rule = function (state) {
-	var _p5 = state;
-	if (_p5.ctor === 'D') {
-		return {
-			ctor: '::',
-			_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-			_1: {
-				ctor: '::',
-				_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-				_1: {
-					ctor: '::',
-					_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
-					_1: {
-						ctor: '::',
-						_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-						_1: {
-							ctor: '::',
-							_0: _Spaxe$elm_lsystem$LSystem_Turtle$L,
-							_1: {
-								ctor: '::',
-								_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-								_1: {
-									ctor: '::',
-									_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
-									_1: {
-										ctor: '::',
-										_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-										_1: {
-											ctor: '::',
-											_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
-											_1: {
-												ctor: '::',
-												_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-												_1: {
-													ctor: '::',
-													_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-													_1: {ctor: '[]'}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		};
-	} else {
-		return {
-			ctor: '::',
-			_0: _p5,
-			_1: {ctor: '[]'}
-		};
-	}
-};
-var _creative$elm_generative$Example_Turtle$Model = F2(
-	function (a, b) {
-		return {ctor: 'Model', _0: a, _1: b};
-	});
-var _creative$elm_generative$Example_Turtle$Configuration = F2(
-	function (a, b) {
-		return {ctor: 'Configuration', _0: a, _1: b};
-	});
-var _creative$elm_generative$Example_Turtle$view = function (model) {
-	var _p6 = model;
-	return A2(
-		_creative$elm_generative$Draw$a4Landscape,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_creative$elm_generative$Draw$g,
-				{
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$transform(
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							A2(_creative$elm_generative$Draw$translate, 125, 70),
-							_creative$elm_generative$Draw$scale(2))),
-					_1: {ctor: '[]'}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_creative$elm_generative$Example_Turtle$draw,
-						model,
-						A2(
-							_creative$elm_generative$Example_Turtle$Configuration,
-							{ctor: '_Tuple2', _0: 0, _1: 0},
-							0)),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
-		});
-};
-var _creative$elm_generative$Example_Turtle$Draw = {ctor: 'Draw'};
-var _creative$elm_generative$Example_Turtle$Iterate = {ctor: 'Iterate'};
-var _creative$elm_generative$Example_Turtle$update = F2(
-	function (msg, model) {
-		update:
-		while (true) {
-			var _p7 = {ctor: '_Tuple2', _0: msg, _1: model};
-			if (_p7._0.ctor === 'Iterate') {
-				var _p9 = _p7._1._0;
-				var _p8 = _elm_lang$core$Native_Utils.cmp(_p9, 0) > 0;
-				if (_p8 === true) {
-					var _v6 = _creative$elm_generative$Example_Turtle$Iterate,
-						_v7 = A2(
-						_creative$elm_generative$Example_Turtle$Model,
-						_p9 - 1,
-						A2(_Spaxe$elm_lsystem$LSystem$apply, _creative$elm_generative$Example_Turtle$rule, _p7._1._1));
-					msg = _v6;
-					model = _v7;
-					continue update;
-				} else {
-					var _v8 = _creative$elm_generative$Example_Turtle$Draw,
-						_v9 = model;
-					msg = _v8;
-					model = _v9;
-					continue update;
-				}
-			} else {
-				return {ctor: '_Tuple2', _0: _p7._1, _1: _elm_lang$core$Platform_Cmd$none};
-			}
-		}
-	});
-var _creative$elm_generative$Example_Turtle$init = A2(
-	_creative$elm_generative$Example_Turtle$update,
-	_creative$elm_generative$Example_Turtle$Iterate,
-	A2(
-		_creative$elm_generative$Example_Turtle$Model,
-		4,
-		{
-			ctor: '::',
-			_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-			_1: {
-				ctor: '::',
-				_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
-				_1: {
-					ctor: '::',
-					_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-					_1: {
-						ctor: '::',
-						_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
-						_1: {
-							ctor: '::',
-							_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-							_1: {
-								ctor: '::',
-								_0: _Spaxe$elm_lsystem$LSystem_Turtle$R,
-								_1: {
-									ctor: '::',
-									_0: _Spaxe$elm_lsystem$LSystem_Turtle$D,
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					}
-				}
-			}
-		}));
 
 var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
 var _elm_lang$html$Html_Events$targetChecked = A2(
@@ -18475,8 +18472,8 @@ var _creative$elm_generative$Main$RaiseLowerPen = {ctor: 'RaiseLowerPen'};
 var _creative$elm_generative$Main$HilbertCurve = function (a) {
 	return {ctor: 'HilbertCurve', _0: a};
 };
-var _creative$elm_generative$Main$Turtle = function (a) {
-	return {ctor: 'Turtle', _0: a};
+var _creative$elm_generative$Main$Rectangles = function (a) {
+	return {ctor: 'Rectangles', _0: a};
 };
 var _creative$elm_generative$Main$Sun = function (a) {
 	return {ctor: 'Sun', _0: a};
@@ -18543,8 +18540,8 @@ var _creative$elm_generative$Main$matchers = _evancz$url_parser$UrlParser$oneOf(
 									ctor: '::',
 									_0: A2(
 										_evancz$url_parser$UrlParser$map,
-										_creative$elm_generative$Main$Turtle(_elm_lang$core$Maybe$Nothing),
-										_evancz$url_parser$UrlParser$s('turtle')),
+										_creative$elm_generative$Main$Rectangles(_elm_lang$core$Maybe$Nothing),
+										_evancz$url_parser$UrlParser$s('rectangles')),
 									_1: {
 										ctor: '::',
 										_0: A2(
@@ -18572,8 +18569,8 @@ var _creative$elm_generative$Main$parseLocation = function (location) {
 var _creative$elm_generative$Main$HilbertCurveMsg = function (a) {
 	return {ctor: 'HilbertCurveMsg', _0: a};
 };
-var _creative$elm_generative$Main$TurtleMsg = function (a) {
-	return {ctor: 'TurtleMsg', _0: a};
+var _creative$elm_generative$Main$RectanglesMsg = function (a) {
+	return {ctor: 'RectanglesMsg', _0: a};
 };
 var _creative$elm_generative$Main$SunMsg = function (a) {
 	return {ctor: 'SunMsg', _0: a};
@@ -18651,15 +18648,15 @@ var _creative$elm_generative$Main$init = function (location) {
 					},
 					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$SunMsg),
 					_creative$elm_generative$Example_Sun$init);
-			case 'Turtle':
+			case 'Rectangles':
 				return A3(
 					_creative$elm_generative$Generative$mapTuple2,
 					function (_p9) {
-						return _creative$elm_generative$Main$Turtle(
+						return _creative$elm_generative$Main$Rectangles(
 							_elm_lang$core$Maybe$Just(_p9));
 					},
-					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$TurtleMsg),
-					_creative$elm_generative$Example_Turtle$init);
+					_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$RectanglesMsg),
+					_creative$elm_generative$Example_Rectangles$init);
 			default:
 				return A3(
 					_creative$elm_generative$Generative$mapTuple2,
@@ -18739,12 +18736,12 @@ var _creative$elm_generative$Main$render = function (route) {
 				} else {
 					break _v3_8;
 				}
-			case 'Turtle':
+			case 'Rectangles':
 				if (_p11._0.ctor === 'Just') {
 					return A2(
 						_elm_lang$html$Html$map,
-						_creative$elm_generative$Main$TurtleMsg,
-						_creative$elm_generative$Example_Turtle$view(_p11._0._0));
+						_creative$elm_generative$Main$RectanglesMsg,
+						_creative$elm_generative$Example_Rectangles$view(_p11._0._0));
 				} else {
 					break _v3_8;
 				}
@@ -18893,16 +18890,16 @@ var _creative$elm_generative$Main$update = F2(
 									} else {
 										break _v6_8;
 									}
-								case 'Turtle':
-									if ((_p14._0.ctor === 'TurtleMsg') && (_p14._1._0.ctor === 'Just')) {
+								case 'Rectangles':
+									if ((_p14._0.ctor === 'RectanglesMsg') && (_p14._1._0.ctor === 'Just')) {
 										return A3(
 											_creative$elm_generative$Generative$mapTuple2,
 											function (_p21) {
-												return _creative$elm_generative$Main$Turtle(
+												return _creative$elm_generative$Main$Rectangles(
 													_elm_lang$core$Maybe$Just(_p21));
 											},
-											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$TurtleMsg),
-											A2(_creative$elm_generative$Example_Turtle$update, _p14._0._0, _p14._1._0._0));
+											_elm_lang$core$Platform_Cmd$map(_creative$elm_generative$Main$RectanglesMsg),
+											A2(_creative$elm_generative$Example_Rectangles$update, _p14._0._0, _p14._1._0._0));
 									} else {
 										break _v6_8;
 									}
@@ -19080,7 +19077,7 @@ var _creative$elm_generative$Main$view = function (model) {
 															_elm_lang$html$Html$a,
 															{
 																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$href('/#turtle'),
+																_0: _elm_lang$html$Html_Attributes$href('/#rectangles'),
 																_1: {ctor: '[]'}
 															},
 															{
@@ -19265,7 +19262,7 @@ var _creative$elm_generative$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Curtain"],"Generate":[]}},"Example.HilbertCurve.Msg":{"args":[],"tags":{"Iterate":[],"Draw":[]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List (List Float)","List (List Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Grid.Grid":{"args":[],"tags":{"Grid":["List Float"]}},"Example.Sun.Sun":{"args":[],"tags":{"Sun":["List (List ( Float, Float ))"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Example.Sun.Msg":{"args":[],"tags":{"Draw":["Example.Sun.Sun"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.ParallelLines"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"CrescentMsg":["Example.Crescent.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"SunMsg":["Example.Sun.Msg"],"NavigateTo":["Navigation.Location"],"TurtleMsg":["Example.Turtle.Msg"],"HilbertCurveMsg":["Example.HilbertCurve.Msg"],"GridMsg":["Example.Grid.Msg"]}},"Example.Turtle.Msg":{"args":[],"tags":{"Iterate":[],"Draw":[]}},"Example.Crescent.Msg":{"args":[],"tags":{"Draw":["Example.Crescent.Grid"],"Generate":[]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Landscape"],"Generate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}},"Example.Crescent.Grid":{"args":[],"tags":{"Grid":["List (Maybe.Maybe Float)"]}},"Example.Grid.Msg":{"args":[],"tags":{"Draw":["Example.Grid.Grid"],"Generate":[]}}},"aliases":{"Example.ParallelRandom.ParallelLines":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Curtain"],"Generate":[]}},"Example.HilbertCurve.Msg":{"args":[],"tags":{"Iterate":[],"Draw":[]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List (List Float)","List (List Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Grid.Grid":{"args":[],"tags":{"Grid":["List Float"]}},"Example.Sun.Sun":{"args":[],"tags":{"Sun":["List (List ( Float, Float ))"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Example.Sun.Msg":{"args":[],"tags":{"Draw":["Example.Sun.Sun"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.ParallelLines"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"CrescentMsg":["Example.Crescent.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"SunMsg":["Example.Sun.Msg"],"NavigateTo":["Navigation.Location"],"HilbertCurveMsg":["Example.HilbertCurve.Msg"],"RectanglesMsg":["Example.Rectangles.Msg"],"GridMsg":["Example.Grid.Msg"]}},"Example.Crescent.Msg":{"args":[],"tags":{"Draw":["Example.Crescent.Grid"],"Generate":[]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Landscape"],"Generate":[]}},"Example.Rectangles.Msg":{"args":[],"tags":{"Iterate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}},"Example.Crescent.Grid":{"args":[],"tags":{"Grid":["List (Maybe.Maybe Float)"]}},"Example.Grid.Msg":{"args":[],"tags":{"Draw":["Example.Grid.Grid"],"Generate":[]}}},"aliases":{"Example.ParallelRandom.ParallelLines":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])
