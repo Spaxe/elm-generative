@@ -18963,7 +18963,7 @@ var _creative$elm_generative$Main$view = function (model) {
 							_elm_lang$html$Html$a,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$href('/#grid'),
+								_0: _elm_lang$html$Html_Attributes$href('#grid'),
 								_1: {ctor: '[]'}
 							},
 							{
@@ -18977,7 +18977,7 @@ var _creative$elm_generative$Main$view = function (model) {
 								_elm_lang$html$Html$a,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$href('/#crescent'),
+									_0: _elm_lang$html$Html_Attributes$href('#crescent'),
 									_1: {ctor: '[]'}
 								},
 								{
@@ -19001,7 +19001,7 @@ var _creative$elm_generative$Main$view = function (model) {
 										_elm_lang$html$Html$a,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$href('/#parallel-random'),
+											_0: _elm_lang$html$Html_Attributes$href('#parallel-random'),
 											_1: {ctor: '[]'}
 										},
 										{
@@ -19015,7 +19015,7 @@ var _creative$elm_generative$Main$view = function (model) {
 											_elm_lang$html$Html$a,
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$href('/#curtain'),
+												_0: _elm_lang$html$Html_Attributes$href('#curtain'),
 												_1: {ctor: '[]'}
 											},
 											{
@@ -19029,7 +19029,7 @@ var _creative$elm_generative$Main$view = function (model) {
 												_elm_lang$html$Html$a,
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$href('/#landscape'),
+													_0: _elm_lang$html$Html_Attributes$href('#landscape'),
 													_1: {ctor: '[]'}
 												},
 												{
@@ -19043,7 +19043,7 @@ var _creative$elm_generative$Main$view = function (model) {
 													_elm_lang$html$Html$a,
 													{
 														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$href('/#sun'),
+														_0: _elm_lang$html$Html_Attributes$href('#sun'),
 														_1: {ctor: '[]'}
 													},
 													{
@@ -19067,7 +19067,7 @@ var _creative$elm_generative$Main$view = function (model) {
 															_elm_lang$html$Html$a,
 															{
 																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$href('/#rectangles'),
+																_0: _elm_lang$html$Html_Attributes$href('#rectangles'),
 																_1: {ctor: '[]'}
 															},
 															{
@@ -19081,7 +19081,7 @@ var _creative$elm_generative$Main$view = function (model) {
 																_elm_lang$html$Html$a,
 																{
 																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$href('/#hilbert-curve'),
+																	_0: _elm_lang$html$Html_Attributes$href('#hilbert-curve'),
 																	_1: {ctor: '[]'}
 																},
 																{
