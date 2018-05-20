@@ -16053,22 +16053,13 @@ var _creative$elm_generative$Example_Curtain$initialiseLines = function (n) {
 		function (y) {
 			return A5(_creative$elm_generative$Generative$makePath, 100, 10, y, 210, y);
 		},
-		A2(
-			_elm_community$list_extra$List_Extra$initialize,
-			n,
-			function (_p0) {
-				return A2(
-					F2(
-						function (x, y) {
-							return x * y;
-						}),
-					1.0,
-					_elm_lang$core$Basics$toFloat(_p0));
-			}));
+		A2(_elm_community$list_extra$List_Extra$initialize, n, _elm_lang$core$Basics$toFloat));
 };
 var _creative$elm_generative$Example_Curtain$view = function (model) {
-	var _p1 = model;
-	if (_p1.ctor === 'Model') {
+	var _p0 = model;
+	if (_p0.ctor === 'Model') {
+		var _p2 = _p0._1._1;
+		var _p1 = _p0._1._0;
 		var dys = _creative$elm_generative$Generative$accumulateList(
 			A2(
 				_creative$elm_generative$Generative$mapList,
@@ -16076,7 +16067,7 @@ var _creative$elm_generative$Example_Curtain$view = function (model) {
 					function (x, y) {
 						return x * y;
 					})(0.5),
-				_p1._1._1));
+				_p2));
 		var dxs = _creative$elm_generative$Generative$accumulateList(
 			A2(
 				_creative$elm_generative$Generative$mapList,
@@ -16084,7 +16075,7 @@ var _creative$elm_generative$Example_Curtain$view = function (model) {
 					function (x, y) {
 						return x * y;
 					})(0.5),
-				_p1._1._0));
+				_p1));
 		return A2(
 			_creative$elm_generative$Draw$a4Landscape,
 			{ctor: '[]'},
@@ -16111,13 +16102,41 @@ var _creative$elm_generative$Example_Curtain$view = function (model) {
 							dys,
 							A3(
 								_elm_lang$core$List$map2,
-								_creative$elm_generative$Generative$map2First(
+								_creative$elm_generative$Generative$map2Second(
 									F2(
 										function (x, y) {
 											return x + y;
 										})),
-								dxs,
-								_creative$elm_generative$Example_Curtain$initialiseLines(100))))),
+								A2(
+									_creative$elm_generative$Generative$mapList,
+									F2(
+										function (x, y) {
+											return x * y;
+										})(0.25),
+									_p2),
+								A3(
+									_elm_lang$core$List$map2,
+									_creative$elm_generative$Generative$map2First(
+										F2(
+											function (x, y) {
+												return x + y;
+											})),
+									dxs,
+									A3(
+										_elm_lang$core$List$map2,
+										_creative$elm_generative$Generative$map2First(
+											F2(
+												function (x, y) {
+													return x + y;
+												})),
+										A2(
+											_creative$elm_generative$Generative$mapList,
+											F2(
+												function (x, y) {
+													return x * y;
+												})(0.25),
+											_p1),
+										_creative$elm_generative$Example_Curtain$initialiseLines(100))))))),
 				_1: {ctor: '[]'}
 			});
 	} else {
@@ -16140,13 +16159,13 @@ var _creative$elm_generative$Example_Curtain$Draw = function (a) {
 };
 var _creative$elm_generative$Example_Curtain$update = F2(
 	function (msg, model) {
-		var _p2 = {ctor: '_Tuple2', _0: msg, _1: model};
+		var _p3 = {ctor: '_Tuple2', _0: msg, _1: model};
 		_v1_2:
 		do {
-			if (_p2.ctor === '_Tuple2') {
-				if (_p2._0.ctor === 'Generate') {
-					if (_p2._1.ctor === 'Setup') {
-						var _p3 = _p2._1._0;
+			if (_p3.ctor === '_Tuple2') {
+				if (_p3._0.ctor === 'Generate') {
+					if (_p3._1.ctor === 'Setup') {
+						var _p4 = _p3._1._0;
 						return {
 							ctor: '_Tuple2',
 							_0: model,
@@ -16156,17 +16175,17 @@ var _creative$elm_generative$Example_Curtain$update = F2(
 								A3(
 									_elm_lang$core$Random$map2,
 									_creative$elm_generative$Example_Curtain$Curtain,
-									A2(_creative$elm_generative$Generative$randomList2, _p3, 100),
-									A2(_creative$elm_generative$Generative$randomList2, _p3, 100)))
+									A2(_creative$elm_generative$Generative$randomList2, _p4, 100),
+									A2(_creative$elm_generative$Generative$randomList2, _p4, 100)))
 						};
 					} else {
 						break _v1_2;
 					}
 				} else {
-					if (_p2._1.ctor === 'Setup') {
+					if (_p3._1.ctor === 'Setup') {
 						return {
 							ctor: '_Tuple2',
-							_0: A2(_creative$elm_generative$Example_Curtain$Model, _p2._1._0, _p2._0._0),
+							_0: A2(_creative$elm_generative$Example_Curtain$Model, _p3._1._0, _p3._0._0),
 							_1: _elm_lang$core$Platform_Cmd$none
 						};
 					} else {
