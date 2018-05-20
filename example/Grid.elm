@@ -17,8 +17,8 @@ type Configuration
     = Configuration Int Int Float
 
 
-type Grid
-    = Grid (List Float)
+type alias Grid =
+    List Float
 
 
 type alias Line =
@@ -50,9 +50,9 @@ draw model start =
                 90
     in
     case model of
-        Model (Configuration m n size) (Grid rs) ->
+        Model (Configuration m n size) rs ->
             List.map3
-                (\( ( x1, y1 ), ( x2, y2 ) ) r ( dx, dy ) ->
+                (\( dx, dy ) ( ( x1, y1 ), ( x2, y2 ) ) r ->
                     g
                         [ transform <|
                             Draw.scale size
@@ -62,9 +62,9 @@ draw model start =
                         ]
                         [ line x1 y1 x2 y2 ]
                 )
+                (makeGrid m n)
                 start
                 rs
-                (makeGrid m n)
 
         _ ->
             []
@@ -73,7 +73,7 @@ draw model start =
 view : Model -> Html Msg
 view model =
     case model of
-        Model config (Grid d) ->
+        Model config _ ->
             a4Landscape
                 []
                 [ g
@@ -90,8 +90,7 @@ update msg model =
     case ( msg, model ) of
         ( Generate, Setup (Configuration m n _) ) ->
             ( model
-            , Random.generate Draw <|
-                Random.map Grid (randomList (m * n))
+            , Random.generate Draw (randomList (m * n))
             )
 
         ( Draw data, Setup config ) ->

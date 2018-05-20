@@ -5,8 +5,8 @@ module Generative
         , accumulateListTuple
         , accumulateTuple
         , firstList
-        , makePath
         , makeGrid
+        , makePath
         , map2First
         , map2Second
         , map2Tuple
@@ -238,16 +238,12 @@ map2Tuple f =
 -}
 makeGrid : Int -> Int -> List ( Float, Float )
 makeGrid m n =
-    let
-        xs =
-            List.Extra.initialize m toFloat
-
-        ys =
-            List.Extra.initialize n toFloat
-    in
-        xs
-            |> List.Extra.andThen
-                (\x -> ys |> List.Extra.andThen (\y -> [ ( x, y ) ]))
+    List.Extra.initialize m toFloat
+        |> List.Extra.andThen
+            (\x ->
+                List.Extra.initialize n toFloat
+                    |> List.Extra.andThen (\y -> [ ( x, y ) ])
+            )
 
 
 
@@ -279,4 +275,4 @@ makePath n x1 y1 x2 y2 =
                 List.range 0 n
                     |> List.map (toFloat >> (*) dy >> (+) y1)
         in
-            zip xs ys
+        zip xs ys

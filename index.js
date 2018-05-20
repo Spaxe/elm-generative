@@ -15360,8 +15360,6 @@ var _creative$elm_generative$Generative$makePath = F5(
 	});
 var _creative$elm_generative$Generative$makeGrid = F2(
 	function (m, n) {
-		var ys = A2(_elm_community$list_extra$List_Extra$initialize, n, _elm_lang$core$Basics$toFloat);
-		var xs = A2(_elm_community$list_extra$List_Extra$initialize, m, _elm_lang$core$Basics$toFloat);
 		return A2(
 			_elm_community$list_extra$List_Extra$andThen,
 			function (x) {
@@ -15374,9 +15372,9 @@ var _creative$elm_generative$Generative$makeGrid = F2(
 							_1: {ctor: '[]'}
 						};
 					},
-					ys);
+					A2(_elm_community$list_extra$List_Extra$initialize, n, _elm_lang$core$Basics$toFloat));
 			},
-			xs);
+			A2(_elm_community$list_extra$List_Extra$initialize, m, _elm_lang$core$Basics$toFloat));
 	});
 var _creative$elm_generative$Generative$map2Tuple = function (f) {
 	return _elm_lang$core$List$map2(
@@ -16189,7 +16187,7 @@ var _creative$elm_generative$Example_Grid$draw = F2(
 			return A4(
 				_elm_lang$core$List$map3,
 				F3(
-					function (_p2, r, _p1) {
+					function (_p2, _p1, r) {
 						var _p3 = _p2;
 						var _p4 = _p1;
 						return A2(
@@ -16202,7 +16200,7 @@ var _creative$elm_generative$Example_Grid$draw = F2(
 										_creative$elm_generative$Draw$scale(_p5),
 										A2(
 											_elm_lang$core$Basics_ops['++'],
-											A2(_creative$elm_generative$Draw$translate, _p4._0, _p4._1),
+											A2(_creative$elm_generative$Draw$translate, _p3._0, _p3._1),
 											_creative$elm_generative$Draw$rotate(
 												flip(r))))),
 								_1: {
@@ -16214,13 +16212,13 @@ var _creative$elm_generative$Example_Grid$draw = F2(
 							},
 							{
 								ctor: '::',
-								_0: A4(_creative$elm_generative$Draw$line, _p3._0._0, _p3._0._1, _p3._1._0, _p3._1._1),
+								_0: A4(_creative$elm_generative$Draw$line, _p4._0._0, _p4._0._1, _p4._1._0, _p4._1._1),
 								_1: {ctor: '[]'}
 							});
 					}),
+				A2(_creative$elm_generative$Generative$makeGrid, _p0._0._0, _p0._0._1),
 				start,
-				_p0._1._0,
-				A2(_creative$elm_generative$Generative$makeGrid, _p0._0._0, _p0._0._1));
+				_p0._1);
 		} else {
 			return {ctor: '[]'};
 		}
@@ -16273,9 +16271,6 @@ var _creative$elm_generative$Example_Grid$Configuration = F3(
 	function (a, b, c) {
 		return {ctor: 'Configuration', _0: a, _1: b, _2: c};
 	});
-var _creative$elm_generative$Example_Grid$Grid = function (a) {
-	return {ctor: 'Grid', _0: a};
-};
 var _creative$elm_generative$Example_Grid$Draw = function (a) {
 	return {ctor: 'Draw', _0: a};
 };
@@ -16293,10 +16288,7 @@ var _creative$elm_generative$Example_Grid$update = F2(
 							_1: A2(
 								_elm_lang$core$Random$generate,
 								_creative$elm_generative$Example_Grid$Draw,
-								A2(
-									_elm_lang$core$Random$map,
-									_creative$elm_generative$Example_Grid$Grid,
-									_creative$elm_generative$Generative$randomList(_p9._1._0._0 * _p9._1._0._1)))
+								_creative$elm_generative$Generative$randomList(_p9._1._0._0 * _p9._1._0._1))
 						};
 					} else {
 						break _v5_2;
@@ -19260,7 +19252,7 @@ var _creative$elm_generative$Main$main = A2(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _creative$elm_generative$Main$main !== 'undefined') {
-    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Curtain"],"Generate":[]}},"Example.HilbertCurve.Msg":{"args":[],"tags":{"Iterate":[],"Draw":[]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List (List Float)","List (List Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Grid.Grid":{"args":[],"tags":{"Grid":["List Float"]}},"Example.Sun.Sun":{"args":[],"tags":{"Sun":["List (List ( Float, Float ))"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Example.Sun.Msg":{"args":[],"tags":{"Draw":["Example.Sun.Sun"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.ParallelLines"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"CrescentMsg":["Example.Crescent.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"SunMsg":["Example.Sun.Msg"],"NavigateTo":["Navigation.Location"],"HilbertCurveMsg":["Example.HilbertCurve.Msg"],"RectanglesMsg":["Example.Rectangles.Msg"],"GridMsg":["Example.Grid.Msg"]}},"Example.Crescent.Msg":{"args":[],"tags":{"Draw":["Example.Crescent.Grid"],"Generate":[]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Landscape"],"Generate":[]}},"Example.Rectangles.Msg":{"args":[],"tags":{"Iterate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}},"Example.Crescent.Grid":{"args":[],"tags":{"Grid":["List (Maybe.Maybe Float)"]}},"Example.Grid.Msg":{"args":[],"tags":{"Draw":["Example.Grid.Grid"],"Generate":[]}}},"aliases":{"Example.ParallelRandom.ParallelLines":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _creative$elm_generative$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Example.Curtain.Msg":{"args":[],"tags":{"Draw":["Example.Curtain.Curtain"],"Generate":[]}},"Example.HilbertCurve.Msg":{"args":[],"tags":{"Iterate":[],"Draw":[]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List (List Float)","List (List Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Float, Float )","Float","List (List Float)"]}},"Example.Sun.Sun":{"args":[],"tags":{"Sun":["List (List ( Float, Float ))"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Example.Sun.Msg":{"args":[],"tags":{"Draw":["Example.Sun.Sun"],"Generate":[]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Draw":["Example.ParallelRandom.ParallelLines"],"Generate":[]}},"Main.Msg":{"args":[],"tags":{"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"CrescentMsg":["Example.Crescent.Msg"],"PlotterStatus":["String"],"Menu":["Main.Action"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"SunMsg":["Example.Sun.Msg"],"NavigateTo":["Navigation.Location"],"HilbertCurveMsg":["Example.HilbertCurve.Msg"],"RectanglesMsg":["Example.Rectangles.Msg"],"GridMsg":["Example.Grid.Msg"]}},"Example.Crescent.Msg":{"args":[],"tags":{"Draw":["Example.Crescent.Grid"],"Generate":[]}},"Example.Landscape.Msg":{"args":[],"tags":{"Draw":["Example.Landscape.Landscape"],"Generate":[]}},"Example.Rectangles.Msg":{"args":[],"tags":{"Iterate":[]}},"Main.Action":{"args":[],"tags":{"Print":[],"RaiseLowerPen":[],"Download":[],"DisableMotor":[]}},"Example.Crescent.Grid":{"args":[],"tags":{"Grid":["List (Maybe.Maybe Float)"]}},"Example.Grid.Msg":{"args":[],"tags":{"Draw":["Example.Grid.Grid"],"Generate":[]}}},"aliases":{"Example.Grid.Grid":{"args":[],"type":"List Float"},"Example.ParallelRandom.ParallelLines":{"args":[],"type":"List (List Float)"},"Navigation.Location":{"args":[],"type":"{ href : String , host : String , hostname : String , protocol : String , origin : String , port_ : String , pathname : String , search : String , hash : String , username : String , password : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])
