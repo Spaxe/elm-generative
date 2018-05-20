@@ -1,4 +1,4 @@
-**[Experimental] - Do not use in production**
+[**View the demo online**](https://creative.github.io/elm-generative/)
 
 # Generative Art with Elm
 This package is a set of utilities for creating random, geneative art.
