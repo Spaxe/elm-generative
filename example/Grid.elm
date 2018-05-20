@@ -41,7 +41,7 @@ setup (Configuration m n _) =
 
 
 draw : Model -> List Line -> List (Svg Msg)
-draw model start =
+draw model lines =
     let
         flip r =
             if r > 0 then
@@ -63,10 +63,10 @@ draw model start =
                         [ line x1 y1 x2 y2 ]
                 )
                 (makeGrid m n)
-                start
+                lines
                 rs
 
-        _ ->
+        Setup _ ->
             []
 
 

@@ -16177,7 +16177,7 @@ var _creative$elm_generative$Example_Curtain$init = A2(
 	_creative$elm_generative$Example_Curtain$Setup(100));
 
 var _creative$elm_generative$Example_Grid$draw = F2(
-	function (model, start) {
+	function (model, lines) {
 		var flip = function (r) {
 			return (_elm_lang$core$Native_Utils.cmp(r, 0) > 0) ? 0 : 90;
 		};
@@ -16217,7 +16217,7 @@ var _creative$elm_generative$Example_Grid$draw = F2(
 							});
 					}),
 				A2(_creative$elm_generative$Generative$makeGrid, _p0._0._0, _p0._0._1),
-				start,
+				lines,
 				_p0._1);
 		} else {
 			return {ctor: '[]'};
