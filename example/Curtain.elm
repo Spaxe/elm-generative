@@ -5,6 +5,7 @@ import Generative exposing (..)
 import Html exposing (Html, div, text)
 import List.Extra
 import Random
+import Svg.Attributes exposing (transform)
 
 
 type Model
@@ -45,14 +46,16 @@ view model =
                     mapList ((*) 0.5) b
                         |> accumulateList
             in
-                a4Landscape
-                    []
+            a4Landscape
+                []
+                [ g
+                    [ transform <| Draw.translate 50 30 ]
                     (initialiseLines 100
                         |> List.map2 (map2First (+)) dxs
                         |> List.map2 (map2Second (+)) dys
-                        |> List.map (translateList 40 30)
                         |> List.map Draw.lines
                     )
+                ]
 
         _ ->
             text ""

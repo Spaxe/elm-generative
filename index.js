@@ -16088,29 +16088,38 @@ var _creative$elm_generative$Example_Curtain$view = function (model) {
 		return A2(
 			_creative$elm_generative$Draw$a4Landscape,
 			{ctor: '[]'},
-			A2(
-				_elm_lang$core$List$map,
-				_creative$elm_generative$Draw$lines,
-				A2(
-					_elm_lang$core$List$map,
-					A2(_creative$elm_generative$Generative$translateList, 40, 30),
-					A3(
-						_elm_lang$core$List$map2,
-						_creative$elm_generative$Generative$map2Second(
-							F2(
-								function (x, y) {
-									return x + y;
-								})),
-						dys,
+			{
+				ctor: '::',
+				_0: A2(
+					_creative$elm_generative$Draw$g,
+					{
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$transform(
+							A2(_creative$elm_generative$Draw$translate, 50, 30)),
+						_1: {ctor: '[]'}
+					},
+					A2(
+						_elm_lang$core$List$map,
+						_creative$elm_generative$Draw$lines,
 						A3(
 							_elm_lang$core$List$map2,
-							_creative$elm_generative$Generative$map2First(
+							_creative$elm_generative$Generative$map2Second(
 								F2(
 									function (x, y) {
 										return x + y;
 									})),
-							dxs,
-							_creative$elm_generative$Example_Curtain$initialiseLines(100))))));
+							dys,
+							A3(
+								_elm_lang$core$List$map2,
+								_creative$elm_generative$Generative$map2First(
+									F2(
+										function (x, y) {
+											return x + y;
+										})),
+								dxs,
+								_creative$elm_generative$Example_Curtain$initialiseLines(100))))),
+				_1: {ctor: '[]'}
+			});
 	} else {
 		return _elm_lang$html$Html$text('');
 	}
