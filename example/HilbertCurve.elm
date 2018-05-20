@@ -39,7 +39,7 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Iterate (Model 4 [ A ])
+    update Iterate (Model 5 [ A ])
 
 
 draw : Model -> Configuration -> Svg Msg

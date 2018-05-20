@@ -4,6 +4,7 @@ import Draw exposing (..)
 import Generative exposing (..)
 import Html exposing (Html, div, text)
 import Random
+import Svg.Attributes exposing (transform)
 
 
 type Model
@@ -30,11 +31,11 @@ initialiseLines (Configuration n segments r1 r2) =
         line ( x1, y1 ) ( x2, y2 ) =
             makePath segments x1 y1 x2 y2
     in
-        List.range 1 n
-            |> List.map
-                (\x -> toFloat x / 48.0 * 360)
-            |> List.map
-                (\x -> line (fromPolar ( r1, x )) (fromPolar ( r2, x )))
+    List.range 1 n
+        |> List.map
+            (\x -> toFloat x / 48.0 * 360)
+        |> List.map
+            (\x -> line (fromPolar ( r1, x )) (fromPolar ( r2, x )))
 
 
 type Msg
@@ -62,10 +63,12 @@ view model =
                 transformed =
                     List.map2 (map2Tuple (+)) shepherdedValues data
             in
-                a4Landscape
-                    []
-                    [ g [] (List.map Draw.lines <| List.map (translateList 148 105) transformed)
-                    ]
+            a4Landscape
+                []
+                [ g
+                    [ transform <| Draw.translate 148 105 ]
+                    (List.map Draw.lines transformed)
+                ]
 
         _ ->
             text ""

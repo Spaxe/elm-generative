@@ -4,6 +4,7 @@ import Draw exposing (..)
 import Generative exposing (..)
 import Html exposing (Html, div, text)
 import Random
+import Svg.Attributes exposing (transform)
 
 
 type Model
@@ -54,11 +55,11 @@ view model =
                 sunSize =
                     10 + dSunSize * 10
             in
-                a4Landscape
-                    []
-                    [ g [] (List.map Draw.lines <| List.map (translateList 40 100) transformed)
-                    , g [] [ uncurry circle (Generative.translate 150 40 sunPosition) sunSize ]
-                    ]
+            a4Landscape
+                []
+                [ g [ transform <| Draw.translate 40 100 ] (List.map Draw.lines transformed)
+                , g [ transform <| Draw.translate 150 40 ] [ uncurry circle sunPosition sunSize ]
+                ]
 
         _ ->
             text ""
