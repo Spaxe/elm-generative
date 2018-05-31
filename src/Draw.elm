@@ -2,15 +2,17 @@ module Draw
     exposing
         ( a4Landscape
         , a4Portrait
-        , rect
-        , g
-        , translate
-        , scale
-        , strokeWidth
-        , rotate
         , circle
+        , clipPath
+        , g
         , line
         , lines
+        , rect
+        , rotate
+        , scale
+        , strokeWidth
+        , translate
+        , urlHash
         )
 
 {-| SVG Drawing helper functions
@@ -18,8 +20,8 @@ module Draw
 
 import Html exposing (Html)
 import Html.Attributes
+import Svg exposing (Svg, g, rect, svg)
 import Svg.Attributes as Attributes
-import Svg exposing (Svg, svg, g, rect)
 
 
 {-| A4 sized container in landscape
@@ -115,15 +117,35 @@ lines : List ( Float, Float ) -> Svg msg
 lines points =
     let
         coords ( x, y ) =
-            (toString x) ++ ", " ++ (toString y)
+            toString x ++ ", " ++ toString y
     in
-        Svg.path
-            [ List.map coords points
-                |> String.join " L "
-                |> (++) "M "
-                |> Attributes.d
-            ]
-            []
+    Svg.path
+        [ List.map coords points
+            |> String.join " L "
+            |> (++) "M "
+            |> Attributes.d
+        ]
+        []
+
+
+{-| Define a clipping path with name.
+
+**Note**: This is ignored by the AxiDraw.
+
+-}
+clipPath : String -> List (Svg msg) -> Svg msg
+clipPath name element =
+    Svg.defs
+        []
+        [ Svg.clipPath
+            [ Attributes.id name ]
+            element
+        ]
+
+
+urlHash : String -> String
+urlHash name =
+    "url(#" ++ name ++ ")"
 
 
 {-| A fixed sized SVG container.
@@ -139,24 +161,24 @@ frame width height unit attributes =
     svg <|
         [ Attributes.style <|
             "width: "
-                ++ (toString width)
+                ++ toString width
                 ++ unit
                 ++ "; height: "
-                ++ (toString height)
+                ++ toString height
                 ++ unit
         , Attributes.viewBox <|
             "0 0 "
-                ++ (toString width)
+                ++ toString width
                 ++ " "
-                ++ (toString height)
+                ++ toString height
         , Attributes.fill "none"
         , Attributes.stroke "black"
         , Attributes.strokeLinecap "round"
         , Attributes.strokeLinejoin "round"
         , Attributes.id "frame"
         , Attributes.strokeWidth "0.4"
-        , Attributes.width <| (toString width) ++ unit
-        , Attributes.height <| (toString height) ++ unit
+        , Attributes.width <| toString width ++ unit
+        , Attributes.height <| toString height ++ unit
         , Html.Attributes.attribute "xmlns" "http://www.w3.org/2000/svg"
         ]
             ++ attributes

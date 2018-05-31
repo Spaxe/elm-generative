@@ -43,7 +43,7 @@
         http('GET', api(port, '/print'))
           .then(app.ports.getPlotterStatus.send)
           .catch(console.error);
-      }, 30000);
+      }, 1000);
 
       // Return the full API url
       function api (port, endpoint) {

@@ -39,7 +39,7 @@ init =
 draw : Model -> Configuration -> Svg Msg
 draw (Model _ states) (Configuration p0 a0) =
     Svg.path
-        [ d_ <| [ PathD.M p0 ] ++ turtle states p0 a0
+        [ d_ <| [ PathD.M p0 ] ++ turtle states 90
         , Svg.Attributes.strokeWidth "0.2"
         ]
         []

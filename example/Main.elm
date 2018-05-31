@@ -6,6 +6,7 @@ port module Main exposing (main)
 
 -}
 
+import Example.Chords as Chords
 import Example.Crescent as Crescent
 import Example.Curtain as Curtain
 import Example.Grid as Grid
@@ -61,6 +62,7 @@ type Route
     | Landscape (Maybe Landscape.Model)
     | ParallelRandom (Maybe ParallelRandom.Model)
     | Sun (Maybe Sun.Model)
+    | Chords (Maybe Chords.Model)
     | Rectangles (Maybe Rectangles.Model)
     | HilbertCurve (Maybe HilbertCurve.Model)
 
@@ -81,6 +83,7 @@ type Msg
     | LandscapeMsg Landscape.Msg
     | ParallelRandomMsg ParallelRandom.Msg
     | SunMsg Sun.Msg
+    | ChordsMsg Chords.Msg
     | RectanglesMsg Rectangles.Msg
     | HilbertCurveMsg HilbertCurve.Msg
 
@@ -113,6 +116,10 @@ init location =
                 Sun _ ->
                     Sun.init
                         |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
+
+                Chords _ ->
+                    Chords.init
+                        |> mapTuple2 (Chords << Just) (Cmd.map ChordsMsg)
 
                 Rectangles _ ->
                     Rectangles.init
@@ -147,6 +154,7 @@ view model =
             , a [ href "#curtain" ] [ text "Curtain" ]
             , a [ href "#landscape" ] [ text "Landscape" ]
             , a [ href "#sun" ] [ text "Sun" ]
+            , a [ href "#chords" ] [ text "Chords" ]
             , p [] [ text "L-Systems" ]
             , a [ href "#rectangles" ] [ text "Rectangles" ]
             , a [ href "#hilbert-curve" ] [ text "Hilbert Curve" ]
@@ -210,6 +218,10 @@ render route =
         Sun (Just pageModel) ->
             Sun.view pageModel
                 |> Html.map SunMsg
+
+        Chords (Just pageModel) ->
+            Chords.view pageModel
+                |> Html.map ChordsMsg
 
         Rectangles (Just pageModel) ->
             Rectangles.view pageModel
@@ -277,6 +289,10 @@ update msg model =
                         ( SunMsg pageMsg, Sun (Just pageModel) ) ->
                             Sun.update pageMsg pageModel
                                 |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
+
+                        ( ChordsMsg pageMsg, Chords (Just pageModel) ) ->
+                            Chords.update pageMsg pageModel
+                                |> mapTuple2 (Chords << Just) (Cmd.map ChordsMsg)
 
                         ( RectanglesMsg pageMsg, Rectangles (Just pageModel) ) ->
                             Rectangles.update pageMsg pageModel
@@ -346,6 +362,7 @@ matchers =
         , UrlParser.map (Curtain Nothing) (s "curtain")
         , UrlParser.map (Landscape Nothing) (s "landscape")
         , UrlParser.map (Sun Nothing) (s "sun")
+        , UrlParser.map (Chords Nothing) (s "chords")
         , UrlParser.map (Rectangles Nothing) (s "rectangles")
         , UrlParser.map (HilbertCurve Nothing) (s "hilbert-curve")
         ]
