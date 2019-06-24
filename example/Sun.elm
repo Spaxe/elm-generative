@@ -1,4 +1,4 @@
-module Example.Sun exposing (..)
+module Example.Sun exposing (Configuration(..), Model(..), Msg(..), Sun(..), init, initialiseLines, update, view)
 
 import Draw exposing (..)
 import Generative exposing (..)

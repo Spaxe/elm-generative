@@ -1,4 +1,4 @@
-module Example.Chords exposing (..)
+module Example.Chords exposing (Chords(..), Model(..), Msg(..), init, update, view)
 
 import Draw exposing (..)
 import Generative exposing (..)

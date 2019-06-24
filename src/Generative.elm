@@ -1,31 +1,9 @@
-module Generative
-    exposing
-        ( accumulate
-        , accumulateList
-        , accumulateListTuple
-        , accumulateTuple
-        , firstList
-        , makeGrid
-        , makePath
-        , map2First
-        , map2Second
-        , map2Tuple
-        , mapFirstList
-        , mapList
-        , mapList2
-        , mapSecondList
-        , mapTuple
-        , mapTuple2
-        , random
-        , randomList
-        , randomList2
-        , randomListTuple
-        , randomListTuple2
-        , randomTuple
-        , secondList
-        , translate
-        , translateList
-        )
+module Generative exposing
+    ( random, randomTuple, randomList, randomList2, randomListTuple, randomListTuple2
+    , makePath, makeGrid
+    , accumulate, accumulateTuple, accumulateList, accumulateListTuple, translate, translateList
+    , firstList, secondList, mapList, mapList2, map2First, map2Second, map2Tuple, mapFirstList, mapSecondList, mapTuple, mapTuple2
+    )
 
 {-| Tools to help you tinker.
 
@@ -54,6 +32,7 @@ module Generative
 import List.Extra exposing (scanl1, zip)
 import Random exposing (Generator)
 import Tuple exposing (..)
+
 
 
 -- GENERATORS --
@@ -259,6 +238,7 @@ makePath : Int -> Float -> Float -> Float -> Float -> List ( Float, Float )
 makePath n x1 y1 x2 y2 =
     if n < 1 then
         []
+
     else
         let
             dx =

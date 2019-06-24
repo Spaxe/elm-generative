@@ -1,4 +1,4 @@
-module Example.Rectangles exposing (..)
+module Example.Rectangles exposing (Configuration(..), Model(..), Msg(..), draw, init, rule, update, view)
 
 import Draw exposing (..)
 import Html exposing (Html, text)
@@ -6,7 +6,7 @@ import LSystem
 import LSystem.Turtle exposing (State(..), turtle)
 import Svg exposing (Svg)
 import Svg.Attributes exposing (transform)
-import Svg.PathD as PathD exposing (d_)
+import Svg.PathD exposing (Segment(..), pathD)
 
 
 type Model
@@ -39,7 +39,7 @@ init =
 draw : Model -> Configuration -> Svg Msg
 draw (Model _ states) (Configuration p0 a0) =
     Svg.path
-        [ d_ <| [ PathD.M p0 ] ++ turtle states 90
+        [ d <| pathD [ M p0 ] ++ turtle states 90
         , Svg.Attributes.strokeWidth "0.2"
         ]
         []

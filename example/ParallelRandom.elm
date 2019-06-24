@@ -1,4 +1,4 @@
-module Example.ParallelRandom exposing (..)
+module Example.ParallelRandom exposing (Configuration(..), Model(..), Msg(..), ParallelLines, init, setup, update, view)
 
 {-| Random rows of squiggle
 -}
@@ -9,6 +9,7 @@ import Html exposing (Html, div, text)
 import List.Extra
 import Random
 import Svg.Attributes exposing (transform)
+
 
 
 -- Model contains the generative/random element

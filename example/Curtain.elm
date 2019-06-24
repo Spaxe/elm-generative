@@ -1,4 +1,4 @@
-module Example.Curtain exposing (..)
+module Example.Curtain exposing (Curtain(..), Model(..), Msg(..), init, initialiseLines, update, view)
 
 import Draw exposing (..)
 import Generative exposing (..)

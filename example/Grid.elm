@@ -1,4 +1,4 @@
-module Example.Grid exposing (..)
+module Example.Grid exposing (Configuration(..), Grid, Line, Model(..), Msg(..), draw, init, setup, update, view)
 
 import Draw exposing (..)
 import Generative exposing (..)
@@ -46,6 +46,7 @@ draw model lines =
         flip r =
             if r > 0 then
                 0
+
             else
                 90
     in
@@ -57,7 +58,7 @@ draw model lines =
                         [ transform <|
                             Draw.scale size
                                 ++ Draw.translate dx dy
-                                ++ Draw.rotate (flip r)
+                                ++ Draw.rotate (\b a -> r a b)
                         , Svg.Attributes.style <| strokeWidth (0.5 / size)
                         ]
                         [ line x1 y1 x2 y2 ]

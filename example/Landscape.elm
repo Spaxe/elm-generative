@@ -1,4 +1,4 @@
-module Example.Landscape exposing (..)
+module Example.Landscape exposing (Landscape(..), Model(..), Msg(..), init, initialiseLines, update, view)
 
 import Draw exposing (..)
 import Generative exposing (..)
@@ -58,7 +58,7 @@ view model =
             a4Landscape
                 []
                 [ g [ transform <| Draw.translate 40 100 ] (List.map Draw.lines transformed)
-                , g [ transform <| Draw.translate 150 40 ] [ uncurry circle sunPosition sunSize ]
+                , g [ transform <| Draw.translate 150 40 ] [ (\( a, b ) -> circle a b) sunPosition sunSize ]
                 ]
 
         _ ->

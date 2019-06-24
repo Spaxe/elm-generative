@@ -1,19 +1,18 @@
-module Draw
-    exposing
-        ( a4Landscape
-        , a4Portrait
-        , circle
-        , clipPath
-        , g
-        , line
-        , lines
-        , rect
-        , rotate
-        , scale
-        , strokeWidth
-        , translate
-        , urlHash
-        )
+module Draw exposing
+    ( a4Landscape
+    , a4Portrait
+    , circle
+    , clipPath
+    , g
+    , line
+    , lines
+    , rect
+    , rotate
+    , scale
+    , strokeWidth
+    , translate
+    , urlHash
+    )
 
 {-| SVG Drawing helper functions
 -}
@@ -49,28 +48,28 @@ g =
 -}
 translate : Float -> Float -> String
 translate x y =
-    " translate(" ++ toString x ++ "," ++ toString y ++ ") "
+    " translate(" ++ fromFloat x ++ "," ++ fromFloat y ++ ") "
 
 
 {-| Constructs the transform property for rotate
 -}
 rotate : Float -> String
 rotate degree =
-    " rotate(" ++ toString degree ++ ") "
+    " rotate(" ++ fromFloat degree ++ ") "
 
 
 {-| Constructs the transform property for scale
 -}
 scale : Float -> String
 scale ratio =
-    " scale(" ++ toString ratio ++ ") "
+    " scale(" ++ fromFloat ratio ++ ") "
 
 
 {-| Constructs the style property for stroke-width
 -}
 strokeWidth : Float -> String
 strokeWidth x =
-    "stroke-width: " ++ toString x ++ "px"
+    "stroke-width: " ++ fromFloat x ++ "px"
 
 
 {-| Draw a rectangle
@@ -78,10 +77,10 @@ strokeWidth x =
 rect : Float -> Float -> Float -> Float -> Svg msg
 rect x y width height =
     Svg.rect
-        [ Attributes.x <| toString x
-        , Attributes.y <| toString y
-        , Attributes.width <| toString width
-        , Attributes.height <| toString height
+        [ Attributes.x <| fromFloat x
+        , Attributes.y <| fromFloat y
+        , Attributes.width <| fromFloat width
+        , Attributes.height <| fromFloat height
         ]
         []
 
@@ -91,9 +90,9 @@ rect x y width height =
 circle : Float -> Float -> Float -> Svg msg
 circle x y r =
     Svg.circle
-        [ Attributes.cx <| toString x
-        , Attributes.cy <| toString y
-        , Attributes.r <| toString r
+        [ Attributes.cx <| fromFloat x
+        , Attributes.cy <| fromFloat y
+        , Attributes.r <| fromFloat r
         ]
         []
 
@@ -103,10 +102,10 @@ circle x y r =
 line : Float -> Float -> Float -> Float -> Svg msg
 line x1 y1 x2 y2 =
     Svg.line
-        [ Attributes.x1 <| toString x1
-        , Attributes.y1 <| toString y1
-        , Attributes.x2 <| toString x2
-        , Attributes.y2 <| toString y2
+        [ Attributes.x1 <| fromFloat x1
+        , Attributes.y1 <| fromFloat y1
+        , Attributes.x2 <| fromFloat x2
+        , Attributes.y2 <| fromFloat y2
         ]
         []
 
@@ -117,7 +116,7 @@ lines : List ( Float, Float ) -> Svg msg
 lines points =
     let
         coords ( x, y ) =
-            toString x ++ ", " ++ toString y
+            fromFloat x ++ ", " ++ fromFloat y
     in
     Svg.path
         [ List.map coords points
@@ -161,24 +160,24 @@ frame width height unit attributes =
     svg <|
         [ Attributes.style <|
             "width: "
-                ++ toString width
+                ++ fromFloat width
                 ++ unit
                 ++ "; height: "
-                ++ toString height
+                ++ fromFloat height
                 ++ unit
         , Attributes.viewBox <|
             "0 0 "
-                ++ toString width
+                ++ fromFloat width
                 ++ " "
-                ++ toString height
+                ++ fromFloat height
         , Attributes.fill "none"
         , Attributes.stroke "black"
         , Attributes.strokeLinecap "round"
         , Attributes.strokeLinejoin "round"
         , Attributes.id "frame"
         , Attributes.strokeWidth "0.4"
-        , Attributes.width <| toString width ++ unit
-        , Attributes.height <| toString height ++ unit
+        , Attributes.width <| fromFloat width ++ unit
+        , Attributes.height <| fromFloat height ++ unit
         , Html.Attributes.attribute "xmlns" "http://www.w3.org/2000/svg"
         ]
             ++ attributes

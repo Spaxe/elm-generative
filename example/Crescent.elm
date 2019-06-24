@@ -1,13 +1,13 @@
-module Example.Crescent exposing (..)
+module Example.Crescent exposing (Configuration(..), Grid(..), Model(..), Msg(..), Shape, draw, init, setup, square, update, view)
 
 import Draw exposing (..)
 import Generative exposing (..)
 import Html exposing (Html, div, text)
-import Svg exposing (Svg)
-import Svg.PathD exposing (Segment(..), d_)
-import Svg.Attributes exposing (transform)
 import Random
 import Random.Extra exposing (sample)
+import Svg exposing (Svg)
+import Svg.Attributes exposing (transform)
+import Svg.PathD exposing (Segment(..), pathD)
 
 
 type Model
@@ -65,33 +65,35 @@ draw model ( a, b, c ) =
                     (distance x y <= radius)
                         && (distance x (y + radius / 1.5) > radius)
             in
-                List.map2
-                    (\r ( dx, dy ) ->
-                        if isVisible dx dy then
-                            g
-                                [ transform <|
-                                    (Draw.scale size)
-                                        ++ (Draw.translate dx dy)
-                                        ++ (Draw.rotate (Maybe.withDefault 0 r))
-                                , Svg.Attributes.style <| strokeWidth (0.5 / size)
-                                ]
-                                [ Svg.path
-                                    [ d_
+            List.map2
+                (\r ( dx, dy ) ->
+                    if isVisible dx dy then
+                        g
+                            [ transform <|
+                                Draw.scale size
+                                    ++ Draw.translate dx dy
+                                    ++ Draw.rotate (Maybe.withDefault 0 r)
+                            , Svg.Attributes.style <| strokeWidth (0.5 / size)
+                            ]
+                            [ Svg.path
+                                [ d <|
+                                    PathD
                                         [ M a
                                         , L b
                                         , L c
                                         , Q b a
                                         ]
-                                    , Svg.Attributes.fill "black"
-                                    , Svg.Attributes.stroke "none"
-                                    ]
-                                    []
+                                , Svg.Attributes.fill "black"
+                                , Svg.Attributes.stroke "none"
                                 ]
-                        else
-                            text ""
-                    )
-                    x
-                    (makeGrid m m)
+                                []
+                            ]
+
+                    else
+                        text ""
+                )
+                x
+                (makeGrid m m)
 
         _ ->
             []

@@ -33,16 +33,15 @@ import Html
 import Html.Attributes exposing (class, href, id, style, type_)
 import Html.Events exposing (onClick)
 import Json.Decode exposing (decodeString, field, string)
-import Navigation exposing (Location)
-import Tuple exposing (first, mapFirst, mapSecond, second)
-import UrlParser
-    exposing
-        ( Parser
+import Browser
+import Url
+import Url.Parser exposing(Parser
         , oneOf
         , parseHash
         , s
-        , top
-        )
+        , top)
+import Tuple exposing (first, mapFirst, mapSecond, second)
+
 
 
 -- MODEL --
@@ -67,6 +66,29 @@ type Route
     | HilbertCurve (Maybe HilbertCurve.Model)
 
 
+fromRoute : Route -> String
+fromRoute route =
+    case route of
+        Crescent ->
+            "crescent"
+        Grid ->
+            "grid"
+        Curtain ->
+            "curtain"
+        Landscape ->
+            "landscape"
+        ParallelRandom ->
+            "parallelrandom"
+        Sun ->
+            "sun"
+        Chords ->
+            "chords"
+        Rectangles ->
+            "rectangles"
+        HilbertCurve ->
+            "hilbertcurve"
+
+
 type alias Model =
     { route : Route
     , status : Maybe String
@@ -74,7 +96,7 @@ type alias Model =
 
 
 type Msg
-    = NavigateTo Location
+    = NavigateTo Url.Url
     | Menu Action
     | PlotterStatus String
     | CrescentMsg Crescent.Msg
@@ -88,7 +110,7 @@ type Msg
     | HilbertCurveMsg HilbertCurve.Msg
 
 
-init : Location -> ( Model, Cmd Msg )
+init : flags -> Url.Url -> Browser.Key -> ( Model, Cmd Msg )
 init location =
     let
         routeMsg =
@@ -175,7 +197,7 @@ view model =
                 , input
                     [ id "svgFile"
                     , type_ "file"
-                    , style [ ( "display", "none" ) ]
+                    , style "display" "none"
                     ]
                     []
                 , button
@@ -257,7 +279,7 @@ update msg model =
                     ( model, print "" )
 
                 Download ->
-                    ( model, download <| toString model.route )
+                    ( model, download <| fromRoute model.route )
 
         ( PlotterStatus value, _ ) ->
             ( { model | status = Just <| decodePlotterStatus value }, Cmd.none )
@@ -315,7 +337,7 @@ decodePlotterStatus value =
             s
 
         Err e ->
-            toString e
+            e
 
 
 
@@ -368,7 +390,7 @@ matchers =
         ]
 
 
-parseLocation : Location -> Route
+parseLocation : Url.Url -> Route
 parseLocation location =
     case parseHash matchers location of
         Just route ->
@@ -382,7 +404,7 @@ parseLocation location =
 -}
 main : Program Never Model Msg
 main =
-    Navigation.program NavigateTo
+    Browser.application NavigateTo
         { init = init
         , view = view
         , update = update
