@@ -1,4 +1,4 @@
-[**View the demo online**](https://creative.github.io/elm-generative/)
+[**View the demo online**](https://spaxe.github.io/elm-generative/)
 
 # Generative Art with Elm
 
