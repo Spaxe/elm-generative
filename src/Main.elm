@@ -234,6 +234,7 @@ view model =
                         , backgroundColor (hex "F5F5F6")
                         , position relative
                         , padding2 (rem 1) (rem 2)
+                        , fontSize (pct 80)
                         , lineHeight (num 1.5)
                         ]
                     ]
