@@ -1,9 +1,6 @@
 port module Main exposing (main)
 
 {-| Single Gallery Application to display various examples of generative art.
-
-@docs main
-
 -}
 
 import Browser exposing (Document)
@@ -38,7 +35,7 @@ import Url.Parser
 
 init : flags -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    updateRoute <| Model key url Nothing ""
+    initRoute <| Model key url Nothing ""
 
 
 
@@ -73,10 +70,17 @@ type alias Model =
 
 
 type Msg
-    = Homepage
-    | LinkClicked Browser.UrlRequest
+    = LinkClicked Browser.UrlRequest
     | UrlChanged Url.Url
     | CrescentMsg Crescent.Msg
+    | GridMsg Grid.Msg
+    | ParallelRandomMsg ParallelRandom.Msg
+    | CurtainMsg Curtain.Msg
+    | LandscapeMsg Landscape.Msg
+    | SunMsg Sun.Msg
+    | ChordsMsg Chords.Msg
+    | RectanglesMsg Rectangles.Msg
+    | HilbertCurveMsg HilbertCurve.Msg
 
 
 
@@ -98,13 +102,17 @@ update msg model =
                     ( model, Nav.load href )
 
         ( UrlChanged url, _ ) ->
-            updateRoute { model | url = url }
+            initRoute { model | url = url }
 
         ( subMsg, { route } ) ->
             case ( subMsg, route ) of
                 ( CrescentMsg pageMsg, Just (Crescent pageModel) ) ->
                     Crescent.update pageMsg pageModel
-                        |> mapTuple2 (\m -> { model | route = Just <| Crescent m }) (Cmd.map CrescentMsg)
+                        |> mapTuple2 (\m -> { model | route = Just (Crescent m) }) (Cmd.map CrescentMsg)
+
+                ( GridMsg pageMsg, Just (Grid pageModel) ) ->
+                    Grid.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (Grid m) }) (Cmd.map GridMsg)
 
                 ( _, _ ) ->
                     ( model, Cmd.none )
@@ -196,42 +204,50 @@ update msg model =
 --)
 
 
-updateRoute : Model -> ( Model, Cmd Msg )
-updateRoute model =
-    case parse routeParser model.url of
-        Just (Crescent _) ->
-            let
-                routeMsgModel =
-                    Crescent.init
-            in
-            ( { model
-                | route = Just <| Crescent (Tuple.first routeMsgModel)
-                , url = model.url
-              }
-            , Cmd.map CrescentMsg <| Tuple.second routeMsgModel
-            )
+initRoute : Model -> ( Model, Cmd Msg )
+initRoute model =
+    case model.url.fragment of
+        Just "crescent" ->
+            Crescent.init
+                |> mapTuple2 (\m -> { model | route = Just (Crescent m) }) (Cmd.map CrescentMsg)
+
+        Just "grid" ->
+            Grid.init
+                |> mapTuple2 (\m -> { model | route = Just (Grid m) }) (Cmd.map GridMsg)
+
+        Just "parallel-random" ->
+            ParallelRandom.init
+                |> mapTuple2 (\m -> { model | route = Just (ParallelRandom m) }) (Cmd.map ParallelRandomMsg)
+
+        Just "curtain" ->
+            Curtain.init
+                |> mapTuple2 (\m -> { model | route = Just (Curtain m) }) (Cmd.map CurtainMsg)
+
+        Just "landscape" ->
+            Landscape.init
+                |> mapTuple2 (\m -> { model | route = Just (Landscape m) }) (Cmd.map LandscapeMsg)
+
+        Just "sun" ->
+            Sun.init
+                |> mapTuple2 (\m -> { model | route = Just (Sun m) }) (Cmd.map SunMsg)
+
+        Just "chords" ->
+            Chords.init
+                |> mapTuple2 (\m -> { model | route = Just (Chords m) }) (Cmd.map ChordsMsg)
+
+        Just "rectangles" ->
+            Rectangles.init
+                |> mapTuple2 (\m -> { model | route = Just (Rectangles m) }) (Cmd.map RectanglesMsg)
+
+        Just "hilbert-curve" ->
+            HilbertCurve.init
+                |> mapTuple2 (\m -> { model | route = Just (HilbertCurve m) }) (Cmd.map HilbertCurveMsg)
 
         Just _ ->
             ( model, Cmd.none )
 
         Nothing ->
             ( model, Cmd.none )
-
-
-routeParser : Parser (Route -> a) a
-routeParser =
-    oneOf
-        [ Url.Parser.map (Crescent Crescent.initModel) Url.Parser.top
-        , Url.Parser.map (Grid Grid.initModel) (Url.Parser.s "grid")
-        , Url.Parser.map (Crescent Crescent.initModel) (Url.Parser.s "crescent")
-        , Url.Parser.map (ParallelRandom ParallelRandom.initModel) (Url.Parser.s "parallel-random")
-        , Url.Parser.map (Curtain Curtain.initModel) (Url.Parser.s "curtain")
-        , Url.Parser.map (Landscape Landscape.initModel) (Url.Parser.s "landscape")
-        , Url.Parser.map (Sun Sun.initModel) (Url.Parser.s "sun")
-        , Url.Parser.map (Chords Chords.initModel) (Url.Parser.s "chords")
-        , Url.Parser.map (Rectangles Rectangles.initModel) (Url.Parser.s "rectangles")
-        , Url.Parser.map (HilbertCurve HilbertCurve.initModel) (Url.Parser.s "hilbert-curve")
-        ]
 
 
 
@@ -334,17 +350,6 @@ view model =
         ]
 
 
-
---svg {
---    height: 100%;
---    width: auto;
---    justify-content: center;
---    align-items: center;
---    position: relative;
---    background: #FAFAFB;
---}
-
-
 menuLinkStyles : List Style
 menuLinkStyles =
     [ color (hex "9af")
@@ -379,32 +384,37 @@ render r =
                 Crescent.view pageModel
                     |> Html.map CrescentMsg
 
-            --Grid (Just pageModel) ->
-            --    Grid.view pageModel
-            --        |> Html.map GridMsg
-            --ParallelRandom (Just pageModel) ->
-            --    ParallelRandom.view pageModel
-            --        |> Html.map ParallelRandomMsg
-            --Curtain (Just pageModel) ->
-            --    Curtain.view pageModel
-            --        |> Html.map CurtainMsg
-            --Landscape (Just pageModel) ->
-            --    Landscape.view pageModel
-            --        |> Html.map LandscapeMsg
-            --Sun (Just pageModel) ->
-            --    Sun.view pageModel
-            --        |> Html.map SunMsg
-            --Chords (Just pageModel) ->
-            --    Chords.view pageModel
-            --        |> Html.map ChordsMsg
-            --Rectangles (Just pageModel) ->
-            --    Rectangles.view pageModel
-            --        |> Html.map RectanglesMsg
-            --HilbertCurve (Just pageModel) ->
-            --    HilbertCurve.view pageModel
-            --        |> Html.map HilbertCurveMsg
-            _ ->
-                Html.text "404 Not Found"
+            Grid pageModel ->
+                Grid.view pageModel
+                    |> Html.map GridMsg
+
+            ParallelRandom pageModel ->
+                ParallelRandom.view pageModel
+                    |> Html.map ParallelRandomMsg
+
+            Curtain pageModel ->
+                Curtain.view pageModel
+                    |> Html.map CurtainMsg
+
+            Landscape pageModel ->
+                Landscape.view pageModel
+                    |> Html.map LandscapeMsg
+
+            Sun pageModel ->
+                Sun.view pageModel
+                    |> Html.map SunMsg
+
+            Chords pageModel ->
+                Chords.view pageModel
+                    |> Html.map ChordsMsg
+
+            Rectangles pageModel ->
+                Rectangles.view pageModel
+                    |> Html.map RectanglesMsg
+
+            HilbertCurve pageModel ->
+                HilbertCurve.view pageModel
+                    |> Html.map HilbertCurveMsg
 
 
 decodePlotterStatus : String -> String

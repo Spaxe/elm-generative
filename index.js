@@ -4984,24 +4984,7 @@ function _Time_getZoneName()
 		callback(_Scheduler_succeed(name));
 	});
 }
-
-
-function _Url_percentEncode(string)
-{
-	return encodeURIComponent(string);
-}
-
-function _Url_percentDecode(string)
-{
-	try
-	{
-		return $elm$core$Maybe$Just(decodeURIComponent(string));
-	}
-	catch (e)
-	{
-		return $elm$core$Maybe$Nothing;
-	}
-}var $author$project$Main$LinkClicked = function (a) {
+var $author$project$Main$LinkClicked = function (a) {
 	return {$: 'LinkClicked', a: a};
 };
 var $author$project$Main$UrlChanged = function (a) {
@@ -10609,32 +10592,73 @@ var $author$project$Main$Model = F4(
 	function (key, url, route, status) {
 		return {key: key, route: route, status: status, url: url};
 	});
+var $author$project$Main$Chords = function (a) {
+	return {$: 'Chords', a: a};
+};
+var $author$project$Main$ChordsMsg = function (a) {
+	return {$: 'ChordsMsg', a: a};
+};
 var $author$project$Main$Crescent = function (a) {
 	return {$: 'Crescent', a: a};
 };
 var $author$project$Main$CrescentMsg = function (a) {
 	return {$: 'CrescentMsg', a: a};
 };
-var $author$project$Example$Crescent$Generate = {$: 'Generate'};
-var $author$project$Example$Crescent$Configuration = F2(
-	function (a, b) {
-		return {$: 'Configuration', a: a, b: b};
-	});
-var $author$project$Example$Crescent$Setup = function (a) {
-	return {$: 'Setup', a: a};
+var $author$project$Main$Curtain = function (a) {
+	return {$: 'Curtain', a: a};
 };
-var $author$project$Example$Crescent$initModel = $author$project$Example$Crescent$Setup(
-	A2($author$project$Example$Crescent$Configuration, 31, 5));
-var $author$project$Example$Crescent$Draw = function (a) {
-	return {$: 'Draw', a: a};
+var $author$project$Main$CurtainMsg = function (a) {
+	return {$: 'CurtainMsg', a: a};
 };
-var $author$project$Example$Crescent$Grid = function (a) {
+var $author$project$Main$Grid = function (a) {
 	return {$: 'Grid', a: a};
 };
-var $author$project$Example$Crescent$Model = F2(
+var $author$project$Main$GridMsg = function (a) {
+	return {$: 'GridMsg', a: a};
+};
+var $author$project$Main$HilbertCurve = function (a) {
+	return {$: 'HilbertCurve', a: a};
+};
+var $author$project$Main$HilbertCurveMsg = function (a) {
+	return {$: 'HilbertCurveMsg', a: a};
+};
+var $author$project$Main$Landscape = function (a) {
+	return {$: 'Landscape', a: a};
+};
+var $author$project$Main$LandscapeMsg = function (a) {
+	return {$: 'LandscapeMsg', a: a};
+};
+var $author$project$Main$ParallelRandom = function (a) {
+	return {$: 'ParallelRandom', a: a};
+};
+var $author$project$Main$ParallelRandomMsg = function (a) {
+	return {$: 'ParallelRandomMsg', a: a};
+};
+var $author$project$Main$Rectangles = function (a) {
+	return {$: 'Rectangles', a: a};
+};
+var $author$project$Main$RectanglesMsg = function (a) {
+	return {$: 'RectanglesMsg', a: a};
+};
+var $author$project$Main$Sun = function (a) {
+	return {$: 'Sun', a: a};
+};
+var $author$project$Main$SunMsg = function (a) {
+	return {$: 'SunMsg', a: a};
+};
+var $author$project$Example$Chords$Generate = {$: 'Generate'};
+var $author$project$Example$Chords$Setup = {$: 'Setup'};
+var $author$project$Example$Chords$initModel = $author$project$Example$Chords$Setup;
+var $author$project$Example$Chords$Chords = F2(
 	function (a, b) {
-		return {$: 'Model', a: a, b: b};
+		return {$: 'Chords', a: a, b: b};
 	});
+var $author$project$Example$Chords$Draw = function (a) {
+	return {$: 'Draw', a: a};
+};
+var $author$project$Example$Chords$Model = function (a) {
+	return {$: 'Model', a: a};
+};
 var $elm$random$Random$Generate = function (a) {
 	return {$: 'Generate', a: a};
 };
@@ -10741,6 +10765,23 @@ var $elm$random$Random$generate = F2(
 			$elm$random$Random$Generate(
 				A2($elm$random$Random$map, tagger, generator)));
 	});
+var $elm$random$Random$map2 = F3(
+	function (func, _v0, _v1) {
+		var genA = _v0.a;
+		var genB = _v1.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v2 = genA(seed0);
+				var a = _v2.a;
+				var seed1 = _v2.b;
+				var _v3 = genB(seed1);
+				var b = _v3.a;
+				var seed2 = _v3.b;
+				return _Utils_Tuple2(
+					A2(func, a, b),
+					seed2);
+			});
+	});
 var $elm$random$Random$listHelp = F4(
 	function (revList, n, gen, seed) {
 		listHelp:
@@ -10771,12 +10812,93 @@ var $elm$random$Random$list = F2(
 				return A4($elm$random$Random$listHelp, _List_Nil, n, gen, seed);
 			});
 	});
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
+};
 var $elm$core$Bitwise$xor = _Bitwise_xor;
 var $elm$random$Random$peel = function (_v0) {
 	var state = _v0.a;
 	var word = (state ^ (state >>> ((state >>> 28) + 4))) * 277803737;
 	return ((word >>> 22) ^ word) >>> 0;
 };
+var $elm$random$Random$float = F2(
+	function (a, b) {
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var seed1 = $elm$random$Random$next(seed0);
+				var range = $elm$core$Basics$abs(b - a);
+				var n1 = $elm$random$Random$peel(seed1);
+				var n0 = $elm$random$Random$peel(seed0);
+				var lo = (134217727 & n1) * 1.0;
+				var hi = (67108863 & n0) * 1.0;
+				var val = ((hi * 134217728.0) + lo) / 9007199254740992.0;
+				var scaled = (val * range) + a;
+				return _Utils_Tuple2(
+					scaled,
+					$elm$random$Random$next(seed1));
+			});
+	});
+var $author$project$Generative$random = A2($elm$random$Random$float, -0.5, 0.5);
+var $author$project$Generative$randomList = function (n) {
+	return A2($elm$random$Random$list, n, $author$project$Generative$random);
+};
+var $author$project$Example$Chords$update = F2(
+	function (msg, model) {
+		var _v0 = _Utils_Tuple2(msg, model);
+		_v0$2:
+		while (true) {
+			if (_v0.a.$ === 'Generate') {
+				if (_v0.b.$ === 'Setup') {
+					var _v1 = _v0.a;
+					var _v2 = _v0.b;
+					return _Utils_Tuple2(
+						model,
+						A2(
+							$elm$random$Random$generate,
+							$author$project$Example$Chords$Draw,
+							A3(
+								$elm$random$Random$map2,
+								$author$project$Example$Chords$Chords,
+								$author$project$Generative$randomList(20),
+								$author$project$Generative$randomList(20))));
+				} else {
+					break _v0$2;
+				}
+			} else {
+				if (_v0.b.$ === 'Setup') {
+					var data = _v0.a.a;
+					var _v3 = _v0.b;
+					return _Utils_Tuple2(
+						$author$project$Example$Chords$Model(data),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					break _v0$2;
+				}
+			}
+		}
+		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+	});
+var $author$project$Example$Chords$init = A2($author$project$Example$Chords$update, $author$project$Example$Chords$Generate, $author$project$Example$Chords$initModel);
+var $author$project$Example$Crescent$Generate = {$: 'Generate'};
+var $author$project$Example$Crescent$Configuration = F2(
+	function (a, b) {
+		return {$: 'Configuration', a: a, b: b};
+	});
+var $author$project$Example$Crescent$Setup = function (a) {
+	return {$: 'Setup', a: a};
+};
+var $author$project$Example$Crescent$initModel = $author$project$Example$Crescent$Setup(
+	A2($author$project$Example$Crescent$Configuration, 31, 5));
+var $author$project$Example$Crescent$Draw = function (a) {
+	return {$: 'Draw', a: a};
+};
+var $author$project$Example$Crescent$Grid = function (a) {
+	return {$: 'Grid', a: a};
+};
+var $author$project$Example$Crescent$Model = F2(
+	function (a, b) {
+		return {$: 'Model', a: a, b: b};
+	});
 var $elm$random$Random$int = F2(
 	function (a, b) {
 		return $elm$random$Random$Generator(
@@ -10888,155 +11010,67 @@ var $author$project$Example$Crescent$update = F2(
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	});
 var $author$project$Example$Crescent$init = A2($author$project$Example$Crescent$update, $author$project$Example$Crescent$Generate, $author$project$Example$Crescent$initModel);
-var $elm$url$Url$Parser$State = F5(
-	function (visited, unvisited, params, frag, value) {
-		return {frag: frag, params: params, unvisited: unvisited, value: value, visited: visited};
-	});
-var $elm$url$Url$Parser$getFirstMatch = function (states) {
-	getFirstMatch:
-	while (true) {
-		if (!states.b) {
-			return $elm$core$Maybe$Nothing;
-		} else {
-			var state = states.a;
-			var rest = states.b;
-			var _v1 = state.unvisited;
-			if (!_v1.b) {
-				return $elm$core$Maybe$Just(state.value);
-			} else {
-				if ((_v1.a === '') && (!_v1.b.b)) {
-					return $elm$core$Maybe$Just(state.value);
-				} else {
-					var $temp$states = rest;
-					states = $temp$states;
-					continue getFirstMatch;
-				}
-			}
-		}
-	}
-};
-var $elm$url$Url$Parser$removeFinalEmpty = function (segments) {
-	if (!segments.b) {
-		return _List_Nil;
-	} else {
-		if ((segments.a === '') && (!segments.b.b)) {
-			return _List_Nil;
-		} else {
-			var segment = segments.a;
-			var rest = segments.b;
-			return A2(
-				$elm$core$List$cons,
-				segment,
-				$elm$url$Url$Parser$removeFinalEmpty(rest));
-		}
-	}
-};
-var $elm$url$Url$Parser$preparePath = function (path) {
-	var _v0 = A2($elm$core$String$split, '/', path);
-	if (_v0.b && (_v0.a === '')) {
-		var segments = _v0.b;
-		return $elm$url$Url$Parser$removeFinalEmpty(segments);
-	} else {
-		var segments = _v0;
-		return $elm$url$Url$Parser$removeFinalEmpty(segments);
-	}
-};
-var $elm$url$Url$Parser$addToParametersHelp = F2(
-	function (value, maybeList) {
-		if (maybeList.$ === 'Nothing') {
-			return $elm$core$Maybe$Just(
-				_List_fromArray(
-					[value]));
-		} else {
-			var list = maybeList.a;
-			return $elm$core$Maybe$Just(
-				A2($elm$core$List$cons, value, list));
-		}
-	});
-var $elm$url$Url$percentDecode = _Url_percentDecode;
-var $elm$url$Url$Parser$addParam = F2(
-	function (segment, dict) {
-		var _v0 = A2($elm$core$String$split, '=', segment);
-		if ((_v0.b && _v0.b.b) && (!_v0.b.b.b)) {
-			var rawKey = _v0.a;
-			var _v1 = _v0.b;
-			var rawValue = _v1.a;
-			var _v2 = $elm$url$Url$percentDecode(rawKey);
-			if (_v2.$ === 'Nothing') {
-				return dict;
-			} else {
-				var key = _v2.a;
-				var _v3 = $elm$url$Url$percentDecode(rawValue);
-				if (_v3.$ === 'Nothing') {
-					return dict;
-				} else {
-					var value = _v3.a;
-					return A3(
-						$elm$core$Dict$update,
-						key,
-						$elm$url$Url$Parser$addToParametersHelp(value),
-						dict);
-				}
-			}
-		} else {
-			return dict;
-		}
-	});
-var $elm$url$Url$Parser$prepareQuery = function (maybeQuery) {
-	if (maybeQuery.$ === 'Nothing') {
-		return $elm$core$Dict$empty;
-	} else {
-		var qry = maybeQuery.a;
-		return A3(
-			$elm$core$List$foldr,
-			$elm$url$Url$Parser$addParam,
-			$elm$core$Dict$empty,
-			A2($elm$core$String$split, '&', qry));
-	}
-};
-var $elm$url$Url$Parser$parse = F2(
-	function (_v0, url) {
-		var parser = _v0.a;
-		return $elm$url$Url$Parser$getFirstMatch(
-			parser(
-				A5(
-					$elm$url$Url$Parser$State,
-					_List_Nil,
-					$elm$url$Url$Parser$preparePath(url.path),
-					$elm$url$Url$Parser$prepareQuery(url.query),
-					url.fragment,
-					$elm$core$Basics$identity)));
-	});
-var $author$project$Main$Chords = function (a) {
-	return {$: 'Chords', a: a};
-};
-var $author$project$Main$Curtain = function (a) {
-	return {$: 'Curtain', a: a};
-};
-var $author$project$Main$Grid = function (a) {
-	return {$: 'Grid', a: a};
-};
-var $author$project$Main$HilbertCurve = function (a) {
-	return {$: 'HilbertCurve', a: a};
-};
-var $author$project$Main$Landscape = function (a) {
-	return {$: 'Landscape', a: a};
-};
-var $author$project$Main$ParallelRandom = function (a) {
-	return {$: 'ParallelRandom', a: a};
-};
-var $author$project$Main$Rectangles = function (a) {
-	return {$: 'Rectangles', a: a};
-};
-var $author$project$Main$Sun = function (a) {
-	return {$: 'Sun', a: a};
-};
-var $author$project$Example$Chords$Setup = {$: 'Setup'};
-var $author$project$Example$Chords$initModel = $author$project$Example$Chords$Setup;
+var $author$project$Example$Curtain$Generate = {$: 'Generate'};
 var $author$project$Example$Curtain$Setup = function (a) {
 	return {$: 'Setup', a: a};
 };
 var $author$project$Example$Curtain$initModel = $author$project$Example$Curtain$Setup(100);
+var $author$project$Example$Curtain$Curtain = F2(
+	function (a, b) {
+		return {$: 'Curtain', a: a, b: b};
+	});
+var $author$project$Example$Curtain$Draw = function (a) {
+	return {$: 'Draw', a: a};
+};
+var $author$project$Example$Curtain$Model = F2(
+	function (a, b) {
+		return {$: 'Model', a: a, b: b};
+	});
+var $author$project$Generative$randomList2 = F2(
+	function (m, n) {
+		return A2(
+			$elm$random$Random$list,
+			m,
+			A2($elm$random$Random$list, n, $author$project$Generative$random));
+	});
+var $author$project$Example$Curtain$update = F2(
+	function (msg, model) {
+		var _v0 = _Utils_Tuple2(msg, model);
+		_v0$2:
+		while (true) {
+			if (_v0.a.$ === 'Generate') {
+				if (_v0.b.$ === 'Setup') {
+					var _v1 = _v0.a;
+					var n = _v0.b.a;
+					return _Utils_Tuple2(
+						model,
+						A2(
+							$elm$random$Random$generate,
+							$author$project$Example$Curtain$Draw,
+							A3(
+								$elm$random$Random$map2,
+								$author$project$Example$Curtain$Curtain,
+								A2($author$project$Generative$randomList2, n, 100),
+								A2($author$project$Generative$randomList2, n, 100))));
+				} else {
+					break _v0$2;
+				}
+			} else {
+				if (_v0.b.$ === 'Setup') {
+					var data = _v0.a.a;
+					var n = _v0.b.a;
+					return _Utils_Tuple2(
+						A2($author$project$Example$Curtain$Model, n, data),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					break _v0$2;
+				}
+			}
+		}
+		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+	});
+var $author$project$Example$Curtain$init = A2($author$project$Example$Curtain$update, $author$project$Example$Curtain$Generate, $author$project$Example$Curtain$initModel);
+var $author$project$Example$Grid$Generate = {$: 'Generate'};
 var $author$project$Example$Grid$Configuration = F3(
 	function (a, b, c) {
 		return {$: 'Configuration', a: a, b: b, c: c};
@@ -11046,6 +11080,49 @@ var $author$project$Example$Grid$Setup = function (a) {
 };
 var $author$project$Example$Grid$initModel = $author$project$Example$Grid$Setup(
 	A3($author$project$Example$Grid$Configuration, 16, 16, 10));
+var $author$project$Example$Grid$Draw = function (a) {
+	return {$: 'Draw', a: a};
+};
+var $author$project$Example$Grid$Model = F2(
+	function (a, b) {
+		return {$: 'Model', a: a, b: b};
+	});
+var $author$project$Example$Grid$update = F2(
+	function (msg, model) {
+		var _v0 = _Utils_Tuple2(msg, model);
+		_v0$2:
+		while (true) {
+			if (_v0.a.$ === 'Generate') {
+				if (_v0.b.$ === 'Setup') {
+					var _v1 = _v0.a;
+					var _v2 = _v0.b.a;
+					var m = _v2.a;
+					var n = _v2.b;
+					return _Utils_Tuple2(
+						model,
+						A2(
+							$elm$random$Random$generate,
+							$author$project$Example$Grid$Draw,
+							$author$project$Generative$randomList(m * n)));
+				} else {
+					break _v0$2;
+				}
+			} else {
+				if (_v0.b.$ === 'Setup') {
+					var data = _v0.a.a;
+					var config = _v0.b.a;
+					return _Utils_Tuple2(
+						A2($author$project$Example$Grid$Model, config, data),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					break _v0$2;
+				}
+			}
+		}
+		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+	});
+var $author$project$Example$Grid$init = A2($author$project$Example$Grid$update, $author$project$Example$Grid$Generate, $author$project$Example$Grid$initModel);
+var $author$project$Example$HilbertCurve$Iterate = {$: 'Iterate'};
 var $Spaxe$elm_lsystem$LSystem$Turtle$A = {$: 'A'};
 var $author$project$Example$HilbertCurve$Model = F2(
 	function (a, b) {
@@ -11056,11 +11133,161 @@ var $author$project$Example$HilbertCurve$initModel = A2(
 	5,
 	_List_fromArray(
 		[$Spaxe$elm_lsystem$LSystem$Turtle$A]));
+var $author$project$Example$HilbertCurve$Draw = {$: 'Draw'};
+var $Spaxe$elm_lsystem$LSystem$apply = F2(
+	function (rule, states) {
+		return A2(
+			$elm$core$List$concatMap,
+			function (s) {
+				return rule(s);
+			},
+			states);
+	});
+var $Spaxe$elm_lsystem$LSystem$Turtle$B = {$: 'B'};
+var $Spaxe$elm_lsystem$LSystem$Turtle$D = {$: 'D'};
+var $Spaxe$elm_lsystem$LSystem$Turtle$L = {$: 'L'};
+var $Spaxe$elm_lsystem$LSystem$Turtle$R = {$: 'R'};
+var $author$project$Example$HilbertCurve$rule = function (state) {
+	switch (state.$) {
+		case 'A':
+			return _List_fromArray(
+				[$Spaxe$elm_lsystem$LSystem$Turtle$R, $Spaxe$elm_lsystem$LSystem$Turtle$B, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$L, $Spaxe$elm_lsystem$LSystem$Turtle$A, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$A, $Spaxe$elm_lsystem$LSystem$Turtle$L, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$B, $Spaxe$elm_lsystem$LSystem$Turtle$R]);
+		case 'B':
+			return _List_fromArray(
+				[$Spaxe$elm_lsystem$LSystem$Turtle$L, $Spaxe$elm_lsystem$LSystem$Turtle$A, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$R, $Spaxe$elm_lsystem$LSystem$Turtle$B, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$B, $Spaxe$elm_lsystem$LSystem$Turtle$R, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$A, $Spaxe$elm_lsystem$LSystem$Turtle$L]);
+		default:
+			var s = state;
+			return _List_fromArray(
+				[s]);
+	}
+};
+var $author$project$Example$HilbertCurve$update = F2(
+	function (msg, model) {
+		update:
+		while (true) {
+			var _v0 = _Utils_Tuple2(msg, model);
+			if (_v0.a.$ === 'Iterate') {
+				var _v1 = _v0.a;
+				var _v2 = _v0.b;
+				var n = _v2.a;
+				var state = _v2.b;
+				var _v3 = n > 0;
+				if (_v3) {
+					return A2(
+						$author$project$Example$HilbertCurve$update,
+						$author$project$Example$HilbertCurve$Iterate,
+						A2(
+							$author$project$Example$HilbertCurve$Model,
+							n - 1,
+							A2($Spaxe$elm_lsystem$LSystem$apply, $author$project$Example$HilbertCurve$rule, state)));
+				} else {
+					var $temp$msg = $author$project$Example$HilbertCurve$Draw,
+						$temp$model = model;
+					msg = $temp$msg;
+					model = $temp$model;
+					continue update;
+				}
+			} else {
+				var _v4 = _v0.a;
+				var m = _v0.b;
+				return _Utils_Tuple2(m, $elm$core$Platform$Cmd$none);
+			}
+		}
+	});
+var $author$project$Example$HilbertCurve$init = A2($author$project$Example$HilbertCurve$update, $author$project$Example$HilbertCurve$Iterate, $author$project$Example$HilbertCurve$initModel);
+var $author$project$Example$Landscape$Generate = {$: 'Generate'};
 var $author$project$Example$Landscape$Setup = F2(
 	function (a, b) {
 		return {$: 'Setup', a: a, b: b};
 	});
 var $author$project$Example$Landscape$initModel = A2($author$project$Example$Landscape$Setup, 10, 1000);
+var $author$project$Example$Landscape$Draw = function (a) {
+	return {$: 'Draw', a: a};
+};
+var $author$project$Example$Landscape$Landscape = F3(
+	function (a, b, c) {
+		return {$: 'Landscape', a: a, b: b, c: c};
+	});
+var $author$project$Example$Landscape$Model = F3(
+	function (a, b, c) {
+		return {$: 'Model', a: a, b: b, c: c};
+	});
+var $elm$random$Random$map3 = F4(
+	function (func, _v0, _v1, _v2) {
+		var genA = _v0.a;
+		var genB = _v1.a;
+		var genC = _v2.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v3 = genA(seed0);
+				var a = _v3.a;
+				var seed1 = _v3.b;
+				var _v4 = genB(seed1);
+				var b = _v4.a;
+				var seed2 = _v4.b;
+				var _v5 = genC(seed2);
+				var c = _v5.a;
+				var seed3 = _v5.b;
+				return _Utils_Tuple2(
+					A3(func, a, b, c),
+					seed3);
+			});
+	});
+var $elm$random$Random$pair = F2(
+	function (genA, genB) {
+		return A3(
+			$elm$random$Random$map2,
+			F2(
+				function (a, b) {
+					return _Utils_Tuple2(a, b);
+				}),
+			genA,
+			genB);
+	});
+var $author$project$Generative$randomTuple = A2($elm$random$Random$pair, $author$project$Generative$random, $author$project$Generative$random);
+var $author$project$Example$Landscape$update = F2(
+	function (msg, model) {
+		var _v0 = _Utils_Tuple2(msg, model);
+		_v0$2:
+		while (true) {
+			if (_v0.a.$ === 'Generate') {
+				if (_v0.b.$ === 'Setup') {
+					var _v1 = _v0.a;
+					var _v2 = _v0.b;
+					var n = _v2.a;
+					var segments = _v2.b;
+					return _Utils_Tuple2(
+						model,
+						A2(
+							$elm$random$Random$generate,
+							$author$project$Example$Landscape$Draw,
+							A4(
+								$elm$random$Random$map3,
+								$author$project$Example$Landscape$Landscape,
+								$author$project$Generative$randomTuple,
+								$author$project$Generative$random,
+								A2($author$project$Generative$randomList2, n, segments))));
+				} else {
+					break _v0$2;
+				}
+			} else {
+				if (_v0.b.$ === 'Setup') {
+					var data = _v0.a.a;
+					var _v3 = _v0.b;
+					var n = _v3.a;
+					var segments = _v3.b;
+					return _Utils_Tuple2(
+						A3($author$project$Example$Landscape$Model, n, segments, data),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					break _v0$2;
+				}
+			}
+		}
+		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+	});
+var $author$project$Example$Landscape$init = A2($author$project$Example$Landscape$update, $author$project$Example$Landscape$Generate, $author$project$Example$Landscape$initModel);
+var $author$project$Example$ParallelRandom$Generate = {$: 'Generate'};
 var $author$project$Example$ParallelRandom$Configuration = F4(
 	function (a, b, c, d) {
 		return {$: 'Configuration', a: a, b: b, c: c, d: d};
@@ -11070,17 +11297,90 @@ var $author$project$Example$ParallelRandom$Setup = function (a) {
 };
 var $author$project$Example$ParallelRandom$initModel = $author$project$Example$ParallelRandom$Setup(
 	A4($author$project$Example$ParallelRandom$Configuration, 10, 100, 10, 10));
-var $Spaxe$elm_lsystem$LSystem$Turtle$D = {$: 'D'};
+var $author$project$Example$ParallelRandom$Draw = function (a) {
+	return {$: 'Draw', a: a};
+};
+var $author$project$Example$ParallelRandom$Model = F2(
+	function (a, b) {
+		return {$: 'Model', a: a, b: b};
+	});
+var $author$project$Example$ParallelRandom$update = F2(
+	function (msg, model) {
+		var _v0 = _Utils_Tuple2(msg, model);
+		_v0$2:
+		while (true) {
+			if (_v0.a.$ === 'Generate') {
+				if (_v0.b.$ === 'Setup') {
+					var _v1 = _v0.a;
+					var _v2 = _v0.b.a;
+					var n = _v2.a;
+					var segments = _v2.b;
+					return _Utils_Tuple2(
+						model,
+						A2(
+							$elm$random$Random$generate,
+							$author$project$Example$ParallelRandom$Draw,
+							A2($author$project$Generative$randomList2, n, segments)));
+				} else {
+					break _v0$2;
+				}
+			} else {
+				if (_v0.b.$ === 'Setup') {
+					var data = _v0.a.a;
+					var config = _v0.b.a;
+					return _Utils_Tuple2(
+						A2($author$project$Example$ParallelRandom$Model, config, data),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					break _v0$2;
+				}
+			}
+		}
+		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+	});
+var $author$project$Example$ParallelRandom$init = A2($author$project$Example$ParallelRandom$update, $author$project$Example$ParallelRandom$Generate, $author$project$Example$ParallelRandom$initModel);
+var $author$project$Example$Rectangles$Iterate = {$: 'Iterate'};
 var $author$project$Example$Rectangles$Model = F2(
 	function (a, b) {
 		return {$: 'Model', a: a, b: b};
 	});
-var $Spaxe$elm_lsystem$LSystem$Turtle$R = {$: 'R'};
 var $author$project$Example$Rectangles$initModel = A2(
 	$author$project$Example$Rectangles$Model,
 	3,
 	_List_fromArray(
 		[$Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$R, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$R, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$R, $Spaxe$elm_lsystem$LSystem$Turtle$D]));
+var $author$project$Example$Rectangles$rule = function (state) {
+	if (state.$ === 'D') {
+		return _List_fromArray(
+			[$Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$R, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$L, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$R, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$R, $Spaxe$elm_lsystem$LSystem$Turtle$D, $Spaxe$elm_lsystem$LSystem$Turtle$D]);
+	} else {
+		var s = state;
+		return _List_fromArray(
+			[s]);
+	}
+};
+var $author$project$Example$Rectangles$update = F2(
+	function (msg, model) {
+		var _v0 = _Utils_Tuple2(msg, model);
+		var _v1 = _v0.a;
+		var _v2 = _v0.b;
+		var n = _v2.a;
+		var state = _v2.b;
+		var _v3 = n > 0;
+		if (_v3) {
+			return A2(
+				$author$project$Example$Rectangles$update,
+				$author$project$Example$Rectangles$Iterate,
+				A2(
+					$author$project$Example$Rectangles$Model,
+					n - 1,
+					A2($Spaxe$elm_lsystem$LSystem$apply, $author$project$Example$Rectangles$rule, state)));
+		} else {
+			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+		}
+	});
+var $author$project$Example$Rectangles$init = A2($author$project$Example$Rectangles$update, $author$project$Example$Rectangles$Iterate, $author$project$Example$Rectangles$initModel);
+var $author$project$Example$Sun$Generate = {$: 'Generate'};
 var $author$project$Example$Sun$Configuration = F4(
 	function (a, b, c, d) {
 		return {$: 'Configuration', a: a, b: b, c: c, d: d};
@@ -11090,160 +11390,64 @@ var $author$project$Example$Sun$Setup = function (a) {
 };
 var $author$project$Example$Sun$initModel = $author$project$Example$Sun$Setup(
 	A4($author$project$Example$Sun$Configuration, 128, 128, 25, 60));
-var $elm$url$Url$Parser$Parser = function (a) {
-	return {$: 'Parser', a: a};
+var $author$project$Example$Sun$Draw = function (a) {
+	return {$: 'Draw', a: a};
 };
-var $elm$url$Url$Parser$mapState = F2(
-	function (func, _v0) {
-		var visited = _v0.visited;
-		var unvisited = _v0.unvisited;
-		var params = _v0.params;
-		var frag = _v0.frag;
-		var value = _v0.value;
-		return A5(
-			$elm$url$Url$Parser$State,
-			visited,
-			unvisited,
-			params,
-			frag,
-			func(value));
+var $author$project$Example$Sun$Model = F2(
+	function (a, b) {
+		return {$: 'Model', a: a, b: b};
 	});
-var $elm$url$Url$Parser$map = F2(
-	function (subValue, _v0) {
-		var parseArg = _v0.a;
-		return $elm$url$Url$Parser$Parser(
-			function (_v1) {
-				var visited = _v1.visited;
-				var unvisited = _v1.unvisited;
-				var params = _v1.params;
-				var frag = _v1.frag;
-				var value = _v1.value;
-				return A2(
-					$elm$core$List$map,
-					$elm$url$Url$Parser$mapState(value),
-					parseArg(
-						A5($elm$url$Url$Parser$State, visited, unvisited, params, frag, subValue)));
-			});
-	});
-var $elm$url$Url$Parser$oneOf = function (parsers) {
-	return $elm$url$Url$Parser$Parser(
-		function (state) {
-			return A2(
-				$elm$core$List$concatMap,
-				function (_v0) {
-					var parser = _v0.a;
-					return parser(state);
-				},
-				parsers);
-		});
+var $author$project$Example$Sun$Sun = function (a) {
+	return {$: 'Sun', a: a};
 };
-var $elm$url$Url$Parser$s = function (str) {
-	return $elm$url$Url$Parser$Parser(
-		function (_v0) {
-			var visited = _v0.visited;
-			var unvisited = _v0.unvisited;
-			var params = _v0.params;
-			var frag = _v0.frag;
-			var value = _v0.value;
-			if (!unvisited.b) {
-				return _List_Nil;
+var $author$project$Generative$randomListTuple = function (n) {
+	return A2($elm$random$Random$list, n, $author$project$Generative$randomTuple);
+};
+var $author$project$Generative$randomListTuple2 = F2(
+	function (m, n) {
+		return A2(
+			$elm$random$Random$list,
+			n,
+			$author$project$Generative$randomListTuple(n));
+	});
+var $author$project$Example$Sun$update = F2(
+	function (msg, model) {
+		var _v0 = _Utils_Tuple2(msg, model);
+		_v0$2:
+		while (true) {
+			if (_v0.a.$ === 'Generate') {
+				if (_v0.b.$ === 'Setup') {
+					var _v1 = _v0.a;
+					var _v2 = _v0.b.a;
+					var n = _v2.a;
+					var segments = _v2.b;
+					return _Utils_Tuple2(
+						model,
+						A2(
+							$elm$random$Random$generate,
+							$author$project$Example$Sun$Draw,
+							A2(
+								$elm$random$Random$map,
+								$author$project$Example$Sun$Sun,
+								A2($author$project$Generative$randomListTuple2, n, segments))));
+				} else {
+					break _v0$2;
+				}
 			} else {
-				var next = unvisited.a;
-				var rest = unvisited.b;
-				return _Utils_eq(next, str) ? _List_fromArray(
-					[
-						A5(
-						$elm$url$Url$Parser$State,
-						A2($elm$core$List$cons, next, visited),
-						rest,
-						params,
-						frag,
-						value)
-					]) : _List_Nil;
+				if (_v0.b.$ === 'Setup') {
+					var data = _v0.a.a;
+					var config = _v0.b.a;
+					return _Utils_Tuple2(
+						A2($author$project$Example$Sun$Model, config, data),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					break _v0$2;
+				}
 			}
-		});
-};
-var $elm$url$Url$Parser$top = $elm$url$Url$Parser$Parser(
-	function (state) {
-		return _List_fromArray(
-			[state]);
-	});
-var $author$project$Main$routeParser = $elm$url$Url$Parser$oneOf(
-	_List_fromArray(
-		[
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$Crescent($author$project$Example$Crescent$initModel),
-			$elm$url$Url$Parser$top),
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$Grid($author$project$Example$Grid$initModel),
-			$elm$url$Url$Parser$s('grid')),
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$Crescent($author$project$Example$Crescent$initModel),
-			$elm$url$Url$Parser$s('crescent')),
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$ParallelRandom($author$project$Example$ParallelRandom$initModel),
-			$elm$url$Url$Parser$s('parallel-random')),
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$Curtain($author$project$Example$Curtain$initModel),
-			$elm$url$Url$Parser$s('curtain')),
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$Landscape($author$project$Example$Landscape$initModel),
-			$elm$url$Url$Parser$s('landscape')),
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$Sun($author$project$Example$Sun$initModel),
-			$elm$url$Url$Parser$s('sun')),
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$Chords($author$project$Example$Chords$initModel),
-			$elm$url$Url$Parser$s('chords')),
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$Rectangles($author$project$Example$Rectangles$initModel),
-			$elm$url$Url$Parser$s('rectangles')),
-			A2(
-			$elm$url$Url$Parser$map,
-			$author$project$Main$HilbertCurve($author$project$Example$HilbertCurve$initModel),
-			$elm$url$Url$Parser$s('hilbert-curve'))
-		]));
-var $author$project$Main$updateRoute = function (model) {
-	var _v0 = A2($elm$url$Url$Parser$parse, $author$project$Main$routeParser, model.url);
-	if (_v0.$ === 'Just') {
-		if (_v0.a.$ === 'Crescent') {
-			var routeMsgModel = $author$project$Example$Crescent$init;
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{
-						route: $elm$core$Maybe$Just(
-							$author$project$Main$Crescent(routeMsgModel.a)),
-						url: model.url
-					}),
-				A2($elm$core$Platform$Cmd$map, $author$project$Main$CrescentMsg, routeMsgModel.b));
-		} else {
-			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
-	} else {
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-	}
-};
-var $author$project$Main$init = F3(
-	function (_v0, url, key) {
-		return $author$project$Main$updateRoute(
-			A4($author$project$Main$Model, key, url, $elm$core$Maybe$Nothing, ''));
 	});
-var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (model) {
-	return $elm$core$Platform$Sub$none;
-};
-var $elm$browser$Browser$Navigation$load = _Browser_load;
+var $author$project$Example$Sun$init = A2($author$project$Example$Sun$update, $author$project$Example$Sun$Generate, $author$project$Example$Sun$initModel);
 var $elm$core$Tuple$mapFirst = F2(
 	function (func, _v0) {
 		var x = _v0.a;
@@ -11267,6 +11471,145 @@ var $author$project$Generative$mapTuple2 = F2(
 			$elm$core$Tuple$mapFirst(f),
 			$elm$core$Tuple$mapSecond(g));
 	});
+var $author$project$Main$initRoute = function (model) {
+	var _v0 = model.url.fragment;
+	if (_v0.$ === 'Just') {
+		switch (_v0.a) {
+			case 'crescent':
+				return A3(
+					$author$project$Generative$mapTuple2,
+					function (m) {
+						return _Utils_update(
+							model,
+							{
+								route: $elm$core$Maybe$Just(
+									$author$project$Main$Crescent(m))
+							});
+					},
+					$elm$core$Platform$Cmd$map($author$project$Main$CrescentMsg),
+					$author$project$Example$Crescent$init);
+			case 'grid':
+				return A3(
+					$author$project$Generative$mapTuple2,
+					function (m) {
+						return _Utils_update(
+							model,
+							{
+								route: $elm$core$Maybe$Just(
+									$author$project$Main$Grid(m))
+							});
+					},
+					$elm$core$Platform$Cmd$map($author$project$Main$GridMsg),
+					$author$project$Example$Grid$init);
+			case 'parallel-random':
+				return A3(
+					$author$project$Generative$mapTuple2,
+					function (m) {
+						return _Utils_update(
+							model,
+							{
+								route: $elm$core$Maybe$Just(
+									$author$project$Main$ParallelRandom(m))
+							});
+					},
+					$elm$core$Platform$Cmd$map($author$project$Main$ParallelRandomMsg),
+					$author$project$Example$ParallelRandom$init);
+			case 'curtain':
+				return A3(
+					$author$project$Generative$mapTuple2,
+					function (m) {
+						return _Utils_update(
+							model,
+							{
+								route: $elm$core$Maybe$Just(
+									$author$project$Main$Curtain(m))
+							});
+					},
+					$elm$core$Platform$Cmd$map($author$project$Main$CurtainMsg),
+					$author$project$Example$Curtain$init);
+			case 'landscape':
+				return A3(
+					$author$project$Generative$mapTuple2,
+					function (m) {
+						return _Utils_update(
+							model,
+							{
+								route: $elm$core$Maybe$Just(
+									$author$project$Main$Landscape(m))
+							});
+					},
+					$elm$core$Platform$Cmd$map($author$project$Main$LandscapeMsg),
+					$author$project$Example$Landscape$init);
+			case 'sun':
+				return A3(
+					$author$project$Generative$mapTuple2,
+					function (m) {
+						return _Utils_update(
+							model,
+							{
+								route: $elm$core$Maybe$Just(
+									$author$project$Main$Sun(m))
+							});
+					},
+					$elm$core$Platform$Cmd$map($author$project$Main$SunMsg),
+					$author$project$Example$Sun$init);
+			case 'chords':
+				return A3(
+					$author$project$Generative$mapTuple2,
+					function (m) {
+						return _Utils_update(
+							model,
+							{
+								route: $elm$core$Maybe$Just(
+									$author$project$Main$Chords(m))
+							});
+					},
+					$elm$core$Platform$Cmd$map($author$project$Main$ChordsMsg),
+					$author$project$Example$Chords$init);
+			case 'rectangles':
+				return A3(
+					$author$project$Generative$mapTuple2,
+					function (m) {
+						return _Utils_update(
+							model,
+							{
+								route: $elm$core$Maybe$Just(
+									$author$project$Main$Rectangles(m))
+							});
+					},
+					$elm$core$Platform$Cmd$map($author$project$Main$RectanglesMsg),
+					$author$project$Example$Rectangles$init);
+			case 'hilbert-curve':
+				return A3(
+					$author$project$Generative$mapTuple2,
+					function (m) {
+						return _Utils_update(
+							model,
+							{
+								route: $elm$core$Maybe$Just(
+									$author$project$Main$HilbertCurve(m))
+							});
+					},
+					$elm$core$Platform$Cmd$map($author$project$Main$HilbertCurveMsg),
+					$author$project$Example$HilbertCurve$init);
+			default:
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+		}
+	} else {
+		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+	}
+};
+var $author$project$Main$init = F3(
+	function (_v0, url, key) {
+		return $author$project$Main$initRoute(
+			A4($author$project$Main$Model, key, url, $elm$core$Maybe$Nothing, ''));
+	});
+var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $author$project$Main$subscriptions = function (model) {
+	return $elm$core$Platform$Sub$none;
+};
+var $elm$browser$Browser$Navigation$load = _Browser_load;
 var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
 var $elm$url$Url$addPort = F2(
 	function (maybePort, starter) {
@@ -11334,7 +11677,7 @@ var $author$project$Main$update = F2(
 				}
 			case 'UrlChanged':
 				var url = _v0.a.a;
-				return $author$project$Main$updateRoute(
+				return $author$project$Main$initRoute(
 					_Utils_update(
 						model,
 						{url: url}));
@@ -11342,24 +11685,56 @@ var $author$project$Main$update = F2(
 				var subMsg = _v0.a;
 				var route = _v0.b.route;
 				var _v2 = _Utils_Tuple2(subMsg, route);
-				if (((_v2.a.$ === 'CrescentMsg') && (_v2.b.$ === 'Just')) && (_v2.b.a.$ === 'Crescent')) {
-					var pageMsg = _v2.a.a;
-					var pageModel = _v2.b.a.a;
-					return A3(
-						$author$project$Generative$mapTuple2,
-						function (m) {
-							return _Utils_update(
-								model,
-								{
-									route: $elm$core$Maybe$Just(
-										$author$project$Main$Crescent(m))
-								});
-						},
-						$elm$core$Platform$Cmd$map($author$project$Main$CrescentMsg),
-						A2($author$project$Example$Crescent$update, pageMsg, pageModel));
-				} else {
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+				_v2$2:
+				while (true) {
+					if (_v2.b.$ === 'Just') {
+						switch (_v2.a.$) {
+							case 'CrescentMsg':
+								if (_v2.b.a.$ === 'Crescent') {
+									var pageMsg = _v2.a.a;
+									var pageModel = _v2.b.a.a;
+									return A3(
+										$author$project$Generative$mapTuple2,
+										function (m) {
+											return _Utils_update(
+												model,
+												{
+													route: $elm$core$Maybe$Just(
+														$author$project$Main$Crescent(m))
+												});
+										},
+										$elm$core$Platform$Cmd$map($author$project$Main$CrescentMsg),
+										A2($author$project$Example$Crescent$update, pageMsg, pageModel));
+								} else {
+									break _v2$2;
+								}
+							case 'GridMsg':
+								if (_v2.b.a.$ === 'Grid') {
+									var pageMsg = _v2.a.a;
+									var pageModel = _v2.b.a.a;
+									return A3(
+										$author$project$Generative$mapTuple2,
+										function (m) {
+											return _Utils_update(
+												model,
+												{
+													route: $elm$core$Maybe$Just(
+														$author$project$Main$Grid(m))
+												});
+										},
+										$elm$core$Platform$Cmd$map($author$project$Main$GridMsg),
+										A2($author$project$Example$Grid$update, pageMsg, pageModel));
+								} else {
+									break _v2$2;
+								}
+							default:
+								break _v2$2;
+						}
+					} else {
+						break _v2$2;
+					}
 				}
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
 var $elm$browser$Browser$Document = F2(
@@ -13785,6 +14160,106 @@ var $author$project$Draw$frame = F4(
 				attributes));
 	});
 var $author$project$Draw$a4Landscape = A3($author$project$Draw$frame, 297, 210, 'mm');
+var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
+var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
+var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
+var $elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
+var $author$project$Draw$circle = F3(
+	function (x, y, r) {
+		return A2(
+			$elm$svg$Svg$circle,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$cx(
+					$elm$core$String$fromFloat(x)),
+					$elm$svg$Svg$Attributes$cy(
+					$elm$core$String$fromFloat(y)),
+					$elm$svg$Svg$Attributes$r(
+					$elm$core$String$fromFloat(r))
+				]),
+			_List_Nil);
+	});
+var $elm$core$Basics$cos = _Basics_cos;
+var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
+var $author$project$Draw$g = $elm$svg$Svg$g;
+var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
+var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
+var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
+var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
+var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
+var $author$project$Draw$line = F4(
+	function (x1, y1, x2, y2) {
+		return A2(
+			$elm$svg$Svg$line,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$x1(
+					$elm$core$String$fromFloat(x1)),
+					$elm$svg$Svg$Attributes$y1(
+					$elm$core$String$fromFloat(y1)),
+					$elm$svg$Svg$Attributes$x2(
+					$elm$core$String$fromFloat(x2)),
+					$elm$svg$Svg$Attributes$y2(
+					$elm$core$String$fromFloat(y2))
+				]),
+			_List_Nil);
+	});
+var $elm$core$Basics$sin = _Basics_sin;
+var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
+var $author$project$Draw$translate = F2(
+	function (x, y) {
+		return ' translate(' + ($elm$core$String$fromFloat(x) + (',' + ($elm$core$String$fromFloat(y) + ') ')));
+	});
+var $author$project$Example$Chords$view = function (model) {
+	if (model.$ === 'Model') {
+		var _v1 = model.a;
+		var p = _v1.a;
+		var q = _v1.b;
+		var s = 60.0;
+		var x = function (a) {
+			return s * $elm$core$Basics$cos(a * 360);
+		};
+		var y = function (a) {
+			return s * $elm$core$Basics$sin(a * 360);
+		};
+		var lines = A3(
+			$elm$core$List$map2,
+			F2(
+				function (a, b) {
+					return A2(
+						$author$project$Draw$g,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A4(
+								$author$project$Draw$line,
+								x(a),
+								y(a),
+								x(b),
+								y(b))
+							]));
+				}),
+			p,
+			q);
+		var circle = A3($author$project$Draw$circle, 0, 0, s);
+		return A2(
+			$author$project$Draw$a4Landscape,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Draw$g,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$transform(
+							A2($author$project$Draw$translate, 150, 100))
+						]),
+					lines)
+				]));
+	} else {
+		return $elm$html$Html$text('');
+	}
+};
 var $Spaxe$svg_pathd$Svg$PathD$L = function (a) {
 	return {$: 'L', a: a};
 };
@@ -13796,8 +14271,6 @@ var $Spaxe$svg_pathd$Svg$PathD$Q = F2(
 		return {$: 'Q', a: a, b: b};
 	});
 var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
-var $elm$svg$Svg$g = $elm$svg$Svg$trustedNode('g');
-var $author$project$Draw$g = $elm$svg$Svg$g;
 var $elm_community$list_extra$List$Extra$andThen = $elm$core$List$concatMap;
 var $elm_community$list_extra$List$Extra$initialize = F2(
 	function (n, f) {
@@ -13992,11 +14465,6 @@ var $elm$core$Basics$sqrt = _Basics_sqrt;
 var $author$project$Draw$strokeWidth = function (x) {
 	return 'stroke-width: ' + ($elm$core$String$fromFloat(x) + 'px');
 };
-var $elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
-var $author$project$Draw$translate = F2(
-	function (x, y) {
-		return ' translate(' + ($elm$core$String$fromFloat(x) + (',' + ($elm$core$String$fromFloat(y) + ') ')));
-	});
 var $author$project$Example$Crescent$draw = F2(
 	function (model, _v0) {
 		var a = _v0.a;
@@ -14101,17 +14569,759 @@ var $author$project$Example$Crescent$view = function (model) {
 		return $elm$html$Html$text('');
 	}
 };
+var $elm_community$list_extra$List$Extra$scanl = F3(
+	function (f, b, xs) {
+		var scan1 = F2(
+			function (x, accAcc) {
+				if (accAcc.b) {
+					var acc = accAcc.a;
+					return A2(
+						$elm$core$List$cons,
+						A2(f, x, acc),
+						accAcc);
+				} else {
+					return _List_Nil;
+				}
+			});
+		return $elm$core$List$reverse(
+			A3(
+				$elm$core$List$foldl,
+				scan1,
+				_List_fromArray(
+					[b]),
+				xs));
+	});
+var $elm_community$list_extra$List$Extra$scanl1 = F2(
+	function (f, xs_) {
+		if (!xs_.b) {
+			return _List_Nil;
+		} else {
+			var x = xs_.a;
+			var xs = xs_.b;
+			return A3($elm_community$list_extra$List$Extra$scanl, f, x, xs);
+		}
+	});
+var $author$project$Generative$accumulateList = $elm_community$list_extra$List$Extra$scanl1(
+	$elm$core$List$map2($elm$core$Basics$add));
+var $elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
+var $elm_community$list_extra$List$Extra$zip = $elm$core$List$map2($elm$core$Tuple$pair);
+var $author$project$Generative$makePath = F5(
+	function (n, x1, y1, x2, y2) {
+		if (n < 1) {
+			return _List_Nil;
+		} else {
+			var dy = (y2 - y1) / n;
+			var ys = A2(
+				$elm$core$List$map,
+				A2(
+					$elm$core$Basics$composeR,
+					$elm$core$Basics$toFloat,
+					A2(
+						$elm$core$Basics$composeR,
+						$elm$core$Basics$mul(dy),
+						$elm$core$Basics$add(y1))),
+				A2($elm$core$List$range, 0, n));
+			var dx = (x2 - x1) / n;
+			var xs = A2(
+				$elm$core$List$map,
+				A2(
+					$elm$core$Basics$composeR,
+					$elm$core$Basics$toFloat,
+					A2(
+						$elm$core$Basics$composeR,
+						$elm$core$Basics$mul(dx),
+						$elm$core$Basics$add(x1))),
+				A2($elm$core$List$range, 0, n));
+			return A2($elm_community$list_extra$List$Extra$zip, xs, ys);
+		}
+	});
+var $author$project$Example$Curtain$initialiseLines = function (n) {
+	return A2(
+		$elm$core$List$map,
+		function (y) {
+			return A5($author$project$Generative$makePath, 100, 10, y, 210, y);
+		},
+		A2($elm_community$list_extra$List$Extra$initialize, n, $elm$core$Basics$toFloat));
+};
+var $author$project$Draw$lines = function (points) {
+	var coords = function (_v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return $elm$core$String$fromFloat(x) + (', ' + $elm$core$String$fromFloat(y));
+	};
+	return A2(
+		$elm$svg$Svg$path,
+		_List_fromArray(
+			[
+				$elm$svg$Svg$Attributes$d(
+				'M ' + A2(
+					$elm$core$String$join,
+					' L ',
+					A2($elm$core$List$map, coords, points)))
+			]),
+		_List_Nil);
+};
+var $author$project$Generative$map2First = function (f) {
+	return $elm$core$List$map2(
+		A2($elm$core$Basics$composeL, $elm$core$Tuple$mapFirst, f));
+};
+var $author$project$Generative$map2Second = function (f) {
+	return $elm$core$List$map2(
+		A2($elm$core$Basics$composeL, $elm$core$Tuple$mapSecond, f));
+};
+var $author$project$Generative$mapList = A2($elm$core$Basics$composeL, $elm$core$List$map, $elm$core$List$map);
+var $author$project$Example$Curtain$view = function (model) {
+	if (model.$ === 'Model') {
+		var n = model.a;
+		var _v1 = model.b;
+		var a = _v1.a;
+		var b = _v1.b;
+		var dys = $author$project$Generative$accumulateList(
+			A2(
+				$author$project$Generative$mapList,
+				$elm$core$Basics$mul(0.5),
+				b));
+		var dxs = $author$project$Generative$accumulateList(
+			A2(
+				$author$project$Generative$mapList,
+				$elm$core$Basics$mul(0.5),
+				a));
+		return A2(
+			$author$project$Draw$a4Landscape,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Draw$g,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$transform(
+							A2($author$project$Draw$translate, 50, 30))
+						]),
+					A2(
+						$elm$core$List$map,
+						$author$project$Draw$lines,
+						A3(
+							$elm$core$List$map2,
+							$author$project$Generative$map2Second($elm$core$Basics$add),
+							dys,
+							A3(
+								$elm$core$List$map2,
+								$author$project$Generative$map2Second($elm$core$Basics$add),
+								A2(
+									$author$project$Generative$mapList,
+									$elm$core$Basics$mul(0.25),
+									b),
+								A3(
+									$elm$core$List$map2,
+									$author$project$Generative$map2First($elm$core$Basics$add),
+									dxs,
+									A3(
+										$elm$core$List$map2,
+										$author$project$Generative$map2First($elm$core$Basics$add),
+										A2(
+											$author$project$Generative$mapList,
+											$elm$core$Basics$mul(0.25),
+											a),
+										$author$project$Example$Curtain$initialiseLines(100)))))))
+				]));
+	} else {
+		return $elm$html$Html$text('');
+	}
+};
+var $elm$core$List$map3 = _List_map3;
+var $author$project$Example$Grid$draw = F2(
+	function (model, lines) {
+		var flip = function (r) {
+			return (r > 0) ? 0 : 90;
+		};
+		if (model.$ === 'Model') {
+			var _v1 = model.a;
+			var m = _v1.a;
+			var n = _v1.b;
+			var size = _v1.c;
+			var rs = model.b;
+			return A4(
+				$elm$core$List$map3,
+				F3(
+					function (_v2, _v3, r) {
+						var dx = _v2.a;
+						var dy = _v2.b;
+						var _v4 = _v3.a;
+						var x1 = _v4.a;
+						var y1 = _v4.b;
+						var _v5 = _v3.b;
+						var x2 = _v5.a;
+						var y2 = _v5.b;
+						return A2(
+							$author$project$Draw$g,
+							_List_fromArray(
+								[
+									$elm$svg$Svg$Attributes$transform(
+									_Utils_ap(
+										$author$project$Draw$scale(size),
+										_Utils_ap(
+											A2($author$project$Draw$translate, dx, dy),
+											$author$project$Draw$rotate(r)))),
+									$elm$svg$Svg$Attributes$style(
+									$author$project$Draw$strokeWidth(0.5 / size))
+								]),
+							_List_fromArray(
+								[
+									A4($author$project$Draw$line, x1, y1, x2, y2)
+								]));
+					}),
+				A2($author$project$Generative$makeGrid, m, n),
+				lines,
+				rs);
+		} else {
+			return _List_Nil;
+		}
+	});
+var $elm$core$List$repeatHelp = F3(
+	function (result, n, value) {
+		repeatHelp:
+		while (true) {
+			if (n <= 0) {
+				return result;
+			} else {
+				var $temp$result = A2($elm$core$List$cons, value, result),
+					$temp$n = n - 1,
+					$temp$value = value;
+				result = $temp$result;
+				n = $temp$n;
+				value = $temp$value;
+				continue repeatHelp;
+			}
+		}
+	});
+var $elm$core$List$repeat = F2(
+	function (n, value) {
+		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
+	});
+var $author$project$Example$Grid$setup = function (_v0) {
+	var m = _v0.a;
+	var n = _v0.b;
+	return A2(
+		$elm$core$List$repeat,
+		m * n,
+		_Utils_Tuple2(
+			_Utils_Tuple2(-0.5, -0.5),
+			_Utils_Tuple2(0.5, 0.5)));
+};
+var $author$project$Example$Grid$view = function (model) {
+	if (model.$ === 'Model') {
+		var config = model.a;
+		return A2(
+			$author$project$Draw$a4Landscape,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Draw$g,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$transform(
+							A2($author$project$Draw$translate, 60, 25))
+						]),
+					A2(
+						$author$project$Example$Grid$draw,
+						model,
+						$author$project$Example$Grid$setup(config)))
+				]));
+	} else {
+		return $elm$html$Html$text('');
+	}
+};
+var $author$project$Example$HilbertCurve$Configuration = F2(
+	function (a, b) {
+		return {$: 'Configuration', a: a, b: b};
+	});
+var $elm$core$Basics$pi = _Basics_pi;
+var $elm$core$Basics$degrees = function (angleInDegrees) {
+	return (angleInDegrees * $elm$core$Basics$pi) / 180;
+};
+var $elm_community$list_extra$List$Extra$mapAccuml = F3(
+	function (f, acc0, list) {
+		var _v0 = A3(
+			$elm$core$List$foldl,
+			F2(
+				function (x, _v1) {
+					var acc1 = _v1.a;
+					var ys = _v1.b;
+					var _v2 = A2(f, acc1, x);
+					var acc2 = _v2.a;
+					var y = _v2.b;
+					return _Utils_Tuple2(
+						acc2,
+						A2($elm$core$List$cons, y, ys));
+				}),
+			_Utils_Tuple2(acc0, _List_Nil),
+			list);
+		var accFinal = _v0.a;
+		var generatedList = _v0.b;
+		return _Utils_Tuple2(
+			accFinal,
+			$elm$core$List$reverse(generatedList));
+	});
+var $Spaxe$elm_lsystem$LSystem$Turtle$turtle = F2(
+	function (states, dAngle) {
+		var move = F2(
+			function (_v2, a) {
+				var x = _v2.a;
+				var y = _v2.b;
+				return _Utils_Tuple2(
+					x + $elm$core$Basics$cos(
+						$elm$core$Basics$degrees(a)),
+					y + $elm$core$Basics$sin(
+						$elm$core$Basics$degrees(a)));
+			});
+		var next = F2(
+			function (_v1, state) {
+				var p = _v1.a;
+				var a = _v1.b;
+				switch (state.$) {
+					case 'D':
+						return _Utils_Tuple2(
+							_Utils_Tuple2(
+								A2(move, p, a),
+								a),
+							_List_fromArray(
+								[
+									$Spaxe$svg_pathd$Svg$PathD$L(
+									A2(move, p, a))
+								]));
+					case 'S':
+						return _Utils_Tuple2(
+							_Utils_Tuple2(
+								A2(move, p, a),
+								a),
+							_List_fromArray(
+								[
+									$Spaxe$svg_pathd$Svg$PathD$M(
+									A2(move, p, a))
+								]));
+					case 'L':
+						return _Utils_Tuple2(
+							_Utils_Tuple2(p, a - dAngle),
+							_List_Nil);
+					case 'R':
+						return _Utils_Tuple2(
+							_Utils_Tuple2(p, a + dAngle),
+							_List_Nil);
+					case 'A':
+						return _Utils_Tuple2(
+							_Utils_Tuple2(p, a),
+							_List_Nil);
+					case 'B':
+						return _Utils_Tuple2(
+							_Utils_Tuple2(p, a),
+							_List_Nil);
+					default:
+						return _Utils_Tuple2(
+							_Utils_Tuple2(p, a),
+							_List_Nil);
+				}
+			});
+		return $elm$core$List$concat(
+			A3(
+				$elm_community$list_extra$List$Extra$mapAccuml,
+				next,
+				_Utils_Tuple2(
+					_Utils_Tuple2(0, 0),
+					0),
+				states).b);
+	});
+var $author$project$Example$HilbertCurve$draw = F2(
+	function (_v0, _v1) {
+		var states = _v0.b;
+		var p0 = _v1.a;
+		var a0 = _v1.b;
+		return A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$d(
+					$Spaxe$svg_pathd$Svg$PathD$pathD(
+						_Utils_ap(
+							_List_fromArray(
+								[
+									$Spaxe$svg_pathd$Svg$PathD$M(p0)
+								]),
+							A2($Spaxe$elm_lsystem$LSystem$Turtle$turtle, states, 90)))),
+					$elm$svg$Svg$Attributes$strokeWidth('0.2')
+				]),
+			_List_Nil);
+	});
+var $author$project$Example$HilbertCurve$view = function (model) {
+	var n = model.a;
+	var state = model.b;
+	return A2(
+		$author$project$Draw$a4Landscape,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				$author$project$Draw$g,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$transform(
+						_Utils_ap(
+							A2($author$project$Draw$translate, 120, 70),
+							$author$project$Draw$scale(2)))
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Example$HilbertCurve$draw,
+						model,
+						A2(
+							$author$project$Example$HilbertCurve$Configuration,
+							_Utils_Tuple2(0, 0),
+							0))
+					]))
+			]));
+};
+var $author$project$Generative$accumulate = $elm_community$list_extra$List$Extra$scanl1($elm$core$Basics$add);
+var $author$project$Example$Landscape$initialiseLines = F2(
+	function (n, segments) {
+		return A2(
+			$elm$core$List$map,
+			function (y) {
+				return A5($author$project$Generative$makePath, segments, 10, y, 210, y);
+			},
+			A2($elm$core$List$repeat, n, 0));
+	});
+var $author$project$Example$Landscape$view = function (model) {
+	if (model.$ === 'Model') {
+		var n = model.a;
+		var segments = model.b;
+		var _v1 = model.c;
+		var dSunPosition = _v1.a;
+		var dSunSize = _v1.b;
+		var crawl = _v1.c;
+		var sunSize = 10 + (dSunSize * 10);
+		var sunPosition = A3(
+			$author$project$Generative$mapTuple2,
+			$elm$core$Basics$mul(100),
+			$elm$core$Basics$mul(50),
+			dSunPosition);
+		var randomValues = A2($elm$core$List$map, $author$project$Generative$accumulate, crawl);
+		var shepherdedValues = $author$project$Generative$accumulateList(randomValues);
+		var lines = A2($author$project$Example$Landscape$initialiseLines, n, segments);
+		var transformed = A3(
+			$elm$core$List$map2,
+			$author$project$Generative$map2Second($elm$core$Basics$add),
+			shepherdedValues,
+			lines);
+		return A2(
+			$author$project$Draw$a4Landscape,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Draw$g,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$transform(
+							A2($author$project$Draw$translate, 40, 100))
+						]),
+					A2($elm$core$List$map, $author$project$Draw$lines, transformed)),
+					A2(
+					$author$project$Draw$g,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$transform(
+							A2($author$project$Draw$translate, 150, 40))
+						]),
+					_List_fromArray(
+						[
+							A2(
+							function (_v2) {
+								var a = _v2.a;
+								var b = _v2.b;
+								return A2($author$project$Draw$circle, a, b);
+							},
+							sunPosition,
+							sunSize)
+						]))
+				]));
+	} else {
+		return $elm$html$Html$text('');
+	}
+};
+var $author$project$Example$ParallelRandom$setup = function (_v0) {
+	var n = _v0.a;
+	var segments = _v0.b;
+	var gap = _v0.c;
+	var line = function (y) {
+		return A5($author$project$Generative$makePath, segments, 0, y, 110, y);
+	};
+	return A2(
+		$elm$core$List$map,
+		line,
+		A2(
+			$elm_community$list_extra$List$Extra$initialize,
+			n,
+			A2(
+				$elm$core$Basics$composeL,
+				$elm$core$Basics$toFloat,
+				$elm$core$Basics$mul(gap))));
+};
+var $author$project$Example$ParallelRandom$view = function (model) {
+	if (model.$ === 'Model') {
+		var _v1 = model.a;
+		var n = _v1.a;
+		var semgents = _v1.b;
+		var gap = _v1.c;
+		var amp = _v1.d;
+		var lines = model.b;
+		var randomValues = A2(
+			$author$project$Generative$mapList,
+			$elm$core$Basics$mul(amp),
+			lines);
+		var data = $author$project$Example$ParallelRandom$setup(
+			A4($author$project$Example$ParallelRandom$Configuration, n, semgents, gap, amp));
+		var transformed = A3(
+			$elm$core$List$map2,
+			$author$project$Generative$map2Second($elm$core$Basics$add),
+			randomValues,
+			data);
+		return A2(
+			$author$project$Draw$a4Landscape,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Draw$g,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$transform(
+							A2($author$project$Draw$translate, 90, 50))
+						]),
+					A2($elm$core$List$map, $author$project$Draw$lines, transformed))
+				]));
+	} else {
+		return $elm$html$Html$text('');
+	}
+};
+var $author$project$Example$Rectangles$Configuration = F2(
+	function (a, b) {
+		return {$: 'Configuration', a: a, b: b};
+	});
+var $author$project$Example$Rectangles$draw = F2(
+	function (_v0, _v1) {
+		var states = _v0.b;
+		var p0 = _v1.a;
+		var a0 = _v1.b;
+		return A2(
+			$elm$svg$Svg$path,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$d(
+					$Spaxe$svg_pathd$Svg$PathD$pathD(
+						_Utils_ap(
+							_List_fromArray(
+								[
+									$Spaxe$svg_pathd$Svg$PathD$M(p0)
+								]),
+							A2($Spaxe$elm_lsystem$LSystem$Turtle$turtle, states, 90)))),
+					$elm$svg$Svg$Attributes$strokeWidth('0.2')
+				]),
+			_List_Nil);
+	});
+var $author$project$Example$Rectangles$view = function (model) {
+	var n = model.a;
+	var state = model.b;
+	return A2(
+		$author$project$Draw$a4Landscape,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				$author$project$Draw$g,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$transform(
+						_Utils_ap(
+							A2($author$project$Draw$translate, 150, 100),
+							$author$project$Draw$scale(2)))
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Example$Rectangles$draw,
+						model,
+						A2(
+							$author$project$Example$Rectangles$Configuration,
+							_Utils_Tuple2(0, 0),
+							0))
+					]))
+			]));
+};
+var $author$project$Generative$accumulateListTuple = $elm_community$list_extra$List$Extra$scanl1(
+	$elm$core$List$map2(
+		F2(
+			function (a, b) {
+				return _Utils_Tuple2(a.a + b.a, a.b + b.b);
+			})));
+var $author$project$Generative$accumulateTuple = $elm_community$list_extra$List$Extra$scanl1(
+	F2(
+		function (a, b) {
+			return _Utils_Tuple2(a.a + b.a, a.b + b.b);
+		}));
+var $elm$core$Basics$fromPolar = function (_v0) {
+	var radius = _v0.a;
+	var theta = _v0.b;
+	return _Utils_Tuple2(
+		radius * $elm$core$Basics$cos(theta),
+		radius * $elm$core$Basics$sin(theta));
+};
+var $author$project$Example$Sun$initialiseLines = function (_v0) {
+	var n = _v0.a;
+	var segments = _v0.b;
+	var r1 = _v0.c;
+	var r2 = _v0.d;
+	var line = F2(
+		function (_v1, _v2) {
+			var x1 = _v1.a;
+			var y1 = _v1.b;
+			var x2 = _v2.a;
+			var y2 = _v2.b;
+			return A5($author$project$Generative$makePath, segments, x1, y1, x2, y2);
+		});
+	return A2(
+		$elm$core$List$map,
+		function (x) {
+			return A2(
+				line,
+				$elm$core$Basics$fromPolar(
+					_Utils_Tuple2(r1, x)),
+				$elm$core$Basics$fromPolar(
+					_Utils_Tuple2(r2, x)));
+		},
+		A2(
+			$elm$core$List$map,
+			function (x) {
+				return (x / 48.0) * 360;
+			},
+			A2($elm$core$List$range, 1, n)));
+};
+var $author$project$Generative$map2Tuple = function (f) {
+	return $elm$core$List$map2(
+		F2(
+			function (a, b) {
+				return _Utils_Tuple2(
+					A2(f, a.a, b.a),
+					A2(f, a.b, b.b));
+			}));
+};
+var $author$project$Generative$mapTuple = function (f) {
+	return A2(
+		$elm$core$Basics$composeL,
+		$elm$core$Tuple$mapFirst(f),
+		$elm$core$Tuple$mapSecond(f));
+};
+var $author$project$Example$Sun$view = function (model) {
+	if (model.$ === 'Model') {
+		var config = model.a;
+		var crawl = model.b.a;
+		var shepherdLines = function (x) {
+			return A2($elm$core$List$map, $author$project$Generative$accumulateTuple, x);
+		};
+		var data = $author$project$Example$Sun$initialiseLines(config);
+		var amplitude = function (a) {
+			return $author$project$Generative$mapList(
+				$author$project$Generative$mapTuple(
+					$elm$core$Basics$mul(a)));
+		};
+		var shepherdedValues = $author$project$Generative$accumulateListTuple(
+			shepherdLines(
+				A2(amplitude, 0.5, crawl)));
+		var transformed = A3(
+			$elm$core$List$map2,
+			$author$project$Generative$map2Tuple($elm$core$Basics$add),
+			shepherdedValues,
+			data);
+		return A2(
+			$author$project$Draw$a4Landscape,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Draw$g,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$transform(
+							A2($author$project$Draw$translate, 148, 105))
+						]),
+					A2($elm$core$List$map, $author$project$Draw$lines, transformed))
+				]));
+	} else {
+		return $elm$html$Html$text('');
+	}
+};
 var $author$project$Main$render = function (r) {
 	return $rtfeldman$elm_css$Html$Styled$fromUnstyled(
 		function () {
-			if (r.$ === 'Crescent') {
-				var pageModel = r.a;
-				return A2(
-					$elm$html$Html$map,
-					$author$project$Main$CrescentMsg,
-					$author$project$Example$Crescent$view(pageModel));
-			} else {
-				return $elm$html$Html$text('404 Not Found');
+			switch (r.$) {
+				case 'Crescent':
+					var pageModel = r.a;
+					return A2(
+						$elm$html$Html$map,
+						$author$project$Main$CrescentMsg,
+						$author$project$Example$Crescent$view(pageModel));
+				case 'Grid':
+					var pageModel = r.a;
+					return A2(
+						$elm$html$Html$map,
+						$author$project$Main$GridMsg,
+						$author$project$Example$Grid$view(pageModel));
+				case 'ParallelRandom':
+					var pageModel = r.a;
+					return A2(
+						$elm$html$Html$map,
+						$author$project$Main$ParallelRandomMsg,
+						$author$project$Example$ParallelRandom$view(pageModel));
+				case 'Curtain':
+					var pageModel = r.a;
+					return A2(
+						$elm$html$Html$map,
+						$author$project$Main$CurtainMsg,
+						$author$project$Example$Curtain$view(pageModel));
+				case 'Landscape':
+					var pageModel = r.a;
+					return A2(
+						$elm$html$Html$map,
+						$author$project$Main$LandscapeMsg,
+						$author$project$Example$Landscape$view(pageModel));
+				case 'Sun':
+					var pageModel = r.a;
+					return A2(
+						$elm$html$Html$map,
+						$author$project$Main$SunMsg,
+						$author$project$Example$Sun$view(pageModel));
+				case 'Chords':
+					var pageModel = r.a;
+					return A2(
+						$elm$html$Html$map,
+						$author$project$Main$ChordsMsg,
+						$author$project$Example$Chords$view(pageModel));
+				case 'Rectangles':
+					var pageModel = r.a;
+					return A2(
+						$elm$html$Html$map,
+						$author$project$Main$RectanglesMsg,
+						$author$project$Example$Rectangles$view(pageModel));
+				default:
+					var pageModel = r.a;
+					return A2(
+						$elm$html$Html$map,
+						$author$project$Main$HilbertCurveMsg,
+						$author$project$Example$HilbertCurve$view(pageModel));
 			}
 		}());
 };
@@ -14854,4 +16064,4 @@ var $author$project$Main$view = function (model) {
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{init: $author$project$Main$init, onUrlChange: $author$project$Main$UrlChanged, onUrlRequest: $author$project$Main$LinkClicked, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"}},"unions":{"Main.Msg":{"args":[],"tags":{"Homepage":[],"LinkClicked":["Browser.UrlRequest"],"UrlChanged":["Url.Url"],"CrescentMsg":["Example.Crescent.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Example.Crescent.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Crescent.Grid"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Example.Crescent.Grid":{"args":[],"tags":{"Grid":["List.List (Maybe.Maybe Basics.Float)"]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"List.List":{"args":["a"],"tags":{}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Example.Grid.Grid":{"args":[],"type":"List.List Basics.Float"},"Example.ParallelRandom.ParallelLines":{"args":[],"type":"List.List (List.List Basics.Float)"}},"unions":{"Main.Msg":{"args":[],"tags":{"LinkClicked":["Browser.UrlRequest"],"UrlChanged":["Url.Url"],"CrescentMsg":["Example.Crescent.Msg"],"GridMsg":["Example.Grid.Msg"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"SunMsg":["Example.Sun.Msg"],"ChordsMsg":["Example.Chords.Msg"],"RectanglesMsg":["Example.Rectangles.Msg"],"HilbertCurveMsg":["Example.HilbertCurve.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Example.Chords.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Chords.Chords"]}},"Example.Crescent.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Crescent.Grid"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Curtain.Curtain"]}},"Example.Grid.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Grid.Grid"]}},"Example.HilbertCurve.Msg":{"args":[],"tags":{"Iterate":[],"Draw":[]}},"Example.Landscape.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Landscape.Landscape"]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.ParallelRandom.ParallelLines"]}},"Example.Rectangles.Msg":{"args":[],"tags":{"Iterate":[]}},"Example.Sun.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Sun.Sun"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Example.Chords.Chords":{"args":[],"tags":{"Chords":["List.List Basics.Float","List.List Basics.Float"]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List.List (List.List Basics.Float)","List.List (List.List Basics.Float)"]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"Example.Crescent.Grid":{"args":[],"tags":{"Grid":["List.List (Maybe.Maybe Basics.Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Basics.Float, Basics.Float )","Basics.Float","List.List (List.List Basics.Float)"]}},"List.List":{"args":["a"],"tags":{}},"Example.Sun.Sun":{"args":[],"tags":{"Sun":["List.List (List.List ( Basics.Float, Basics.Float ))"]}}}}})}});}(this));
