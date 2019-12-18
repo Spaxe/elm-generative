@@ -38,7 +38,7 @@ import Url.Parser
 
 init : flags -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    update (UrlChanged url) (Model key (Crescent Nothing) "")
+    updateRoute <| Model key url Nothing ""
 
 
 
@@ -53,20 +53,21 @@ type Action
 
 
 type Route
-    = Crescent (Maybe Crescent.Model)
-    | Grid (Maybe Grid.Model)
-    | Curtain (Maybe Curtain.Model)
-    | Landscape (Maybe Landscape.Model)
-    | ParallelRandom (Maybe ParallelRandom.Model)
-    | Sun (Maybe Sun.Model)
-    | Chords (Maybe Chords.Model)
-    | Rectangles (Maybe Rectangles.Model)
-    | HilbertCurve (Maybe HilbertCurve.Model)
+    = Crescent Crescent.Model
+    | Grid Grid.Model
+    | Curtain Curtain.Model
+    | Landscape Landscape.Model
+    | ParallelRandom ParallelRandom.Model
+    | Sun Sun.Model
+    | Chords Chords.Model
+    | Rectangles Rectangles.Model
+    | HilbertCurve HilbertCurve.Model
 
 
 type alias Model =
     { key : Nav.Key
-    , route : Route
+    , url : Url.Url
+    , route : Maybe Route
     , status : String
     }
 
@@ -97,32 +98,13 @@ update msg model =
                     ( model, Nav.load href )
 
         ( UrlChanged url, _ ) ->
-            case parse routeParser url of
-                Just (Crescent _) ->
-                    let
-                        routeMsgModel =
-                            Crescent.init
-                    in
-                    ( { model | route = Crescent <| Just (Tuple.first routeMsgModel) }
-                    , Cmd.map CrescentMsg <| Tuple.second routeMsgModel
-                    )
-
-                Just _ ->
-                    ( model, Cmd.none )
-
-                Nothing ->
-                    ( model, Cmd.none )
+            updateRoute { model | url = url }
 
         ( subMsg, { route } ) ->
             case ( subMsg, route ) of
-                ( CrescentMsg pageMsg, Crescent state ) ->
-                    mapTuple2 (\m -> { model | route = Crescent (Just m) }) (Cmd.map CrescentMsg) <|
-                        case state of
-                            Nothing ->
-                                Crescent.init
-
-                            Just pageModel ->
-                                Crescent.update pageMsg pageModel
+                ( CrescentMsg pageMsg, Just (Crescent pageModel) ) ->
+                    Crescent.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just <| Crescent m }) (Cmd.map CrescentMsg)
 
                 ( _, _ ) ->
                     ( model, Cmd.none )
@@ -212,6 +194,47 @@ update msg model =
 --  }
 --, second routeMsg
 --)
+
+
+updateRoute : Model -> ( Model, Cmd Msg )
+updateRoute model =
+    case parse routeParser model.url of
+        Just (Crescent _) ->
+            let
+                routeMsgModel =
+                    Crescent.init
+            in
+            ( { model
+                | route = Just <| Crescent (Tuple.first routeMsgModel)
+                , url = model.url
+              }
+            , Cmd.map CrescentMsg <| Tuple.second routeMsgModel
+            )
+
+        Just _ ->
+            ( model, Cmd.none )
+
+        Nothing ->
+            ( model, Cmd.none )
+
+
+routeParser : Parser (Route -> a) a
+routeParser =
+    oneOf
+        [ Url.Parser.map (Crescent Crescent.initModel) Url.Parser.top
+        , Url.Parser.map (Grid Grid.initModel) (Url.Parser.s "grid")
+        , Url.Parser.map (Crescent Crescent.initModel) (Url.Parser.s "crescent")
+        , Url.Parser.map (ParallelRandom ParallelRandom.initModel) (Url.Parser.s "parallel-random")
+        , Url.Parser.map (Curtain Curtain.initModel) (Url.Parser.s "curtain")
+        , Url.Parser.map (Landscape Landscape.initModel) (Url.Parser.s "landscape")
+        , Url.Parser.map (Sun Sun.initModel) (Url.Parser.s "sun")
+        , Url.Parser.map (Chords Chords.initModel) (Url.Parser.s "chords")
+        , Url.Parser.map (Rectangles Rectangles.initModel) (Url.Parser.s "rectangles")
+        , Url.Parser.map (HilbertCurve HilbertCurve.initModel) (Url.Parser.s "hilbert-curve")
+        ]
+
+
+
 -- VIEW --
 
 
@@ -299,8 +322,13 @@ view model =
                             , backgroundColor (hex "efefef")
                             ]
                         ]
-                        [ render model.route
-                        ]
+                        (case model.route of
+                            Just route ->
+                                [ render route ]
+
+                            Nothing ->
+                                []
+                        )
                     ]
                 ]
         ]
@@ -347,7 +375,7 @@ render : Route -> Html Msg
 render r =
     fromUnstyled <|
         case r of
-            Crescent (Just pageModel) ->
+            Crescent pageModel ->
                 Crescent.view pageModel
                     |> Html.map CrescentMsg
 
@@ -422,25 +450,6 @@ subscriptions model =
 --    [ getPlotterStatus PlotterStatus
 --    ]
 -- ROUTING --
-
-
-routeParser : Parser (Route -> a) a
-routeParser =
-    oneOf
-        [ Url.Parser.map (Crescent Nothing) Url.Parser.top
-        , Url.Parser.map (Grid Nothing) (Url.Parser.s "grid")
-        , Url.Parser.map (Crescent Nothing) (Url.Parser.s "crescent")
-        , Url.Parser.map (ParallelRandom Nothing) (Url.Parser.s "parallel-random")
-        , Url.Parser.map (Curtain Nothing) (Url.Parser.s "curtain")
-        , Url.Parser.map (Landscape Nothing) (Url.Parser.s "landscape")
-        , Url.Parser.map (Sun Nothing) (Url.Parser.s "sun")
-        , Url.Parser.map (Chords Nothing) (Url.Parser.s "chords")
-        , Url.Parser.map (Rectangles Nothing) (Url.Parser.s "rectangles")
-        , Url.Parser.map (HilbertCurve Nothing) (Url.Parser.s "hilbert-curve")
-        ]
-
-
-
 -- ENTRY --
 
 

@@ -1,4 +1,11 @@
-module Example.Sun exposing (Configuration(..), Model(..), Msg(..), Sun(..), init, initialiseLines, update, view)
+module Example.Sun exposing
+    ( Model(..)
+    , Msg(..)
+    , init
+    , initModel
+    , update
+    , view
+    )
 
 import Draw exposing (..)
 import Generative exposing (..)
@@ -22,7 +29,12 @@ type Sun
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Setup <| Configuration 128 128 25 60)
+    update Generate initModel
+
+
+initModel : Model
+initModel =
+    Setup <| Configuration 128 128 25 60
 
 
 initialiseLines : Configuration -> List (List ( Float, Float ))

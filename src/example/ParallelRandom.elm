@@ -1,4 +1,11 @@
-module Example.ParallelRandom exposing (Configuration(..), Model(..), Msg(..), ParallelLines, init, setup, update, view)
+module Example.ParallelRandom exposing
+    ( Model(..)
+    , Msg(..)
+    , init
+    , initModel
+    , update
+    , view
+    )
 
 {-| Random rows of squiggle
 -}
@@ -43,7 +50,12 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Setup <| Configuration 10 100 10 10)
+    update Generate initModel
+
+
+initModel : Model
+initModel =
+    Setup <| Configuration 10 100 10 10
 
 
 

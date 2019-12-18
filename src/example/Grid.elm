@@ -1,4 +1,11 @@
-module Example.Grid exposing (Configuration(..), Grid, Line, Model(..), Msg(..), draw, init, setup, update, view)
+module Example.Grid exposing
+    ( Model(..)
+    , Msg(..)
+    , init
+    , initModel
+    , update
+    , view
+    )
 
 import Draw exposing (..)
 import Generative exposing (..)
@@ -32,7 +39,12 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Setup <| Configuration 16 16 10)
+    update Generate initModel
+
+
+initModel : Model
+initModel =
+    Setup <| Configuration 16 16 10
 
 
 setup : Configuration -> List Line

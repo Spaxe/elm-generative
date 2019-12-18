@@ -1,4 +1,11 @@
-module Example.Chords exposing (Chords(..), Model(..), Msg(..), init, update, view)
+module Example.Chords exposing
+    ( Model(..)
+    , Msg(..)
+    , init
+    , initModel
+    , update
+    , view
+    )
 
 import Draw exposing (..)
 import Generative exposing (..)
@@ -18,7 +25,12 @@ type Chords
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate Setup
+    update Generate initModel
+
+
+initModel : Model
+initModel =
+    Setup
 
 
 type Msg

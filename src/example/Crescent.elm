@@ -1,4 +1,11 @@
-module Example.Crescent exposing (Configuration(..), Grid(..), Model(..), Msg(..), Shape, draw, init, setup, square, update, view)
+module Example.Crescent exposing
+    ( Model(..)
+    , Msg(..)
+    , init
+    , initModel
+    , update
+    , view
+    )
 
 import Draw exposing (..)
 import Generative exposing (..)
@@ -34,7 +41,12 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Setup <| Configuration 31 5)
+    update Generate initModel
+
+
+initModel : Model
+initModel =
+    Setup <| Configuration 31 5
 
 
 setup : Shape

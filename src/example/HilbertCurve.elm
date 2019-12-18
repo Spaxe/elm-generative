@@ -1,4 +1,11 @@
-module Example.HilbertCurve exposing (Configuration(..), Model(..), Msg(..), draw, init, rule, update, view)
+module Example.HilbertCurve exposing
+    ( Model(..)
+    , Msg(..)
+    , init
+    , initModel
+    , update
+    , view
+    )
 
 import Draw exposing (..)
 import Html exposing (Html, text)
@@ -39,7 +46,12 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Iterate (Model 5 [ A ])
+    update Iterate initModel
+
+
+initModel : Model
+initModel =
+    Model 5 [ A ]
 
 
 draw : Model -> Configuration -> Svg Msg

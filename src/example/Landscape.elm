@@ -1,4 +1,11 @@
-module Example.Landscape exposing (Landscape(..), Model(..), Msg(..), init, initialiseLines, update, view)
+module Example.Landscape exposing
+    ( Model(..)
+    , Msg(..)
+    , init
+    , initModel
+    , update
+    , view
+    )
 
 import Draw exposing (..)
 import Generative exposing (..)
@@ -18,7 +25,12 @@ type Landscape
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Setup 10 1000)
+    update Generate initModel
+
+
+initModel : Model
+initModel =
+    Setup 10 1000
 
 
 initialiseLines : Int -> Int -> List (List ( Float, Float ))

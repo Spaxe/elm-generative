@@ -1,4 +1,11 @@
-module Example.Curtain exposing (Curtain(..), Model(..), Msg(..), init, initialiseLines, update, view)
+module Example.Curtain exposing
+    ( Model(..)
+    , Msg(..)
+    , init
+    , initModel
+    , update
+    , view
+    )
 
 import Draw exposing (..)
 import Generative exposing (..)
@@ -19,7 +26,12 @@ type Curtain
 
 init : ( Model, Cmd Msg )
 init =
-    update Generate (Setup 100)
+    update Generate initModel
+
+
+initModel : Model
+initModel =
+    Setup 100
 
 
 initialiseLines : Int -> List (List ( Float, Float ))

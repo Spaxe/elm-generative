@@ -1,4 +1,11 @@
-module Example.Rectangles exposing (Configuration(..), Model(..), Msg(..), draw, init, rule, update, view)
+module Example.Rectangles exposing
+    ( Model(..)
+    , Msg(..)
+    , init
+    , initModel
+    , update
+    , view
+    )
 
 import Draw exposing (..)
 import Html exposing (Html, text)
@@ -33,7 +40,12 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    update Iterate (Model 3 [ D, R, D, R, D, R, D ])
+    update Iterate initModel
+
+
+initModel : Model
+initModel =
+    Model 3 [ D, R, D, R, D, R, D ]
 
 
 draw : Model -> Configuration -> Svg Msg
