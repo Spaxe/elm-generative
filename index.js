@@ -11604,10 +11604,17 @@ var $author$project$Main$init = F3(
 		return $author$project$Main$initRoute(
 			A4($author$project$Main$Model, key, url, $elm$core$Maybe$Nothing, ''));
 	});
+var $author$project$Main$PlotterStatus = function (a) {
+	return {$: 'PlotterStatus', a: a};
+};
 var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $author$project$Main$getPlotterStatus = _Platform_incomingPort('getPlotterStatus', $elm$json$Json$Decode$string);
 var $author$project$Main$subscriptions = function (model) {
-	return $elm$core$Platform$Sub$none;
+	return $elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				$author$project$Main$getPlotterStatus($author$project$Main$PlotterStatus)
+			]));
 };
 var $author$project$Main$decodePlotterStatus = function (value) {
 	var _v0 = A2(
@@ -11732,12 +11739,12 @@ var $author$project$Main$update = F2(
 				var subMsg = _v0.a;
 				var route = _v0.b.route;
 				var _v3 = _Utils_Tuple2(subMsg, route);
-				_v3$2:
+				_v3$9:
 				while (true) {
 					if (_v3.b.$ === 'Just') {
-						switch (_v3.a.$) {
-							case 'CrescentMsg':
-								if (_v3.b.a.$ === 'Crescent') {
+						switch (_v3.b.a.$) {
+							case 'Crescent':
+								if (_v3.a.$ === 'CrescentMsg') {
 									var pageMsg = _v3.a.a;
 									var pageModel = _v3.b.a.a;
 									return A3(
@@ -11753,10 +11760,10 @@ var $author$project$Main$update = F2(
 										$elm$core$Platform$Cmd$map($author$project$Main$CrescentMsg),
 										A2($author$project$Example$Crescent$update, pageMsg, pageModel));
 								} else {
-									break _v3$2;
+									break _v3$9;
 								}
-							case 'GridMsg':
-								if (_v3.b.a.$ === 'Grid') {
+							case 'Grid':
+								if (_v3.a.$ === 'GridMsg') {
 									var pageMsg = _v3.a.a;
 									var pageModel = _v3.b.a.a;
 									return A3(
@@ -11772,13 +11779,144 @@ var $author$project$Main$update = F2(
 										$elm$core$Platform$Cmd$map($author$project$Main$GridMsg),
 										A2($author$project$Example$Grid$update, pageMsg, pageModel));
 								} else {
-									break _v3$2;
+									break _v3$9;
+								}
+							case 'ParallelRandom':
+								if (_v3.a.$ === 'ParallelRandomMsg') {
+									var pageMsg = _v3.a.a;
+									var pageModel = _v3.b.a.a;
+									return A3(
+										$author$project$Generative$mapTuple2,
+										function (m) {
+											return _Utils_update(
+												model,
+												{
+													route: $elm$core$Maybe$Just(
+														$author$project$Main$ParallelRandom(m))
+												});
+										},
+										$elm$core$Platform$Cmd$map($author$project$Main$ParallelRandomMsg),
+										A2($author$project$Example$ParallelRandom$update, pageMsg, pageModel));
+								} else {
+									break _v3$9;
+								}
+							case 'Curtain':
+								if (_v3.a.$ === 'CurtainMsg') {
+									var pageMsg = _v3.a.a;
+									var pageModel = _v3.b.a.a;
+									return A3(
+										$author$project$Generative$mapTuple2,
+										function (m) {
+											return _Utils_update(
+												model,
+												{
+													route: $elm$core$Maybe$Just(
+														$author$project$Main$Curtain(m))
+												});
+										},
+										$elm$core$Platform$Cmd$map($author$project$Main$CurtainMsg),
+										A2($author$project$Example$Curtain$update, pageMsg, pageModel));
+								} else {
+									break _v3$9;
+								}
+							case 'Landscape':
+								if (_v3.a.$ === 'LandscapeMsg') {
+									var pageMsg = _v3.a.a;
+									var pageModel = _v3.b.a.a;
+									return A3(
+										$author$project$Generative$mapTuple2,
+										function (m) {
+											return _Utils_update(
+												model,
+												{
+													route: $elm$core$Maybe$Just(
+														$author$project$Main$Landscape(m))
+												});
+										},
+										$elm$core$Platform$Cmd$map($author$project$Main$LandscapeMsg),
+										A2($author$project$Example$Landscape$update, pageMsg, pageModel));
+								} else {
+									break _v3$9;
+								}
+							case 'Sun':
+								if (_v3.a.$ === 'SunMsg') {
+									var pageMsg = _v3.a.a;
+									var pageModel = _v3.b.a.a;
+									return A3(
+										$author$project$Generative$mapTuple2,
+										function (m) {
+											return _Utils_update(
+												model,
+												{
+													route: $elm$core$Maybe$Just(
+														$author$project$Main$Sun(m))
+												});
+										},
+										$elm$core$Platform$Cmd$map($author$project$Main$SunMsg),
+										A2($author$project$Example$Sun$update, pageMsg, pageModel));
+								} else {
+									break _v3$9;
+								}
+							case 'Chords':
+								if (_v3.a.$ === 'ChordsMsg') {
+									var pageMsg = _v3.a.a;
+									var pageModel = _v3.b.a.a;
+									return A3(
+										$author$project$Generative$mapTuple2,
+										function (m) {
+											return _Utils_update(
+												model,
+												{
+													route: $elm$core$Maybe$Just(
+														$author$project$Main$Chords(m))
+												});
+										},
+										$elm$core$Platform$Cmd$map($author$project$Main$ChordsMsg),
+										A2($author$project$Example$Chords$update, pageMsg, pageModel));
+								} else {
+									break _v3$9;
+								}
+							case 'Rectangles':
+								if (_v3.a.$ === 'RectanglesMsg') {
+									var pageMsg = _v3.a.a;
+									var pageModel = _v3.b.a.a;
+									return A3(
+										$author$project$Generative$mapTuple2,
+										function (m) {
+											return _Utils_update(
+												model,
+												{
+													route: $elm$core$Maybe$Just(
+														$author$project$Main$Rectangles(m))
+												});
+										},
+										$elm$core$Platform$Cmd$map($author$project$Main$RectanglesMsg),
+										A2($author$project$Example$Rectangles$update, pageMsg, pageModel));
+								} else {
+									break _v3$9;
 								}
 							default:
-								break _v3$2;
+								if (_v3.a.$ === 'HilbertCurveMsg') {
+									var pageMsg = _v3.a.a;
+									var pageModel = _v3.b.a.a;
+									return A3(
+										$author$project$Generative$mapTuple2,
+										function (m) {
+											return _Utils_update(
+												model,
+												{
+													route: $elm$core$Maybe$Just(
+														$author$project$Main$HilbertCurve(m))
+												});
+										},
+										$elm$core$Platform$Cmd$map($author$project$Main$HilbertCurveMsg),
+										A2($author$project$Example$HilbertCurve$update, pageMsg, pageModel));
+								} else {
+									break _v3$9;
+								}
 						}
 					} else {
-						break _v3$2;
+						break _v3$9;
 					}
 				}
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);

@@ -10,7 +10,15 @@ This package is a set of utilities for creating random, geneative art.
 2.  Run `elm reactor`
 3.  Click on `index.html` to see the demo
 
-Alternatively, use `npx elm-live -- src/Main.elm --output=index.js --debug` to enable the time travelling debugger.
+Alternatively, use
+
+    npx elm-live src/Main.elm --no-server --verbose -- --output=index.js --debug
+
+to enable the time travelling debugger, and use
+
+    npx http-server --cors
+
+to launch a CORS friendly server.
 
 ## Branching strategy
 

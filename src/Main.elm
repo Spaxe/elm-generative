@@ -176,6 +176,34 @@ update msg model =
                     Grid.update pageMsg pageModel
                         |> mapTuple2 (\m -> { model | route = Just (Grid m) }) (Cmd.map GridMsg)
 
+                ( ParallelRandomMsg pageMsg, Just (ParallelRandom pageModel) ) ->
+                    ParallelRandom.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (ParallelRandom m) }) (Cmd.map ParallelRandomMsg)
+
+                ( CurtainMsg pageMsg, Just (Curtain pageModel) ) ->
+                    Curtain.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (Curtain m) }) (Cmd.map CurtainMsg)
+
+                ( LandscapeMsg pageMsg, Just (Landscape pageModel) ) ->
+                    Landscape.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (Landscape m) }) (Cmd.map LandscapeMsg)
+
+                ( SunMsg pageMsg, Just (Sun pageModel) ) ->
+                    Sun.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (Sun m) }) (Cmd.map SunMsg)
+
+                ( ChordsMsg pageMsg, Just (Chords pageModel) ) ->
+                    Chords.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (Chords m) }) (Cmd.map ChordsMsg)
+
+                ( RectanglesMsg pageMsg, Just (Rectangles pageModel) ) ->
+                    Rectangles.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (Rectangles m) }) (Cmd.map RectanglesMsg)
+
+                ( HilbertCurveMsg pageMsg, Just (HilbertCurve pageModel) ) ->
+                    HilbertCurve.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (HilbertCurve m) }) (Cmd.map HilbertCurveMsg)
+
                 ( _, _ ) ->
                     ( model, Cmd.none )
 
@@ -398,13 +426,12 @@ port download : String -> Cmd msg
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    Sub.batch
+        [ getPlotterStatus PlotterStatus
+        ]
 
 
 
---Sub.batch
---    [ getPlotterStatus PlotterStatus
---    ]
 -- ROUTING --
 -- ENTRY --
 
