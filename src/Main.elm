@@ -299,7 +299,7 @@ view model =
                             [ onClick (Menu Download), css menuButtonstyles ]
                             [ text "💾 Download" ]
                         , div
-                            [ css [ margin (rem 1), fontSize initial, color (hex "dedede") ] ]
+                            [ css [ margin (rem 1), fontSize initial, color (hex "aeaeae") ] ]
                             [ text <| model.status ]
                         ]
                     , div

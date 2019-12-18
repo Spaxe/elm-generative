@@ -16393,7 +16393,7 @@ var $author$project$Main$view = function (model) {
 															$rtfeldman$elm_css$Css$rem(1)),
 															$rtfeldman$elm_css$Css$fontSize($rtfeldman$elm_css$Css$initial),
 															$rtfeldman$elm_css$Css$color(
-															$rtfeldman$elm_css$Css$hex('dedede'))
+															$rtfeldman$elm_css$Css$hex('aeaeae'))
 														]))
 												]),
 											_List_fromArray(
