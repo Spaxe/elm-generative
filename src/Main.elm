@@ -132,7 +132,8 @@ initRoute model =
             ( model, Cmd.none )
 
         Nothing ->
-            ( model, Cmd.none )
+            Curtain.init
+                |> mapTuple2 (\m -> { model | route = Just (Curtain m) }) (Cmd.map CurtainMsg)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

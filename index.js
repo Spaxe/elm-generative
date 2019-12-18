@@ -11596,7 +11596,18 @@ var $author$project$Main$initRoute = function (model) {
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	} else {
-		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+		return A3(
+			$author$project$Generative$mapTuple2,
+			function (m) {
+				return _Utils_update(
+					model,
+					{
+						route: $elm$core$Maybe$Just(
+							$author$project$Main$Curtain(m))
+					});
+			},
+			$elm$core$Platform$Cmd$map($author$project$Main$CurtainMsg),
+			$author$project$Example$Curtain$init);
 	}
 };
 var $author$project$Main$init = F3(
