@@ -6,7 +6,7 @@ import Html exposing (Html, div, text)
 import Random
 import Random.Extra exposing (sample)
 import Svg exposing (Svg)
-import Svg.Attributes exposing (transform)
+import Svg.Attributes exposing (d, transform)
 import Svg.PathD exposing (Segment(..), pathD)
 
 
@@ -53,17 +53,17 @@ draw model ( a, b, c ) =
                 radius =
                     (toFloat << floor) (toFloat m / 2)
 
-                circlePos x =
-                    x - radius
+                circlePos cx =
+                    cx - radius
 
-                distance x y =
-                    sqrt (square (circlePos x) + square (circlePos y))
+                distance dx dy =
+                    sqrt (square (circlePos dx) + square (circlePos dy))
 
                 -- | Here we want to make a cresent, so we take the difference
                 -- | between two circles for the inside test.
-                isVisible x y =
-                    (distance x y <= radius)
-                        && (distance x (y + radius / 1.5) > radius)
+                isVisible dx dy =
+                    (distance dx dy <= radius)
+                        && (distance dx (dy + radius / 1.5) > radius)
             in
             List.map2
                 (\r ( dx, dy ) ->
@@ -77,7 +77,7 @@ draw model ( a, b, c ) =
                             ]
                             [ Svg.path
                                 [ d <|
-                                    PathD
+                                    pathD
                                         [ M a
                                         , L b
                                         , L c

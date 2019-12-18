@@ -19,6 +19,7 @@ module Draw exposing
 
 import Html exposing (Html)
 import Html.Attributes
+import String exposing (fromFloat)
 import Svg exposing (Svg, g, rect, svg)
 import Svg.Attributes as Attributes
 
@@ -165,6 +166,7 @@ frame width height unit attributes =
                 ++ "; height: "
                 ++ fromFloat height
                 ++ unit
+                ++ "; background: #FAFAFB"
         , Attributes.viewBox <|
             "0 0 "
                 ++ fromFloat width

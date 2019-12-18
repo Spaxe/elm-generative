@@ -1,12 +1,12 @@
-module Example.Rectangles exposing (Configuration(..), Model(..), Msg(..), draw, init, rule, update, view)
+module Example.HilbertCurve exposing (Configuration(..), Model(..), Msg(..), draw, init, rule, update, view)
 
 import Draw exposing (..)
 import Html exposing (Html, text)
 import LSystem
 import LSystem.Turtle exposing (State(..), turtle)
 import Svg exposing (Svg)
-import Svg.Attributes exposing (transform)
-import Svg.PathD exposing (Segment(..), pathD)
+import Svg.Attributes exposing (d, transform)
+import Svg.PathD as PathD exposing (pathD)
 
 
 type Model
@@ -17,11 +17,16 @@ type Configuration
     = Configuration ( Float, Float ) Float
 
 
+{-| See <https://en.wikipedia.org/wiki/Hilbert_curve#Representation_as_Lindenmayer_system>
+-}
 rule : LSystem.Rule State
 rule state =
     case state of
-        D ->
-            [ D, D, R, D, L, D, R, D, R, D, D ]
+        A ->
+            [ R, B, D, L, A, D, A, L, D, B, R ]
+
+        B ->
+            [ L, A, D, R, B, D, B, R, D, A, L ]
 
         s ->
             [ s ]
@@ -29,17 +34,18 @@ rule state =
 
 type Msg
     = Iterate
+    | Draw
 
 
 init : ( Model, Cmd Msg )
 init =
-    update Iterate (Model 3 [ D, R, D, R, D, R, D ])
+    update Iterate (Model 5 [ A ])
 
 
 draw : Model -> Configuration -> Svg Msg
 draw (Model _ states) (Configuration p0 a0) =
     Svg.path
-        [ d <| pathD [ M p0 ] ++ turtle states 90
+        [ d <| pathD <| [ PathD.M p0 ] ++ turtle states 90
         , Svg.Attributes.strokeWidth "0.2"
         ]
         []
@@ -52,7 +58,7 @@ view model =
             a4Landscape
                 []
                 [ g
-                    [ transform <| Draw.translate 150 100 ++ Draw.scale 2 ]
+                    [ transform <| Draw.translate 120 70 ++ Draw.scale 2 ]
                     [ draw model (Configuration ( 0, 0 ) 0) ]
                 ]
 
@@ -67,4 +73,7 @@ update msg model =
                         Model (n - 1) (LSystem.apply rule state)
 
                 False ->
-                    ( model, Cmd.none )
+                    update Draw model
+
+        ( Draw, m ) ->
+            ( m, Cmd.none )

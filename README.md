@@ -7,14 +7,14 @@ This package is a set of utilities for creating random, geneative art.
 ## Getting started
 
 1.  [Follow the Elm Guide to install Elm Platform](https://guide.elm-lang.org/install.html).
-2.  Run `elm make`
-3.  Run `elm reactor`
-4.  Click on `index.html` to see the demo
+2.  Run `elm reactor`
+3.  Click on `index.html` to see the demo
+
+Alternatively, use `npx elm-live -- src/Main.elm --debug` to enable the time travelling debugger.
 
 ## Branching strategy
 
-Releases go on `master` with tags. All features must be done in a feature
-branch, or your own fork.
+Releases go on `master` with tags. All features must be merged via a pull request.
 
 ## Recommended resources
 

@@ -58,7 +58,7 @@ draw model lines =
                         [ transform <|
                             Draw.scale size
                                 ++ Draw.translate dx dy
-                                ++ Draw.rotate (\b a -> r a b)
+                                ++ Draw.rotate r
                         , Svg.Attributes.style <| strokeWidth (0.5 / size)
                         ]
                         [ line x1 y1 x2 y2 ]

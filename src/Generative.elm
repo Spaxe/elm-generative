@@ -2,7 +2,8 @@ module Generative exposing
     ( random, randomTuple, randomList, randomList2, randomListTuple, randomListTuple2
     , makePath, makeGrid
     , accumulate, accumulateTuple, accumulateList, accumulateListTuple, translate, translateList
-    , firstList, secondList, mapList, mapList2, map2First, map2Second, map2Tuple, mapFirstList, mapSecondList, mapTuple, mapTuple2
+    , firstList, secondList, mapList, mapList2, map2First, map2Second, map2Tuple, mapFirstList, mapSecondList, mapTuple
+    , mapTuple2
     )
 
 {-| Tools to help you tinker.
