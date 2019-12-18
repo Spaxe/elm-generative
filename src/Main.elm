@@ -18,7 +18,7 @@ import Example.Sun as Sun
 import Generative exposing (..)
 import Html
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (class, css, href, src)
+import Html.Styled.Attributes exposing (class, css, href, id, src, type_)
 import Html.Styled.Events exposing (onClick)
 import Json.Decode exposing (decodeString, errorToString, field, string)
 import Ports exposing (disableMotor, download, getPlotterStatus, print, raiseLowerPen)
@@ -31,11 +31,6 @@ import Url.Parser
         , parse
         , top
         )
-
-
-init : flags -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
-init _ url key =
-    initRoute <| Model key url Nothing ""
 
 
 
@@ -81,127 +76,17 @@ type Msg
     | ChordsMsg Chords.Msg
     | RectanglesMsg Rectangles.Msg
     | HilbertCurveMsg HilbertCurve.Msg
+    | Menu Action
+    | PlotterStatus String
 
 
 
---| Menu Action
---| PlotterStatus String
---
 -- UPDATE --
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case ( msg, model ) of
-        ( LinkClicked urlRequest, _ ) ->
-            case urlRequest of
-                Browser.Internal url ->
-                    ( model, Nav.pushUrl model.key (Url.toString url) )
-
-                Browser.External href ->
-                    ( model, Nav.load href )
-
-        ( UrlChanged url, _ ) ->
-            initRoute { model | url = url }
-
-        ( subMsg, { route } ) ->
-            case ( subMsg, route ) of
-                ( CrescentMsg pageMsg, Just (Crescent pageModel) ) ->
-                    Crescent.update pageMsg pageModel
-                        |> mapTuple2 (\m -> { model | route = Just (Crescent m) }) (Cmd.map CrescentMsg)
-
-                ( GridMsg pageMsg, Just (Grid pageModel) ) ->
-                    Grid.update pageMsg pageModel
-                        |> mapTuple2 (\m -> { model | route = Just (Grid m) }) (Cmd.map GridMsg)
-
-                ( _, _ ) ->
-                    ( model, Cmd.none )
-
-
-
---( Menu action, _ ) ->
---    case action of
---        RaiseLowerPen ->
---            ( model, raiseLowerPen "" )
---        DisableMotor ->
---            ( model, disableMotor "" )
---        Print ->
---            ( model, print "" )
---        Download ->
---            ( model, download <| fromRoute model.route )
---( PlotterStatus value, _ ) ->
---    ( { model | status = Just <| decodePlotterStatus value }, Cmd.none )
---( msg, r ) ->
---    let
---        routeMsg =
---            case ( msg, r ) of
---                ( CrescentMsg pageMsg, Crescent (Just pageModel) ) ->
---                    Crescent.update pageMsg pageModel
---                        |> mapTuple2 (Crescent << Just) (Cmd.map CrescentMsg)
---                ( GridMsg pageMsg, Grid (Just pageModel) ) ->
---                    Grid.update pageMsg pageModel
---                        |> mapTuple2 (Grid << Just) (Cmd.map GridMsg)
---                ( ParallelRandomMsg pageMsg, ParallelRandom (Just pageModel) ) ->
---                    ParallelRandom.update pageMsg pageModel
---                        |> mapTuple2 (ParallelRandom << Just) (Cmd.map ParallelRandomMsg)
---                ( CurtainMsg pageMsg, Curtain (Just pageModel) ) ->
---                    Curtain.update pageMsg pageModel
---                        |> mapTuple2 (Curtain << Just) (Cmd.map CurtainMsg)
---                ( LandscapeMsg pageMsg, Landscape (Just pageModel) ) ->
---                    Landscape.update pageMsg pageModel
---                        |> mapTuple2 (Landscape << Just) (Cmd.map LandscapeMsg)
---                ( SunMsg pageMsg, Sun (Just pageModel) ) ->
---                    Sun.update pageMsg pageModel
---                        |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
---                ( ChordsMsg pageMsg, Chords (Just pageModel) ) ->
---                    Chords.update pageMsg pageModel
---                        |> mapTuple2 (Chords << Just) (Cmd.map ChordsMsg)
---                ( RectanglesMsg pageMsg, Rectangles (Just pageModel) ) ->
---                    Rectangles.update pageMsg pageModel
---                        |> mapTuple2 (Rectangles << Just) (Cmd.map RectanglesMsg)
---                ( HilbertCurveMsg pageMsg, HilbertCurve (Just pageModel) ) ->
---                    HilbertCurve.update pageMsg pageModel
---                        |> mapTuple2 (HilbertCurve << Just) (Cmd.map HilbertCurveMsg)
---                _ ->
---                    ( r, Cmd.none )
---    in
---    ( { model | route = first routeMsg }, Cmd.none )
---let
---    routeMsg =
---        case routeParser url of
---            Crescent _ ->
---                Crescent.init
---                    |> mapTuple2 (Crescent << Just) (Cmd.map CrescentMsg)
---            Grid _ ->
---                Grid.init
---                    |> mapTuple2 (Grid << Just) (Cmd.map GridMsg)
---            Curtain _ ->
---                Curtain.init
---                    |> mapTuple2 (Curtain << Just) (Cmd.map CurtainMsg)
---            Landscape _ ->
---                Landscape.init
---                    |> mapTuple2 (Landscape << Just) (Cmd.map LandscapeMsg)
---            ParallelRandom _ ->
---                ParallelRandom.init
---                    |> mapTuple2 (ParallelRandom << Just) (Cmd.map ParallelRandomMsg)
---            Sun _ ->
---                Sun.init
---                    |> mapTuple2 (Sun << Just) (Cmd.map SunMsg)
---            Chords _ ->
---                Chords.init
---                    |> mapTuple2 (Chords << Just) (Cmd.map ChordsMsg)
---            Rectangles _ ->
---                Rectangles.init
---                    |> mapTuple2 (Rectangles << Just) (Cmd.map RectanglesMsg)
---            HilbertCurve _ ->
---                HilbertCurve.init
---                    |> mapTuple2 (HilbertCurve << Just) (Cmd.map HilbertCurveMsg)
---in
---( { route = first routeMsg
---  , status = Nothing
---  }
---, second routeMsg
---)
+init : flags -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
+init _ url key =
+    initRoute <| Model key url Nothing ""
 
 
 initRoute : Model -> ( Model, Cmd Msg )
@@ -250,6 +135,51 @@ initRoute model =
             ( model, Cmd.none )
 
 
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case ( msg, model ) of
+        ( LinkClicked urlRequest, _ ) ->
+            case urlRequest of
+                Browser.Internal url ->
+                    ( model, Nav.pushUrl model.key (Url.toString url) )
+
+                Browser.External href ->
+                    ( model, Nav.load href )
+
+        ( UrlChanged url, _ ) ->
+            initRoute { model | url = url }
+
+        ( Menu action, _ ) ->
+            case action of
+                RaiseLowerPen ->
+                    ( model, raiseLowerPen "" )
+
+                DisableMotor ->
+                    ( model, disableMotor "" )
+
+                Print ->
+                    ( model, print "" )
+
+                Download ->
+                    ( model, download <| Maybe.withDefault "" model.url.fragment )
+
+        ( PlotterStatus value, _ ) ->
+            ( { model | status = decodePlotterStatus value }, Cmd.none )
+
+        ( subMsg, { route } ) ->
+            case ( subMsg, route ) of
+                ( CrescentMsg pageMsg, Just (Crescent pageModel) ) ->
+                    Crescent.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (Crescent m) }) (Cmd.map CrescentMsg)
+
+                ( GridMsg pageMsg, Just (Grid pageModel) ) ->
+                    Grid.update pageMsg pageModel
+                        |> mapTuple2 (\m -> { model | route = Just (Grid m) }) (Cmd.map GridMsg)
+
+                ( _, _ ) ->
+                    ( model, Cmd.none )
+
+
 
 -- VIEW --
 
@@ -277,7 +207,18 @@ view model =
                         , lineHeight (num 1.5)
                         ]
                     ]
-                    [ p [] [ text "Repetition" ]
+                    [ strong [] [ text "Generative Art Examples" ]
+                    , a
+                        [ href "https://twitter.com/Xavier_Ho"
+                        , css
+                            [ color (hex "acacac")
+                            , marginTop (rem 1)
+                            , display block
+                            , textDecoration none
+                            ]
+                        ]
+                        [ text "@Xavier_Ho" ]
+                    , p [] [ text "Repetition" ]
                     , a [ href "#grid", css menuLinkStyles ] [ text "Grid" ]
                     , a [ href "#crescent", css menuLinkStyles ] [ text "Crescent" ]
                     , p [] [ text "Accumulation" ]
@@ -304,28 +245,32 @@ view model =
                             , fontSize (pct 70)
                             , displayFlex
                             , alignItems center
+                            , backgroundColor (hex "f3f3f3")
                             ]
                         ]
-                        [ -- button
-                          --    [ onClick (Menu RaiseLowerPen), css menuButtonstyles ]
-                          --    [ text "↕️ Raise/Lower pen" ]
-                          --, button
-                          --    [ onClick (Menu DisableMotor), css menuButtonstyles ]
-                          --    [ text "🚫 Disable motor" ]
-                          --, button
-                          --    [ onClick (Menu Print) , css menuButtonstyles]
-                          --    [ text "🖊 Print" ]
-                          --, input
-                          --    [ id "svgFile"
-                          --    , type_ "file"
-                          --    , style "display" "none"
-                          --    ]
-                          --    []
-                          --, button
-                          --    [ onClick (Menu Download), css menuButtonstyles ]
-                          --    [ text "💾 Download" ]
-                          div
-                            [ css [ margin2 (px 0) (rem 1) ] ]
+                        [ div
+                            [ css [ margin (rem 1), fontSize initial, color (hex "aaa") ] ]
+                            [ text <| "axidraw V3 " ]
+                        , button
+                            [ onClick (Menu RaiseLowerPen), css menuButtonstyles ]
+                            [ text "↕️ Raise/Lower pen" ]
+                        , button
+                            [ onClick (Menu DisableMotor), css menuButtonstyles ]
+                            [ text "🚫 Disable motor" ]
+                        , button
+                            [ onClick (Menu Print), css menuButtonstyles ]
+                            [ text "✎ Print" ]
+                        , input
+                            [ id "svgFile"
+                            , type_ "file"
+                            , css [ property "display" "none" ]
+                            ]
+                            []
+                        , button
+                            [ onClick (Menu Download), css menuButtonstyles ]
+                            [ text "💾 Download" ]
+                        , div
+                            [ css [ margin (rem 1), fontSize initial, color (hex "dedede") ] ]
                             [ text <| model.status ]
                         ]
                     , div
@@ -367,11 +312,12 @@ menuButtonstyles =
     [ backgroundColor transparent
     , border (px 0)
     , color (hex "9af")
-    , margin2 (rem 0) (rem 0.5)
-    , padding (px 0)
+    , margin (px 0)
+    , padding (rem 1)
     , cursor pointer
     , hover
         [ color (hex "67c")
+        , backgroundColor (hex "efefef")
         ]
     ]
 

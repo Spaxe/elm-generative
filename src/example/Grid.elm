@@ -70,7 +70,14 @@ draw model lines =
                         [ transform <|
                             Draw.scale size
                                 ++ Draw.translate dx dy
-                                ++ Draw.rotate r
+                                ++ Draw.rotate
+                                    (case r > 0 of
+                                        True ->
+                                            0
+
+                                        False ->
+                                            90
+                                    )
                         , Svg.Attributes.style <| strokeWidth (0.5 / size)
                         ]
                         [ line x1 y1 x2 y2 ]
@@ -90,7 +97,7 @@ view model =
             a4Landscape
                 []
                 [ g
-                    [ transform <| Draw.translate 60 25 ]
+                    [ transform <| Draw.translate 80 30 ]
                     (config |> setup |> draw model)
                 ]
 

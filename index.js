@@ -11609,8 +11609,25 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
+var $author$project$Main$decodePlotterStatus = function (value) {
+	var _v0 = A2(
+		$elm$json$Json$Decode$decodeString,
+		A2($elm$json$Json$Decode$field, 'version', $elm$json$Json$Decode$string),
+		value);
+	if (_v0.$ === 'Ok') {
+		var s = _v0.a;
+		return s;
+	} else {
+		var e = _v0.a;
+		return $elm$json$Json$Decode$errorToString(e);
+	}
+};
+var $author$project$Main$disableMotor = _Platform_outgoingPort('disableMotor', $elm$json$Json$Encode$string);
+var $author$project$Main$download = _Platform_outgoingPort('download', $elm$json$Json$Encode$string);
 var $elm$browser$Browser$Navigation$load = _Browser_load;
+var $author$project$Main$print = _Platform_outgoingPort('print', $elm$json$Json$Encode$string);
 var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
+var $author$project$Main$raiseLowerPen = _Platform_outgoingPort('raiseLowerPen', $elm$json$Json$Encode$string);
 var $elm$url$Url$addPort = F2(
 	function (maybePort, starter) {
 		if (maybePort.$ === 'Nothing') {
@@ -11681,18 +11698,48 @@ var $author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{url: url}));
+			case 'Menu':
+				var action = _v0.a.a;
+				switch (action.$) {
+					case 'RaiseLowerPen':
+						return _Utils_Tuple2(
+							model,
+							$author$project$Main$raiseLowerPen(''));
+					case 'DisableMotor':
+						return _Utils_Tuple2(
+							model,
+							$author$project$Main$disableMotor(''));
+					case 'Print':
+						return _Utils_Tuple2(
+							model,
+							$author$project$Main$print(''));
+					default:
+						return _Utils_Tuple2(
+							model,
+							$author$project$Main$download(
+								A2($elm$core$Maybe$withDefault, '', model.url.fragment)));
+				}
+			case 'PlotterStatus':
+				var value = _v0.a.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							status: $author$project$Main$decodePlotterStatus(value)
+						}),
+					$elm$core$Platform$Cmd$none);
 			default:
 				var subMsg = _v0.a;
 				var route = _v0.b.route;
-				var _v2 = _Utils_Tuple2(subMsg, route);
-				_v2$2:
+				var _v3 = _Utils_Tuple2(subMsg, route);
+				_v3$2:
 				while (true) {
-					if (_v2.b.$ === 'Just') {
-						switch (_v2.a.$) {
+					if (_v3.b.$ === 'Just') {
+						switch (_v3.a.$) {
 							case 'CrescentMsg':
-								if (_v2.b.a.$ === 'Crescent') {
-									var pageMsg = _v2.a.a;
-									var pageModel = _v2.b.a.a;
+								if (_v3.b.a.$ === 'Crescent') {
+									var pageMsg = _v3.a.a;
+									var pageModel = _v3.b.a.a;
 									return A3(
 										$author$project$Generative$mapTuple2,
 										function (m) {
@@ -11706,12 +11753,12 @@ var $author$project$Main$update = F2(
 										$elm$core$Platform$Cmd$map($author$project$Main$CrescentMsg),
 										A2($author$project$Example$Crescent$update, pageMsg, pageModel));
 								} else {
-									break _v2$2;
+									break _v3$2;
 								}
 							case 'GridMsg':
-								if (_v2.b.a.$ === 'Grid') {
-									var pageMsg = _v2.a.a;
-									var pageModel = _v2.b.a.a;
+								if (_v3.b.a.$ === 'Grid') {
+									var pageMsg = _v3.a.a;
+									var pageModel = _v3.b.a.a;
 									return A3(
 										$author$project$Generative$mapTuple2,
 										function (m) {
@@ -11725,22 +11772,29 @@ var $author$project$Main$update = F2(
 										$elm$core$Platform$Cmd$map($author$project$Main$GridMsg),
 										A2($author$project$Example$Grid$update, pageMsg, pageModel));
 								} else {
-									break _v2$2;
+									break _v3$2;
 								}
 							default:
-								break _v2$2;
+								break _v3$2;
 						}
 					} else {
-						break _v2$2;
+						break _v3$2;
 					}
 				}
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
+var $author$project$Main$DisableMotor = {$: 'DisableMotor'};
 var $elm$browser$Browser$Document = F2(
 	function (title, body) {
 		return {body: body, title: title};
 	});
+var $author$project$Main$Download = {$: 'Download'};
+var $author$project$Main$Menu = function (a) {
+	return {$: 'Menu', a: a};
+};
+var $author$project$Main$Print = {$: 'Print'};
+var $author$project$Main$RaiseLowerPen = {$: 'RaiseLowerPen'};
 var $rtfeldman$elm_css$VirtualDom$Styled$Node = F3(
 	function (a, b, c) {
 		return {$: 'Node', a: a, b: b, c: c};
@@ -11864,13 +11918,18 @@ var $rtfeldman$elm_css$Css$property = F2(
 var $rtfeldman$elm_css$Css$backgroundColor = function (c) {
 	return A2($rtfeldman$elm_css$Css$property, 'background-color', c.value);
 };
+var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
 var $rtfeldman$elm_css$Css$borderBox = {backgroundClip: $rtfeldman$elm_css$Css$Structure$Compatible, boxSizing: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'border-box'};
 var $rtfeldman$elm_css$Css$prop1 = F2(
 	function (key, arg) {
 		return A2($rtfeldman$elm_css$Css$property, key, arg.value);
 	});
 var $rtfeldman$elm_css$Css$boxSizing = $rtfeldman$elm_css$Css$prop1('box-sizing');
+var $rtfeldman$elm_css$Html$Styled$button = $rtfeldman$elm_css$Html$Styled$node('button');
 var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
+var $rtfeldman$elm_css$Css$color = function (c) {
+	return A2($rtfeldman$elm_css$Css$property, 'color', c.value);
+};
 var $rtfeldman$elm_css$Css$row = {flexDirection: $rtfeldman$elm_css$Css$Structure$Compatible, flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'row'};
 var $rtfeldman$elm_css$Css$column = _Utils_update(
 	$rtfeldman$elm_css$Css$row,
@@ -13589,6 +13648,7 @@ var $rtfeldman$elm_css$Html$Styled$Internal$css = function (styles) {
 	return A3($rtfeldman$elm_css$VirtualDom$Styled$Attribute, classProperty, styles, classname);
 };
 var $rtfeldman$elm_css$Html$Styled$Attributes$css = $rtfeldman$elm_css$Html$Styled$Internal$css;
+var $rtfeldman$elm_css$Css$display = $rtfeldman$elm_css$Css$prop1('display');
 var $rtfeldman$elm_css$Css$displayFlex = A2($rtfeldman$elm_css$Css$property, 'display', 'flex');
 var $rtfeldman$elm_css$Html$Styled$div = $rtfeldman$elm_css$Html$Styled$node('div');
 var $rtfeldman$elm_css$Css$prop3 = F4(
@@ -14018,6 +14078,9 @@ var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
 var $rtfeldman$elm_css$Html$Styled$Attributes$href = function (url) {
 	return A2($rtfeldman$elm_css$Html$Styled$Attributes$stringProperty, 'href', url);
 };
+var $rtfeldman$elm_css$Html$Styled$Attributes$id = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('id');
+var $rtfeldman$elm_css$Css$initial = {alignItems: $rtfeldman$elm_css$Css$Structure$Compatible, all: $rtfeldman$elm_css$Css$Structure$Compatible, backgroundAttachment: $rtfeldman$elm_css$Css$Structure$Compatible, backgroundBlendMode: $rtfeldman$elm_css$Css$Structure$Compatible, backgroundImage: $rtfeldman$elm_css$Css$Structure$Compatible, backgroundOrigin: $rtfeldman$elm_css$Css$Structure$Compatible, backgroundRepeat: $rtfeldman$elm_css$Css$Structure$Compatible, backgroundRepeatShorthand: $rtfeldman$elm_css$Css$Structure$Compatible, borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, boxSizing: $rtfeldman$elm_css$Css$Structure$Compatible, color: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, display: $rtfeldman$elm_css$Css$Structure$Compatible, flexBasis: $rtfeldman$elm_css$Css$Structure$Compatible, flexDirection: $rtfeldman$elm_css$Css$Structure$Compatible, flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, fontFamily: $rtfeldman$elm_css$Css$Structure$Compatible, fontSize: $rtfeldman$elm_css$Css$Structure$Compatible, fontStyle: $rtfeldman$elm_css$Css$Structure$Compatible, fontVariant: $rtfeldman$elm_css$Css$Structure$Compatible, fontWeight: $rtfeldman$elm_css$Css$Structure$Compatible, intOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, justifyContent: $rtfeldman$elm_css$Css$Structure$Compatible, keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, length: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumber: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, listStylePosition: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleType: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleTypeOrPositionOrImage: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, number: $rtfeldman$elm_css$Css$Structure$Compatible, numericValue: 0, outline: $rtfeldman$elm_css$Css$Structure$Compatible, overflow: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, tableLayout: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationLine: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationStyle: $rtfeldman$elm_css$Css$Structure$Compatible, textIndent: $rtfeldman$elm_css$Css$Structure$Compatible, textRendering: $rtfeldman$elm_css$Css$Structure$Compatible, textTransform: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, unitLabel: '', units: $rtfeldman$elm_css$Css$Internal$IncompatibleUnits, value: 'initial', visibility: $rtfeldman$elm_css$Css$Structure$Compatible, whiteSpace: $rtfeldman$elm_css$Css$Structure$Compatible};
+var $rtfeldman$elm_css$Html$Styled$input = $rtfeldman$elm_css$Html$Styled$node('input');
 var $rtfeldman$elm_css$Css$UnitlessInteger = {$: 'UnitlessInteger'};
 var $rtfeldman$elm_css$Css$int = function (val) {
 	return {
@@ -14042,24 +14105,10 @@ var $rtfeldman$elm_css$Css$justifyContent = function (fn) {
 };
 var $rtfeldman$elm_css$Css$lineHeight = $rtfeldman$elm_css$Css$prop1('line-height');
 var $rtfeldman$elm_css$Html$Styled$main_ = $rtfeldman$elm_css$Html$Styled$node('main');
-var $rtfeldman$elm_css$Css$prop2 = F3(
-	function (key, argA, argB) {
-		return A2(
-			$rtfeldman$elm_css$Css$property,
-			key,
-			A2(
-				$elm$core$String$join,
-				' ',
-				_List_fromArray(
-					[argA.value, argB.value])));
-	});
-var $rtfeldman$elm_css$Css$margin2 = $rtfeldman$elm_css$Css$prop2('margin');
-var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
-var $rtfeldman$elm_css$Css$color = function (c) {
-	return A2($rtfeldman$elm_css$Css$property, 'color', c.value);
-};
+var $rtfeldman$elm_css$Css$margin = $rtfeldman$elm_css$Css$prop1('margin');
+var $rtfeldman$elm_css$Css$marginTop = $rtfeldman$elm_css$Css$prop1('margin-top');
+var $rtfeldman$elm_css$Css$border = $rtfeldman$elm_css$Css$prop1('border');
 var $rtfeldman$elm_css$Css$cursor = $rtfeldman$elm_css$Css$prop1('cursor');
-var $rtfeldman$elm_css$Css$display = $rtfeldman$elm_css$Css$prop1('display');
 var $rtfeldman$elm_css$Css$Preprocess$ExtendSelector = F2(
 	function (a, b) {
 		return {$: 'ExtendSelector', a: a, b: b};
@@ -14072,8 +14121,35 @@ var $rtfeldman$elm_css$Css$pseudoClass = function (_class) {
 		$rtfeldman$elm_css$Css$Structure$PseudoClassSelector(_class));
 };
 var $rtfeldman$elm_css$Css$hover = $rtfeldman$elm_css$Css$pseudoClass('hover');
-var $rtfeldman$elm_css$Css$none = {backgroundImage: $rtfeldman$elm_css$Css$Structure$Compatible, blockAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, display: $rtfeldman$elm_css$Css$Structure$Compatible, hoverCapability: $rtfeldman$elm_css$Css$Structure$Compatible, inlineAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleType: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleTypeOrPositionOrImage: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, outline: $rtfeldman$elm_css$Css$Structure$Compatible, pointerDevice: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, resize: $rtfeldman$elm_css$Css$Structure$Compatible, scriptingSupport: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationLine: $rtfeldman$elm_css$Css$Structure$Compatible, textTransform: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, transform: $rtfeldman$elm_css$Css$Structure$Compatible, updateFrequency: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'};
+var $rtfeldman$elm_css$Css$padding = $rtfeldman$elm_css$Css$prop1('padding');
 var $rtfeldman$elm_css$Css$pointer = {cursor: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'pointer'};
+var $rtfeldman$elm_css$Css$PxUnits = {$: 'PxUnits'};
+var $rtfeldman$elm_css$Css$px = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PxUnits, 'px');
+var $rtfeldman$elm_css$Css$RemUnits = {$: 'RemUnits'};
+var $rtfeldman$elm_css$Css$rem = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$RemUnits, 'rem');
+var $rtfeldman$elm_css$Css$transparent = {color: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'transparent'};
+var $author$project$Main$menuButtonstyles = _List_fromArray(
+	[
+		$rtfeldman$elm_css$Css$backgroundColor($rtfeldman$elm_css$Css$transparent),
+		$rtfeldman$elm_css$Css$border(
+		$rtfeldman$elm_css$Css$px(0)),
+		$rtfeldman$elm_css$Css$color(
+		$rtfeldman$elm_css$Css$hex('9af')),
+		$rtfeldman$elm_css$Css$margin(
+		$rtfeldman$elm_css$Css$px(0)),
+		$rtfeldman$elm_css$Css$padding(
+		$rtfeldman$elm_css$Css$rem(1)),
+		$rtfeldman$elm_css$Css$cursor($rtfeldman$elm_css$Css$pointer),
+		$rtfeldman$elm_css$Css$hover(
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Css$color(
+				$rtfeldman$elm_css$Css$hex('67c')),
+				$rtfeldman$elm_css$Css$backgroundColor(
+				$rtfeldman$elm_css$Css$hex('efefef'))
+			]))
+	]);
+var $rtfeldman$elm_css$Css$none = {backgroundImage: $rtfeldman$elm_css$Css$Structure$Compatible, blockAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, display: $rtfeldman$elm_css$Css$Structure$Compatible, hoverCapability: $rtfeldman$elm_css$Css$Structure$Compatible, inlineAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleType: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleTypeOrPositionOrImage: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, outline: $rtfeldman$elm_css$Css$Structure$Compatible, pointerDevice: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, resize: $rtfeldman$elm_css$Css$Structure$Compatible, scriptingSupport: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationLine: $rtfeldman$elm_css$Css$Structure$Compatible, textTransform: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, transform: $rtfeldman$elm_css$Css$Structure$Compatible, updateFrequency: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'};
 var $rtfeldman$elm_css$Css$textDecoration = $rtfeldman$elm_css$Css$prop1('text-decoration');
 var $author$project$Main$menuLinkStyles = _List_fromArray(
 	[
@@ -14103,16 +14179,44 @@ var $rtfeldman$elm_css$Css$num = function (val) {
 		value: $elm$core$String$fromFloat(val)
 	};
 };
+var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
+	function (eventName, handler) {
+		return A3(
+			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
+			A2($elm$virtual_dom$VirtualDom$on, eventName, handler),
+			_List_Nil,
+			'');
+	});
+var $rtfeldman$elm_css$Html$Styled$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$rtfeldman$elm_css$VirtualDom$Styled$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $rtfeldman$elm_css$Html$Styled$Events$onClick = function (msg) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $rtfeldman$elm_css$Html$Styled$p = $rtfeldman$elm_css$Html$Styled$node('p');
+var $rtfeldman$elm_css$Css$prop2 = F3(
+	function (key, argA, argB) {
+		return A2(
+			$rtfeldman$elm_css$Css$property,
+			key,
+			A2(
+				$elm$core$String$join,
+				' ',
+				_List_fromArray(
+					[argA.value, argB.value])));
+	});
 var $rtfeldman$elm_css$Css$padding2 = $rtfeldman$elm_css$Css$prop2('padding');
 var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
 var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
 var $rtfeldman$elm_css$Css$position = $rtfeldman$elm_css$Css$prop1('position');
-var $rtfeldman$elm_css$Css$PxUnits = {$: 'PxUnits'};
-var $rtfeldman$elm_css$Css$px = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PxUnits, 'px');
 var $rtfeldman$elm_css$Css$relative = {position: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'relative'};
-var $rtfeldman$elm_css$Css$RemUnits = {$: 'RemUnits'};
-var $rtfeldman$elm_css$Css$rem = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$RemUnits, 'rem');
 var $rtfeldman$elm_css$VirtualDom$Styled$Unstyled = function (a) {
 	return {$: 'Unstyled', a: a};
 };
@@ -14765,7 +14869,15 @@ var $author$project$Example$Grid$draw = F2(
 										$author$project$Draw$scale(size),
 										_Utils_ap(
 											A2($author$project$Draw$translate, dx, dy),
-											$author$project$Draw$rotate(r)))),
+											$author$project$Draw$rotate(
+												function () {
+													var _v6 = r > 0;
+													if (_v6) {
+														return 0;
+													} else {
+														return 90;
+													}
+												}())))),
 									$elm$svg$Svg$Attributes$style(
 									$author$project$Draw$strokeWidth(0.5 / size))
 								]),
@@ -14825,7 +14937,7 @@ var $author$project$Example$Grid$view = function (model) {
 					_List_fromArray(
 						[
 							$elm$svg$Svg$Attributes$transform(
-							A2($author$project$Draw$translate, 60, 25))
+							A2($author$project$Draw$translate, 80, 30))
 						]),
 					A2(
 						$author$project$Example$Grid$draw,
@@ -15325,6 +15437,7 @@ var $author$project$Main$render = function (r) {
 			}
 		}());
 };
+var $rtfeldman$elm_css$Html$Styled$strong = $rtfeldman$elm_css$Html$Styled$node('strong');
 var $rtfeldman$elm_css$VirtualDom$Styled$text = function (str) {
 	return $rtfeldman$elm_css$VirtualDom$Styled$Unstyled(
 		$elm$virtual_dom$VirtualDom$text(str));
@@ -15799,6 +15912,7 @@ var $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled = function (vdom) {
 	}
 };
 var $rtfeldman$elm_css$Html$Styled$toUnstyled = $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled;
+var $rtfeldman$elm_css$Html$Styled$Attributes$type_ = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('type');
 var $rtfeldman$elm_css$Css$VhUnits = {$: 'VhUnits'};
 var $rtfeldman$elm_css$Css$vh = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VhUnits, 'vh');
 var $author$project$Main$view = function (model) {
@@ -15855,6 +15969,33 @@ var $author$project$Main$view = function (model) {
 								]),
 							_List_fromArray(
 								[
+									A2(
+									$rtfeldman$elm_css$Html$Styled$strong,
+									_List_Nil,
+									_List_fromArray(
+										[
+											$rtfeldman$elm_css$Html$Styled$text('Generative Art Examples')
+										])),
+									A2(
+									$rtfeldman$elm_css$Html$Styled$a,
+									_List_fromArray(
+										[
+											$rtfeldman$elm_css$Html$Styled$Attributes$href('https://twitter.com/Xavier_Ho'),
+											$rtfeldman$elm_css$Html$Styled$Attributes$css(
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Css$color(
+													$rtfeldman$elm_css$Css$hex('acacac')),
+													$rtfeldman$elm_css$Css$marginTop(
+													$rtfeldman$elm_css$Css$rem(1)),
+													$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block),
+													$rtfeldman$elm_css$Css$textDecoration($rtfeldman$elm_css$Css$none)
+												]))
+										]),
+									_List_fromArray(
+										[
+											$rtfeldman$elm_css$Html$Styled$text('@Xavier_Ho')
+										])),
 									A2(
 									$rtfeldman$elm_css$Html$Styled$p,
 									_List_Nil,
@@ -16006,7 +16147,9 @@ var $author$project$Main$view = function (model) {
 													$rtfeldman$elm_css$Css$fontSize(
 													$rtfeldman$elm_css$Css$pct(70)),
 													$rtfeldman$elm_css$Css$displayFlex,
-													$rtfeldman$elm_css$Css$alignItems($rtfeldman$elm_css$Css$center)
+													$rtfeldman$elm_css$Css$alignItems($rtfeldman$elm_css$Css$center),
+													$rtfeldman$elm_css$Css$backgroundColor(
+													$rtfeldman$elm_css$Css$hex('f3f3f3'))
 												]))
 										]),
 									_List_fromArray(
@@ -16018,10 +16161,90 @@ var $author$project$Main$view = function (model) {
 													$rtfeldman$elm_css$Html$Styled$Attributes$css(
 													_List_fromArray(
 														[
-															A2(
-															$rtfeldman$elm_css$Css$margin2,
-															$rtfeldman$elm_css$Css$px(0),
-															$rtfeldman$elm_css$Css$rem(1))
+															$rtfeldman$elm_css$Css$margin(
+															$rtfeldman$elm_css$Css$rem(1)),
+															$rtfeldman$elm_css$Css$fontSize($rtfeldman$elm_css$Css$initial),
+															$rtfeldman$elm_css$Css$color(
+															$rtfeldman$elm_css$Css$hex('aaa'))
+														]))
+												]),
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$text('axidraw V3 ')
+												])),
+											A2(
+											$rtfeldman$elm_css$Html$Styled$button,
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$Events$onClick(
+													$author$project$Main$Menu($author$project$Main$RaiseLowerPen)),
+													$rtfeldman$elm_css$Html$Styled$Attributes$css($author$project$Main$menuButtonstyles)
+												]),
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$text('↕️ Raise/Lower pen')
+												])),
+											A2(
+											$rtfeldman$elm_css$Html$Styled$button,
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$Events$onClick(
+													$author$project$Main$Menu($author$project$Main$DisableMotor)),
+													$rtfeldman$elm_css$Html$Styled$Attributes$css($author$project$Main$menuButtonstyles)
+												]),
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$text('🚫 Disable motor')
+												])),
+											A2(
+											$rtfeldman$elm_css$Html$Styled$button,
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$Events$onClick(
+													$author$project$Main$Menu($author$project$Main$Print)),
+													$rtfeldman$elm_css$Html$Styled$Attributes$css($author$project$Main$menuButtonstyles)
+												]),
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$text('✎ Print')
+												])),
+											A2(
+											$rtfeldman$elm_css$Html$Styled$input,
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$Attributes$id('svgFile'),
+													$rtfeldman$elm_css$Html$Styled$Attributes$type_('file'),
+													$rtfeldman$elm_css$Html$Styled$Attributes$css(
+													_List_fromArray(
+														[
+															A2($rtfeldman$elm_css$Css$property, 'display', 'none')
+														]))
+												]),
+											_List_Nil),
+											A2(
+											$rtfeldman$elm_css$Html$Styled$button,
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$Events$onClick(
+													$author$project$Main$Menu($author$project$Main$Download)),
+													$rtfeldman$elm_css$Html$Styled$Attributes$css($author$project$Main$menuButtonstyles)
+												]),
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$text('💾 Download')
+												])),
+											A2(
+											$rtfeldman$elm_css$Html$Styled$div,
+											_List_fromArray(
+												[
+													$rtfeldman$elm_css$Html$Styled$Attributes$css(
+													_List_fromArray(
+														[
+															$rtfeldman$elm_css$Css$margin(
+															$rtfeldman$elm_css$Css$rem(1)),
+															$rtfeldman$elm_css$Css$fontSize($rtfeldman$elm_css$Css$initial),
+															$rtfeldman$elm_css$Css$color(
+															$rtfeldman$elm_css$Css$hex('dedede'))
 														]))
 												]),
 											_List_fromArray(
@@ -16064,4 +16287,4 @@ var $author$project$Main$view = function (model) {
 var $author$project$Main$main = $elm$browser$Browser$application(
 	{init: $author$project$Main$init, onUrlChange: $author$project$Main$UrlChanged, onUrlRequest: $author$project$Main$LinkClicked, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
-	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Example.Grid.Grid":{"args":[],"type":"List.List Basics.Float"},"Example.ParallelRandom.ParallelLines":{"args":[],"type":"List.List (List.List Basics.Float)"}},"unions":{"Main.Msg":{"args":[],"tags":{"LinkClicked":["Browser.UrlRequest"],"UrlChanged":["Url.Url"],"CrescentMsg":["Example.Crescent.Msg"],"GridMsg":["Example.Grid.Msg"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"SunMsg":["Example.Sun.Msg"],"ChordsMsg":["Example.Chords.Msg"],"RectanglesMsg":["Example.Rectangles.Msg"],"HilbertCurveMsg":["Example.HilbertCurve.Msg"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Example.Chords.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Chords.Chords"]}},"Example.Crescent.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Crescent.Grid"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Curtain.Curtain"]}},"Example.Grid.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Grid.Grid"]}},"Example.HilbertCurve.Msg":{"args":[],"tags":{"Iterate":[],"Draw":[]}},"Example.Landscape.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Landscape.Landscape"]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.ParallelRandom.ParallelLines"]}},"Example.Rectangles.Msg":{"args":[],"tags":{"Iterate":[]}},"Example.Sun.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Sun.Sun"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Example.Chords.Chords":{"args":[],"tags":{"Chords":["List.List Basics.Float","List.List Basics.Float"]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List.List (List.List Basics.Float)","List.List (List.List Basics.Float)"]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"Example.Crescent.Grid":{"args":[],"tags":{"Grid":["List.List (Maybe.Maybe Basics.Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Basics.Float, Basics.Float )","Basics.Float","List.List (List.List Basics.Float)"]}},"List.List":{"args":["a"],"tags":{}},"Example.Sun.Sun":{"args":[],"tags":{"Sun":["List.List (List.List ( Basics.Float, Basics.Float ))"]}}}}})}});}(this));
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.1"},"types":{"message":"Main.Msg","aliases":{"Url.Url":{"args":[],"type":"{ protocol : Url.Protocol, host : String.String, port_ : Maybe.Maybe Basics.Int, path : String.String, query : Maybe.Maybe String.String, fragment : Maybe.Maybe String.String }"},"Example.Grid.Grid":{"args":[],"type":"List.List Basics.Float"},"Example.ParallelRandom.ParallelLines":{"args":[],"type":"List.List (List.List Basics.Float)"}},"unions":{"Main.Msg":{"args":[],"tags":{"LinkClicked":["Browser.UrlRequest"],"UrlChanged":["Url.Url"],"CrescentMsg":["Example.Crescent.Msg"],"GridMsg":["Example.Grid.Msg"],"ParallelRandomMsg":["Example.ParallelRandom.Msg"],"CurtainMsg":["Example.Curtain.Msg"],"LandscapeMsg":["Example.Landscape.Msg"],"SunMsg":["Example.Sun.Msg"],"ChordsMsg":["Example.Chords.Msg"],"RectanglesMsg":["Example.Rectangles.Msg"],"HilbertCurveMsg":["Example.HilbertCurve.Msg"],"Menu":["Main.Action"],"PlotterStatus":["String.String"]}},"Main.Action":{"args":[],"tags":{"RaiseLowerPen":[],"DisableMotor":[],"Print":[],"Download":[]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Example.Chords.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Chords.Chords"]}},"Example.Crescent.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Crescent.Grid"]}},"Example.Curtain.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Curtain.Curtain"]}},"Example.Grid.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Grid.Grid"]}},"Example.HilbertCurve.Msg":{"args":[],"tags":{"Iterate":[],"Draw":[]}},"Example.Landscape.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Landscape.Landscape"]}},"Example.ParallelRandom.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.ParallelRandom.ParallelLines"]}},"Example.Rectangles.Msg":{"args":[],"tags":{"Iterate":[]}},"Example.Sun.Msg":{"args":[],"tags":{"Generate":[],"Draw":["Example.Sun.Sun"]}},"Url.Protocol":{"args":[],"tags":{"Http":[],"Https":[]}},"String.String":{"args":[],"tags":{"String":[]}},"Browser.UrlRequest":{"args":[],"tags":{"Internal":["Url.Url"],"External":["String.String"]}},"Example.Chords.Chords":{"args":[],"tags":{"Chords":["List.List Basics.Float","List.List Basics.Float"]}},"Example.Curtain.Curtain":{"args":[],"tags":{"Curtain":["List.List (List.List Basics.Float)","List.List (List.List Basics.Float)"]}},"Basics.Float":{"args":[],"tags":{"Float":[]}},"Example.Crescent.Grid":{"args":[],"tags":{"Grid":["List.List (Maybe.Maybe Basics.Float)"]}},"Example.Landscape.Landscape":{"args":[],"tags":{"Landscape":["( Basics.Float, Basics.Float )","Basics.Float","List.List (List.List Basics.Float)"]}},"List.List":{"args":["a"],"tags":{}},"Example.Sun.Sun":{"args":[],"tags":{"Sun":["List.List (List.List ( Basics.Float, Basics.Float ))"]}}}}})}});}(this));
