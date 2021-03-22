@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-REST API for the axidraw-standalone Python CLI
-Author: Xavier Ho <contact@xavierho.com>
+A simple webapp that works with the elm-generative webpage
+EXTREMELY EXPERIMENTAL
+Author: Xavier Ho <xavier@jtg.design>
 
 ## To start axidraw-server on port 6743, listening from all hosts
 
